@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MedicalResultsTracker.ViewModel;
+using Microsoft.Extensions.Logging;
 
 namespace MedicalResultsTracker
 {
@@ -6,7 +7,7 @@ namespace MedicalResultsTracker
     {
         public static MauiApp CreateMauiApp()
         {
-            var builder = MauiApp.CreateBuilder();
+            MauiAppBuilder builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -15,6 +16,7 @@ namespace MedicalResultsTracker
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.RegisterViewModels();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
