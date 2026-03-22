@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25">
+
+            <Label
+                SemanticProperties.HeadingLevel="Level1"
+                Style="{StaticResource Headline}"
+                Text="Добрый день, Nick" />
+
+            <Label
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                SemanticProperties.HeadingLevel="Level2"
+                Style="{StaticResource SubHeadline}"
+                Text="Последний тест: 18 Mar 2026" />
+            <HorizontalStackLayout HeightRequest="85" Spacing="10">
+                <Button HorizontalOptions="Fill" Text="📷 Scan Test" />
+                <Button HorizontalOptions="Fill" Text="➕ Add" />
+                <Button HorizontalOptions="Fill" Text="📁 Import PDF" />
+            </HorizontalStackLayout>
+            <VerticalStackLayout Background="AliceBlue">
+                <Label
+                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                    SemanticProperties.HeadingLevel="Level2"
+                    Style="{StaticResource SubHeadline}"
+                    Text="Blood Test - 18 Mar Status: ⚠️ 2 values out of range" />
+                <HorizontalStackLayout>
+                    <Button
+                        HorizontalOptions="Fill"
+                        SemanticProperties.Hint="Counts the number of times you click"
+                        Text="View details" />
+                    <Button
+                        HorizontalOptions="Fill"
+                        SemanticProperties.Hint="Counts the number of times you click"
+                        Text="Compare with previous" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label
+                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                    SemanticProperties.HeadingLevel="Level2"
+                    Style="{StaticResource SubHeadline}"
+                    Text="Key Indicators" />
+                <Label Text="Testosterone 2.65 ↓ (Low)" TextColor="Red" />
+                <Label Text="Vitamin D 32 ↓ (bitte achten)" TextColor="Orange" />
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label
+                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                    SemanticProperties.HeadingLevel="Level2"
+                    Style="{StaticResource SubHeadline}"
+                    Text="Trends Preview" />
+                <Label Text="some diagramms" TextColor="Red" />
+            </VerticalStackLayout>
+            <HorizontalStackLayout />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

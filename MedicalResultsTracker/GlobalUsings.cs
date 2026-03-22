@@ -1,0 +1,9 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Text;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;   
+global using System.Collections.ObjectModel;
+global using System.Diagnostics;
+global using System.Runtime.CompilerServices;
+global using System.Text.Json;
