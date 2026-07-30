@@ -11,7 +11,7 @@ namespace MedicalResultsTracker.Services.Export
     /// Выгрузка истории в файл. Файл кладётся в кэш приложения, дальше пользователь сам решает,
     /// что с ним делать через системный диалог "Поделиться" — приложение никуда ничего не отправляет.
     /// </summary>
-    public sealed class CsvExportService : IExportService
+    public sealed class ExportService : IExportService
     {
         // Точка с запятой + числа в текущей культуре: так файл открывается в Excel без "мастера импорта".
         private const char Separator = ';';
@@ -25,7 +25,7 @@ namespace MedicalResultsTracker.Services.Export
         private readonly IBloodTestRepository _repository;
         private readonly IAnalysisService _analysis;
 
-        public CsvExportService(IBloodTestRepository repository, IAnalysisService analysis)
+        public ExportService(IBloodTestRepository repository, IAnalysisService analysis)
         {
             _repository = repository;
             _analysis = analysis;
@@ -151,6 +151,94 @@ namespace MedicalResultsTracker.Services.Export
 
             return imported;
         }
+
+        public async Task<string> BuildTextSummaryAsync(int maxTests = 6)
+        {
+            IReadOnlyList<BloodTest> all = await _repository.GetAllAsync().ConfigureAwait(false);
+
+            // GetAllAsync отдаёт свежие сверху: берём последние N и разворачиваем в хронологию.
+            List<BloodTest> ordered = (maxTests > 0 ? all.Take(maxTests) : all)
+                .OrderBy(t => t.Date)
+                .ToList();
+
+            if (ordered.Count == 0)
+            {
+                return "История анализов пуста.";
+            }
+
+            StringBuilder builder = new();
+
+            builder.AppendLine("Журнал результатов анализов. Значения внесены вручную из бланков лаборатории.");
+            builder.AppendLine("Персональных данных здесь нет — только показатели, единицы, границы норм из бланка и даты.");
+            builder.AppendLine("Границы норм у разных лабораторий отличаются; в таблице приведены те, что были напечатаны в бланке.");
+            builder.AppendLine();
+
+            BloodTest latest = ordered[^1];
+
+            builder.AppendLine($"Последний анализ: {latest.Title}.");
+            builder.AppendLine();
+
+            List<IGrouping<string, BloodParameter>> rows = ordered
+                .SelectMany(t => t.Parameters)
+                .GroupBy(_analysis.GetKey)
+                .OrderBy(g => g.Last().Name)
+                .ToList();
+
+            builder.Append("| Показатель | Ед. | Норма |");
+
+            foreach (BloodTest test in ordered)
+            {
+                builder.Append($" {test.Date:dd.MM.yyyy} |");
+            }
+
+            builder.AppendLine();
+            builder.Append("|---|---|---|");
+            builder.Append(string.Concat(Enumerable.Repeat("---|", ordered.Count)));
+            builder.AppendLine();
+
+            foreach (IGrouping<string, BloodParameter> row in rows)
+            {
+                BloodParameter newest = row.Last();
+                string range = newest.Range.IsDefined ? newest.Range.ToString() : "—";
+
+                builder.Append($"| {newest.Name} | {newest.Unit ?? "—"} | {range} |");
+
+                foreach (BloodTest test in ordered)
+                {
+                    BloodParameter? measurement = test.Parameters.FirstOrDefault(p => _analysis.GetKey(p) == row.Key);
+
+                    builder.Append($" {(measurement is null ? "—" : FormatValue(measurement))} |");
+                }
+
+                builder.AppendLine();
+            }
+
+            List<BloodParameter> outOfRange = latest.Parameters
+                .Where(p => p.Status is ParameterStatus.Low or ParameterStatus.High)
+                .ToList();
+
+            builder.AppendLine();
+
+            builder.AppendLine(outOfRange.Count == 0
+                ? "В последнем анализе все показатели в пределах указанных норм."
+                : "Вне нормы в последнем анализе: " + string.Join(", ", outOfRange.Select(p =>
+                    $"{p.Name} — {FormatValue(p)} {p.Unit} при норме {p.Range}".Trim())) + ".");
+
+            return builder.ToString();
+        }
+
+        public async Task ShareTextAsync(string text, string title)
+        {
+            await Share.Default.RequestAsync(new ShareTextRequest
+            {
+                Title = title,
+                Subject = title,
+                Text = text,
+            }).ConfigureAwait(false);
+        }
+
+        public async Task CopyToClipboardAsync(string text) =>
+            await Clipboard.Default.SetTextAsync(text).ConfigureAwait(false);
 
         public async Task ShareAsync(string filePath, string title)
         {

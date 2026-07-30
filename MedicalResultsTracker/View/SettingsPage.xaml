@@ -35,6 +35,10 @@
                     <Label Style="{StaticResource SectionTitle}" Text="ИИ-помощник" />
                     <Label Text="Приложение полностью работает без ИИ: все значения можно ввести руками. Помощник — необязательная надстройка, и каждое разрешение выдаётся отдельно." />
 
+                    <Label Style="{StaticResource Caption}" Text="Ручная передача — работает уже сейчас и не требует никаких разрешений: приложение готовит таблицу текстом, а получателя вы выбираете сами." />
+                    <Button Command="{Binding ShareForAiCommand}" Text="Отправить таблицу в ИИ-чат" />
+                    <Button Command="{Binding CopyForAiCommand}" Text="Скопировать таблицу в буфер" />
+
                     <Grid ColumnDefinitions="*,Auto">
                         <VerticalStackLayout Grid.Column="0" Spacing="2">
                             <Label Text="Распознавание бланка" />

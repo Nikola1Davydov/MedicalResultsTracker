@@ -110,6 +110,22 @@ namespace MedicalResultsTracker.ViewModel
             await LoadAsync();
         }, "Не удалось очистить историю");
 
+        [RelayCommand]
+        private Task ShareForAi() => RunAsync(async () =>
+        {
+            string text = await _export.BuildTextSummaryAsync();
+            await _export.ShareTextAsync(text, "Мои анализы");
+        }, "Не удалось подготовить текст");
+
+        [RelayCommand]
+        private Task CopyForAi() => RunAsync(async () =>
+        {
+            string text = await _export.BuildTextSummaryAsync();
+
+            await _export.CopyToClipboardAsync(text);
+            await Dialog.AlertAsync("Скопировано", "Таблица в буфере обмена — вставьте её в любой чат.");
+        }, "Не удалось скопировать текст");
+
         partial void OnAllowDocumentRecognitionChanged(bool value) =>
             UpdateConsent(AiConsentScope.DocumentRecognition, value);
 

@@ -12,7 +12,7 @@ namespace MedicalResultsTracker.Services
             .AddSingleton<IBloodTestRepository, BloodTestRepository>()
             .AddSingleton<IAnalyteCatalog, AnalyteCatalog>()
             .AddSingleton<IAnalysisService, AnalysisService>()
-            .AddSingleton<IExportService, CsvExportService>()
+            .AddSingleton<IExportService, ExportService>()
             .AddSingleton<IAiConsentService, AiConsentService>()
 
             // Заглушка: пока внешний провайдер не подключён, приложение работает полностью локально.

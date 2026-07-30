@@ -92,6 +92,18 @@ namespace MedicalResultsTracker.ViewModel
             await _export.ShareAsync(path, "Результаты анализов");
         }, "Не удалось выгрузить таблицу");
 
+        /// <summary>
+        /// Готовит таблицу текстом и открывает системный диалог «Поделиться».
+        /// Приложение не выбирает получателя и никуда само не отправляет: в какое приложение
+        /// уйдёт текст, решает пользователь в системном списке.
+        /// </summary>
+        [RelayCommand]
+        private Task AskAi() => RunAsync(async () =>
+        {
+            string text = await _export.BuildTextSummaryAsync();
+            await _export.ShareTextAsync(text, "Мои анализы");
+        }, "Не удалось подготовить текст");
+
         private async Task LoadAsync()
         {
             IReadOnlyList<ParameterTrend> trends = await _analysis.GetLatestTrendsAsync();
