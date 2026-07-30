@@ -416,3 +416,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Ключи подписи Android: в репозитории им не место ни в каком виде
+*.keystore
+*.jks
+keystore.base64

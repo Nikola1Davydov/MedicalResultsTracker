@@ -1,7 +1,11 @@
 name: Release APK
 
 # Собирает установочный APK и кладёт его в GitHub Releases.
-# Запуск: пуш тега вида v1.0.0 либо кнопка "Run workflow" на вкладке Actions.
+#
+# Пуш тега вида v1.0.0 — полный релиз: APK попадает в Releases.
+# Кнопка "Run workflow" — репетиция: APK собирается и подписывается, но в Releases
+# ничего не публикуется, файл остаётся артефактом запуска. Так пайплайн можно
+# проверить, не оставляя мусора в списке релизов.
 on:
   push:
     tags: ['v*']
@@ -56,7 +60,7 @@ jobs:
             tag="v${display}"
           else
             display="0.0.${GITHUB_RUN_NUMBER}"
-            tag="build-${GITHUB_RUN_NUMBER}"
+            tag=""
           fi
           echo "display=$display" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
@@ -155,21 +159,35 @@ jobs:
           } > "$notes"
           echo "path=$notes" >> "$GITHUB_OUTPUT"
 
+      # Только для тега: ручной запуск — репетиция, и Releases он не трогает.
       - name: Publish GitHub release
+        if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           tag="${{ steps.version.outputs.tag }}"
-          prerelease=""
-          if [ "${GITHUB_REF_TYPE}" != "tag" ]; then
-            prerelease="--prerelease"
-          fi
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" "${{ steps.apk.outputs.path }}" --clobber
           else
             gh release create "$tag" "${{ steps.apk.outputs.path }}" \
               --title "MedicalResultsTracker ${{ steps.version.outputs.display }}" \
-              --notes-file "${{ steps.notes.outputs.path }}" \
-              $prerelease
+              --notes-file "${{ steps.notes.outputs.path }}"
           fi
+
+      - name: Summary
+        run: |
+          {
+            echo "### APK собран"
+            echo
+            echo "Версия: \`${{ steps.version.outputs.display }}\`"
+            if [ "${{ steps.signing.outputs.persistent }}" = "true" ]; then
+              echo "Подпись: постоянный ключ из секретов — обновления встанут поверх."
+            else
+              echo "Подпись: одноразовый ключ. Настройте секреты, см. docs/CI.md."
+            fi
+            if [ "${GITHUB_REF_TYPE}" != "tag" ]; then
+              echo
+              echo "Ручной запуск: релиз не создавался, файл лежит в артефактах этого запуска."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
