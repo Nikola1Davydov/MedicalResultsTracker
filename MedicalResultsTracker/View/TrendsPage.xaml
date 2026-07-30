@@ -14,17 +14,37 @@
                 IsVisible="{Binding IsEmpty}"
                 Style="{StaticResource Caption}"
                 Text="Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями." />
-            <Button Command="{Binding ToggleFilterCommand}" Text="Показать все / только с историей" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding ToggleFavoritesFilterCommand}"
+                    Text="★ Только избранное" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ToggleHistoryFilterCommand}"
+                    Text="Все / с историей" />
+            </Grid>
         </VerticalStackLayout>
 
         <RefreshView
             Grid.Row="1"
             Command="{Binding RefreshCommand}"
             IsRefreshing="{Binding IsBusy}">
-            <CollectionView ItemsSource="{Binding Series}" SelectionMode="None">
+            <CollectionView
+                IsGrouped="True"
+                ItemsSource="{Binding Groups}"
+                SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="vm:SeriesGroupViewModel">
+                        <VerticalStackLayout Padding="0,12,0,4" Spacing="0">
+                            <Label Style="{StaticResource SectionTitle}" Text="{Binding Name}" />
+                            <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:SeriesItemViewModel">
                         <Border Style="{StaticResource Card}">

@@ -1,14 +1,17 @@
-using System.Globalization;
-using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Analysis;
+using MedicalResultsTracker.Services.Database;
 
 namespace MedicalResultsTracker.ViewModel
 {
-    /// <summary>Список показателей с мини-графиками динамики.</summary>
+    /// <summary>Показатели с мини-графиками, разложенные по группам.</summary>
     public partial class TrendsViewModel : BaseViewModel
     {
+        /// <summary>Группа избранного всегда первая — за этими показателями следят намеренно.</summary>
+        private const string FavoritesGroup = "★ Избранное";
+
         private readonly IAnalysisService _analysis;
+        private readonly IAnalyteCatalog _catalog;
 
         [ObservableProperty]
         private bool _isEmpty = true;
@@ -16,14 +19,18 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private bool _onlyWithHistory = true;
 
-        public TrendsViewModel(IAnalysisService analysis)
+        [ObservableProperty]
+        private bool _onlyFavorites;
+
+        public TrendsViewModel(IAnalysisService analysis, IAnalyteCatalog catalog)
         {
             _analysis = analysis;
+            _catalog = catalog;
 
             Title = "Динамика";
         }
 
-        public ObservableCollection<SeriesItemViewModel> Series { get; } = new();
+        public ObservableCollection<SeriesGroupViewModel> Groups { get; } = new();
 
         public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось построить графики");
 
@@ -37,9 +44,17 @@ namespace MedicalResultsTracker.ViewModel
                 $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(item.Key)}");
 
         [RelayCommand]
-        private Task ToggleFilter()
+        private Task ToggleHistoryFilter()
         {
             OnlyWithHistory = !OnlyWithHistory;
+
+            return RunAsync(LoadAsync, "Не удалось обновить графики");
+        }
+
+        [RelayCommand]
+        private Task ToggleFavoritesFilter()
+        {
+            OnlyFavorites = !OnlyFavorites;
 
             return RunAsync(LoadAsync, "Не удалось обновить графики");
         }
@@ -47,68 +62,37 @@ namespace MedicalResultsTracker.ViewModel
         private async Task LoadAsync()
         {
             IReadOnlyList<ParameterSeries> series = await _analysis.GetSeriesAsync();
+            IReadOnlyList<Analyte> catalog = await _catalog.GetAllAsync();
 
-            Series.Clear();
+            Dictionary<string, Analyte> byCode = catalog
+                .GroupBy(a => a.Code, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
-            foreach (ParameterSeries item in series.Where(s => !OnlyWithHistory || s.HasTrend))
+            List<SeriesItemViewModel> items = series
+                .Where(s => !OnlyWithHistory || s.HasTrend)
+                .Select(s => new SeriesItemViewModel(s, byCode.GetValueOrDefault(s.Key)))
+                .Where(item => !OnlyFavorites || item.IsFavorite)
+                .ToList();
+
+            Groups.Clear();
+
+            // Избранное дублируется в своей группе намеренно: оно должно быть под рукой,
+            // не переставая при этом числиться в своей предметной группе.
+            List<SeriesItemViewModel> favorites = items.Where(i => i.IsFavorite).ToList();
+
+            if (favorites.Count > 0 && !OnlyFavorites)
             {
-                Series.Add(new SeriesItemViewModel(item));
+                Groups.Add(new SeriesGroupViewModel(FavoritesGroup, favorites.OrderBy(i => i.Name)));
             }
 
-            IsEmpty = Series.Count == 0;
+            foreach (IGrouping<string, SeriesItemViewModel> group in items
+                .GroupBy(i => i.Category)
+                .OrderBy(g => g.Key))
+            {
+                Groups.Add(new SeriesGroupViewModel(group.Key, group.OrderBy(i => i.Name)));
+            }
+
+            IsEmpty = Groups.Count == 0;
         }
-    }
-
-    /// <summary>Карточка показателя со спарклайном.</summary>
-    public sealed class SeriesItemViewModel
-    {
-        public SeriesItemViewModel(ParameterSeries series)
-        {
-            Key = series.Key;
-            Name = series.Name;
-            Unit = series.Unit;
-            PointCount = series.Points.Count;
-            Chart = new TrendChartDrawable { Series = series, Compact = true };
-
-            SeriesPoint? latest = series.Latest;
-
-            LatestText = latest is null
-                ? "—"
-                : $"{latest.Value.ToString("0.####", CultureInfo.CurrentCulture)} {Unit}".Trim();
-
-            StatusColor = StatusPalette.For(latest?.Status ?? ParameterStatus.Unknown);
-
-            if (series.Points.Count >= 2)
-            {
-                double delta = series.Points[^1].Value - series.Points[^2].Value;
-
-                DeltaText = delta switch
-                {
-                    > 0 => $"↑ {delta.ToString("0.####", CultureInfo.CurrentCulture)}",
-                    < 0 => $"↓ {Math.Abs(delta).ToString("0.####", CultureInfo.CurrentCulture)}",
-                    _ => "→ без изменений"
-                };
-            }
-            else
-            {
-                DeltaText = "одно измерение";
-            }
-        }
-
-        public string Key { get; }
-
-        public string Name { get; }
-
-        public string? Unit { get; }
-
-        public int PointCount { get; }
-
-        public string LatestText { get; }
-
-        public string DeltaText { get; }
-
-        public Color StatusColor { get; }
-
-        public TrendChartDrawable Chart { get; }
     }
 }

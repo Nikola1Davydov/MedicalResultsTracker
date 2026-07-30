@@ -11,6 +11,7 @@ namespace MedicalResultsTracker.ViewModel
     {
         private readonly IBloodTestRepository _repository;
         private readonly IAnalysisService _analysis;
+        private readonly IAnalyteCatalog _catalog;
         private readonly IExportService _export;
         private readonly IAiConsentService _consent;
         private readonly IAiAssistant _assistant;
@@ -34,6 +35,13 @@ namespace MedicalResultsTracker.ViewModel
         private bool _hasChanges;
 
         [ObservableProperty]
+        private bool _hasFavorites;
+
+        /// <summary>Подсказка про избранное показывается, только когда данные есть, а отмеченного ничего нет.</summary>
+        [ObservableProperty]
+        private bool _showFavoritesHint;
+
+        [ObservableProperty]
         private string _assistantStatus = string.Empty;
 
         private Guid? _latestTestId;
@@ -41,18 +49,26 @@ namespace MedicalResultsTracker.ViewModel
         public MainViewModel(
             IBloodTestRepository repository,
             IAnalysisService analysis,
+            IAnalyteCatalog catalog,
             IExportService export,
             IAiConsentService consent,
             IAiAssistant assistant)
         {
             _repository = repository;
             _analysis = analysis;
+            _catalog = catalog;
             _export = export;
             _consent = consent;
             _assistant = assistant;
 
             Title = "Мои анализы";
         }
+
+        /// <summary>
+        /// Показатели, отмеченные звёздочкой. Берутся из всей истории, а не из последнего анализа:
+        /// следят обычно за тем, что сдают не каждый раз.
+        /// </summary>
+        public ObservableCollection<SeriesItemViewModel> Favorites { get; } = new();
 
         /// <summary>Показатели, вышедшие за норму, — их хочется видеть первыми.</summary>
         public ObservableCollection<TrendItemViewModel> Attention { get; } = new();
@@ -82,8 +98,18 @@ namespace MedicalResultsTracker.ViewModel
         [RelayCommand]
         private Task OpenTrend(TrendItemViewModel? item) => item is null
             ? Task.CompletedTask
-            : Shell.Current.GoToAsync(
-                $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(item.Key)}");
+            : OpenSeriesAsync(item.Key);
+
+        [RelayCommand]
+        private Task OpenFavorite(SeriesItemViewModel? item) => item is null
+            ? Task.CompletedTask
+            : OpenSeriesAsync(item.Key);
+
+        [RelayCommand]
+        private Task OpenCatalog() => Shell.Current.GoToAsync(AppRoutes.Catalog);
+
+        private static Task OpenSeriesAsync(string key) => Shell.Current.GoToAsync(
+            $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(key)}");
 
         [RelayCommand]
         private Task Export() => RunAsync(async () =>
@@ -120,6 +146,30 @@ namespace MedicalResultsTracker.ViewModel
 
             Attention.Clear();
             Changes.Clear();
+            Favorites.Clear();
+
+            IReadOnlyList<Analyte> catalog = await _catalog.GetAllAsync();
+            HashSet<string> favoriteCodes = catalog
+                .Where(a => a.IsFavorite)
+                .Select(a => a.Code)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            if (favoriteCodes.Count > 0)
+            {
+                Dictionary<string, Analyte> byCode = catalog
+                    .GroupBy(a => a.Code, StringComparer.OrdinalIgnoreCase)
+                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
+
+                foreach (ParameterSeries series in (await _analysis.GetSeriesAsync())
+                    .Where(s => favoriteCodes.Contains(s.Key))
+                    .OrderBy(s => s.Name))
+                {
+                    Favorites.Add(new SeriesItemViewModel(series, byCode.GetValueOrDefault(series.Key)));
+                }
+            }
+
+            HasFavorites = Favorites.Count > 0;
+            ShowFavoritesHint = HasData && !HasFavorites;
 
             foreach (ParameterTrend trend in trends
                 .Where(t => t.Status is ParameterStatus.Low or ParameterStatus.High)

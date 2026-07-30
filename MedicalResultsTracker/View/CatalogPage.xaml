@@ -11,12 +11,15 @@
 
         <VerticalStackLayout Grid.Row="0" Spacing="6">
             <SearchBar Placeholder="Поиск по названию" Text="{Binding Query}" />
-            <Grid ColumnDefinitions="*,Auto">
-                <Label
-                    Grid.Column="0"
-                    Style="{StaticResource Caption}"
-                    Text="{Binding Summary}"
-                    VerticalOptions="Center" />
+            <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                    <Label
+                        Style="{StaticResource Caption}"
+                        Text="Только избранное"
+                        VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding OnlyFavorites}" />
+                </HorizontalStackLayout>
                 <HorizontalStackLayout Grid.Column="1" Spacing="6">
                     <Label
                         Style="{StaticResource Caption}"
@@ -29,25 +32,44 @@
 
         <CollectionView
             Grid.Row="1"
-            ItemsSource="{Binding Items}"
+            IsGrouped="True"
+            ItemsSource="{Binding Groups}"
             SelectionMode="None">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
             </CollectionView.ItemsLayout>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="vm:CatalogGroupViewModel">
+                    <VerticalStackLayout Padding="0,12,0,4" Spacing="0">
+                        <Label Style="{StaticResource SectionTitle}" Text="{Binding Name}" />
+                        <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:CatalogItemViewModel">
                     <Border Style="{StaticResource Card}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CatalogViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
-                        </Border.GestureRecognizers>
-                        <VerticalStackLayout Spacing="2">
-                            <Label FontAttributes="Bold" Text="{Binding Name}" />
-                            <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
-                            <Label
-                                IsVisible="{Binding IsHidden}"
-                                Style="{StaticResource Caption}"
-                                Text="скрыт из подсказок" />
-                        </VerticalStackLayout>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CatalogViewModel}}, Path=ToggleFavoriteCommand}"
+                                CommandParameter="{Binding .}"
+                                FontSize="20"
+                                Text="{Binding FavoriteGlyph}"
+                                VerticalOptions="Center"
+                                WidthRequest="52" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CatalogViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
+                                </VerticalStackLayout.GestureRecognizers>
+                                <Label FontAttributes="Bold" Text="{Binding Name}" />
+                                <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
+                                <Label
+                                    IsVisible="{Binding IsHidden}"
+                                    Style="{StaticResource Caption}"
+                                    Text="скрыт из подсказок" />
+                            </VerticalStackLayout>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

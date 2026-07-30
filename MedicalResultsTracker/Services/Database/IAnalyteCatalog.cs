@@ -25,6 +25,12 @@ namespace MedicalResultsTracker.Services.Database
         /// </summary>
         Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20);
 
+        /// <summary>Существующие группы — чтобы предлагать их, а не плодить опечатки в свободном поле.</summary>
+        Task<IReadOnlyList<string>> GetCategoriesAsync();
+
+        /// <summary>Быстрое переключение избранного прямо из списка, без открытия карточки.</summary>
+        Task SetFavoriteAsync(string code, bool isFavorite);
+
         Task SaveAsync(Analyte analyte);
 
         Task DeleteAsync(string code);

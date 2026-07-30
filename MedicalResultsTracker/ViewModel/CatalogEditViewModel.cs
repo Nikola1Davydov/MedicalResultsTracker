@@ -33,6 +33,13 @@ namespace MedicalResultsTracker.ViewModel
         private bool _isHidden;
 
         [ObservableProperty]
+        private bool _isFavorite;
+
+        /// <summary>Выбор из уже существующих групп. Пишет в <see cref="Category"/>, где можно ввести и новую.</summary>
+        [ObservableProperty]
+        private string? _selectedCategory;
+
+        [ObservableProperty]
         private bool _isExisting;
 
         [ObservableProperty]
@@ -60,6 +67,17 @@ namespace MedicalResultsTracker.ViewModel
 
         /// <summary>Куда можно объединить эту запись — все остальные записи справочника.</summary>
         public ObservableCollection<Analyte> MergeTargets { get; } = new();
+
+        /// <summary>Уже заведённые группы — чтобы не плодить «Липиды» и «липиды» рядом.</summary>
+        public ObservableCollection<string> Categories { get; } = new();
+
+        partial void OnSelectedCategoryChanged(string? value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                Category = value;
+            }
+        }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
@@ -104,6 +122,7 @@ namespace MedicalResultsTracker.ViewModel
                 Notes = string.IsNullOrWhiteSpace(Notes) ? null : Notes.Trim(),
                 IsBuiltIn = IsBuiltIn,
                 IsHidden = IsHidden,
+                IsFavorite = IsFavorite,
             });
 
             await Shell.Current.GoToAsync("..");
@@ -180,6 +199,7 @@ namespace MedicalResultsTracker.ViewModel
                     Notes = Notes,
                     IsBuiltIn = true,
                     IsHidden = true,
+                    IsFavorite = false,
                 });
             }
             else
@@ -205,6 +225,13 @@ namespace MedicalResultsTracker.ViewModel
                 MergeTargets.Add(analyte);
             }
 
+            Categories.Clear();
+
+            foreach (string category in await _catalog.GetCategoriesAsync())
+            {
+                Categories.Add(category);
+            }
+
             if (!IsExisting || _code is null)
             {
                 Title = "Новый показатель";
@@ -228,6 +255,7 @@ namespace MedicalResultsTracker.ViewModel
             RefMaxText = Format(current.RefMax);
             Notes = current.Notes;
             IsHidden = current.IsHidden;
+            IsFavorite = current.IsFavorite;
             IsBuiltIn = current.IsBuiltIn;
             CodeText = $"Код: {current.Code}";
             Title = current.Name;

@@ -18,8 +18,14 @@ namespace MedicalResultsTracker.Model
 
         public string? Unit { get; set; }
 
-        /// <summary>Группа для отображения: "Общий анализ крови", "Биохимия", ...</summary>
+        /// <summary>
+        /// Группа для отображения: "Общий анализ крови", "Липиды", ... Задаётся пользователем,
+        /// встроенные значения — только стартовая раскладка, её можно перекроить под себя.
+        /// </summary>
         public string? Category { get; set; }
+
+        /// <summary>Показатель, за которым пользователь следит: выносится наверх на главный экран.</summary>
+        public bool IsFavorite { get; set; }
 
         public double? RefMin { get; set; }
 

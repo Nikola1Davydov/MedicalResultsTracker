@@ -120,6 +120,33 @@ namespace MedicalResultsTracker.Services.Database
                 .ToList();
         }
 
+        public async Task<IReadOnlyList<string>> GetCategoriesAsync()
+        {
+            IReadOnlyList<Analyte> all = await GetAllAsync().ConfigureAwait(false);
+
+            return all
+                .Select(a => a.Category)
+                .Where(c => !string.IsNullOrWhiteSpace(c))
+                .Select(c => c!.Trim())
+                .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                .OrderBy(c => c)
+                .ToList();
+        }
+
+        public async Task SetFavoriteAsync(string code, bool isFavorite)
+        {
+            Analyte? analyte = await FindAsync(code).ConfigureAwait(false);
+
+            if (analyte is null || analyte.IsFavorite == isFavorite)
+            {
+                return;
+            }
+
+            analyte.IsFavorite = isFavorite;
+
+            await SaveAsync(analyte).ConfigureAwait(false);
+        }
+
         public async Task SaveAsync(Analyte analyte)
         {
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);

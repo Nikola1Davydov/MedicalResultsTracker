@@ -3,9 +3,11 @@ using MedicalResultsTracker.Services.Database;
 
 namespace MedicalResultsTracker.ViewModel
 {
-    /// <summary>Справочник показателей: что подставляется при вводе анализа.</summary>
+    /// <summary>Справочник показателей: что подставляется при вводе анализа и как всё это сгруппировано.</summary>
     public partial class CatalogViewModel : BaseViewModel
     {
+        private const string NoCategory = "Без группы";
+
         private readonly IAnalyteCatalog _catalog;
         private readonly IBloodTestRepository _repository;
 
@@ -14,6 +16,9 @@ namespace MedicalResultsTracker.ViewModel
 
         [ObservableProperty]
         private bool _showHidden;
+
+        [ObservableProperty]
+        private bool _onlyFavorites;
 
         [ObservableProperty]
         private string _summary = string.Empty;
@@ -29,13 +34,15 @@ namespace MedicalResultsTracker.ViewModel
             Title = "Справочник";
         }
 
-        public ObservableCollection<CatalogItemViewModel> Items { get; } = new();
+        public ObservableCollection<CatalogGroupViewModel> Groups { get; } = new();
 
         public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось открыть справочник");
 
         partial void OnQueryChanged(string value) => ApplyFilter();
 
         partial void OnShowHiddenChanged(bool value) => ApplyFilter();
+
+        partial void OnOnlyFavoritesChanged(bool value) => ApplyFilter();
 
         [RelayCommand]
         private Task Add() => Shell.Current.GoToAsync(AppRoutes.CatalogEdit);
@@ -45,6 +52,16 @@ namespace MedicalResultsTracker.ViewModel
             ? Task.CompletedTask
             : Shell.Current.GoToAsync(
                 $"{AppRoutes.CatalogEdit}?{AppRoutes.AnalyteCodeParameter}={Uri.EscapeDataString(item.Code)}");
+
+        /// <summary>Звёздочка прямо в списке: отметить десяток показателей через карточку — долго.</summary>
+        [RelayCommand]
+        private Task ToggleFavorite(CatalogItemViewModel? item) => item is null
+            ? Task.CompletedTask
+            : RunAsync(async () =>
+            {
+                await _catalog.SetFavoriteAsync(item.Code, !item.IsFavorite);
+                await LoadAsync();
+            }, "Не удалось изменить избранное");
 
         private async Task LoadAsync()
         {
@@ -60,25 +77,34 @@ namespace MedicalResultsTracker.ViewModel
 
             List<Analyte> filtered = _all
                 .Where(a => ShowHidden || !a.IsHidden)
+                .Where(a => !OnlyFavorites || a.IsFavorite)
                 .Where(a => trimmed.Length == 0
                             || a.Name.Contains(trimmed, StringComparison.CurrentCultureIgnoreCase)
                             || a.Code.Contains(trimmed, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
-            Items.Clear();
+            Groups.Clear();
 
-            foreach (Analyte analyte in filtered)
+            foreach (IGrouping<string, Analyte> group in filtered
+                .GroupBy(a => string.IsNullOrWhiteSpace(a.Category) ? NoCategory : a.Category!.Trim())
+                .OrderBy(g => g.Key == NoCategory)
+                .ThenBy(g => g.Key))
             {
-                _usage.TryGetValue(analyte.Code, out int used);
+                List<CatalogItemViewModel> items = group
+                    .OrderByDescending(a => a.IsFavorite)
+                    .ThenBy(a => a.SortOrder)
+                    .ThenBy(a => a.Name)
+                    .Select(a => new CatalogItemViewModel(a, _usage.GetValueOrDefault(a.Code)))
+                    .ToList();
 
-                Items.Add(new CatalogItemViewModel(analyte, used));
+                Groups.Add(new CatalogGroupViewModel(group.Key, items));
             }
 
             int hidden = _all.Count(a => a.IsHidden);
+            int favorites = _all.Count(a => a.IsFavorite);
 
-            Summary = hidden == 0
-                ? $"{_all.Count} показателей"
-                : $"{_all.Count} показателей, из них скрыто {hidden}";
+            Summary = $"{_all.Count} показателей · в избранном {favorites}" +
+                      (hidden == 0 ? string.Empty : $" · скрыто {hidden}");
         }
     }
 
@@ -90,6 +116,8 @@ namespace MedicalResultsTracker.ViewModel
             Code = analyte.Code;
             Name = analyte.Name;
             IsHidden = analyte.IsHidden;
+            IsFavorite = analyte.IsFavorite;
+            FavoriteGlyph = analyte.IsFavorite ? "★" : "☆";
 
             string range = analyte.DefaultRange.IsDefined ? analyte.DefaultRange.ToString() : "норма не задана";
             string used = measurements switch
@@ -112,5 +140,23 @@ namespace MedicalResultsTracker.ViewModel
         public string Subtitle { get; }
 
         public bool IsHidden { get; }
+
+        public bool IsFavorite { get; }
+
+        public string FavoriteGlyph { get; }
+    }
+
+    /// <summary>Группа справочника. Наследник List — этого требует сгруппированный CollectionView.</summary>
+    public sealed class CatalogGroupViewModel : List<CatalogItemViewModel>
+    {
+        public CatalogGroupViewModel(string name, IEnumerable<CatalogItemViewModel> items)
+            : base(items)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
+
+        public string Subtitle => Count == 1 ? "1 показатель" : $"{Count} показателей";
     }
 }
