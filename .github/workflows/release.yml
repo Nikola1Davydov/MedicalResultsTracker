@@ -1,0 +1,175 @@
+name: Release APK
+
+# Собирает установочный APK и кладёт его в GitHub Releases.
+# Запуск: пуш тега вида v1.0.0 либо кнопка "Run workflow" на вкладке Actions.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Версия для показа в приложении, например 1.0.1'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/Directory.build.props', '**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      # Версия: из тега (v1.0.0 -> 1.0.0), из поля запуска или запасной вариант по номеру сборки.
+      - name: Resolve version
+        id: version
+        run: |
+          set -euo pipefail
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            display="${GITHUB_REF_NAME#v}"
+            tag="${GITHUB_REF_NAME}"
+          elif [ -n "${{ inputs.version }}" ]; then
+            display="${{ inputs.version }}"
+            tag="v${display}"
+          else
+            display="0.0.${GITHUB_RUN_NUMBER}"
+            tag="build-${GITHUB_RUN_NUMBER}"
+          fi
+          echo "display=$display" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      # Ключ подписи. Постоянный ключ из секретов позволяет ставить новую версию поверх старой;
+      # без него генерируется одноразовый, и обновление поверх установленной сборки Android отклонит.
+      - name: Prepare signing key
+        id: signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          keystore="$RUNNER_TEMP/app.keystore"
+          if [ -n "${KEYSTORE_BASE64:-}" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$keystore"
+            echo "persistent=true" >> "$GITHUB_OUTPUT"
+            echo "Использую постоянный ключ из секретов."
+          else
+            keytool -genkeypair -v -keystore "$keystore" \
+              -alias ephemeral -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass ephemeral-password -keypass ephemeral-password \
+              -dname "CN=MedicalResultsTracker, OU=personal, O=personal, L=-, ST=-, C=DE"
+            echo "persistent=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Постоянный ключ не настроен — сборка подписана одноразовым. Поставить её поверх уже установленной не получится."
+          fi
+          echo "path=$keystore" >> "$GITHUB_OUTPUT"
+
+      # Пароли передаются через переменные окружения, а не в тексте команды:
+      # так они не попадают ни в список процессов, ни в лог.
+      - name: Publish signed APK
+        env:
+          KEYSTORE: ${{ steps.signing.outputs.path }}
+          DISPLAY_VERSION: ${{ steps.version.outputs.display }}
+          STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          store_pass="${STORE_PASS:-ephemeral-password}"
+          key_alias="${KEY_ALIAS:-ephemeral}"
+          key_pass="${KEY_PASS:-ephemeral-password}"
+
+          dotnet publish MedicalResultsTracker/MedicalResultsTracker.csproj \
+            -c Release -f net10.0-android \
+            -p:AndroidPackageFormat=apk \
+            -p:ApplicationDisplayVersion="$DISPLAY_VERSION" \
+            -p:ApplicationVersion="$GITHUB_RUN_NUMBER" \
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore="$KEYSTORE" \
+            -p:AndroidSigningStorePass="$store_pass" \
+            -p:AndroidSigningKeyAlias="$key_alias" \
+            -p:AndroidSigningKeyPass="$key_pass"
+
+      - name: Collect APK
+        id: apk
+        run: |
+          set -euo pipefail
+          apk=$(find MedicalResultsTracker/bin/Release/net10.0-android -name '*-Signed.apk' | head -1)
+          if [ -z "$apk" ]; then
+            apk=$(find MedicalResultsTracker/bin/Release/net10.0-android -name '*.apk' | head -1)
+          fi
+          if [ -z "$apk" ]; then
+            echo "APK не найден" >&2
+            exit 1
+          fi
+          target="$RUNNER_TEMP/MedicalResultsTracker-${{ steps.version.outputs.display }}.apk"
+          cp "$apk" "$target"
+          echo "path=$target" >> "$GITHUB_OUTPUT"
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: medical-results-tracker-apk
+          path: ${{ steps.apk.outputs.path }}
+          if-no-files-found: error
+
+      - name: Write release notes
+        id: notes
+        run: |
+          set -euo pipefail
+          notes="$RUNNER_TEMP/notes.md"
+          {
+            echo "Установочный файл для Android."
+            echo
+            echo "**Как поставить:** скачайте \`.apk\` ниже, откройте его на телефоне и разрешите"
+            echo "установку из этого источника, когда Android спросит."
+            echo
+            echo "Все данные остаются на устройстве: приложение не требует аккаунта и работает офлайн."
+            if [ "${{ steps.signing.outputs.persistent }}" != "true" ]; then
+              echo
+              echo "> ⚠️ Сборка подписана одноразовым ключом: поставить её поверх ранее установленной"
+              echo "> версии не выйдет — сначала удалите старую (данные при этом пропадут, сделайте"
+              echo "> резервную копию в настройках). Чтобы обновления ставились поверх, настройте"
+              echo "> постоянный ключ — см. docs/CI.md."
+            fi
+          } > "$notes"
+          echo "path=$notes" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="${{ steps.version.outputs.tag }}"
+          prerelease=""
+          if [ "${GITHUB_REF_TYPE}" != "tag" ]; then
+            prerelease="--prerelease"
+          fi
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "${{ steps.apk.outputs.path }}" --clobber
+          else
+            gh release create "$tag" "${{ steps.apk.outputs.path }}" \
+              --title "MedicalResultsTracker ${{ steps.version.outputs.display }}" \
+              --notes-file "${{ steps.notes.outputs.path }}" \
+              $prerelease
+          fi

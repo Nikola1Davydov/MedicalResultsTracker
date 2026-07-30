@@ -40,6 +40,12 @@ Cross-platform .NET MAUI app for tracking, storing, and comparing medical test r
 Приложение полностью функционально без него. Разбор вариантов подключения — распознавание
 на устройстве, облачная модель, MCP — и правила работы с согласием: [`docs/AI-ASSISTANT.md`](docs/AI-ASSISTANT.md).
 
+## Установка на телефон
+
+Готовый APK для Android — в разделе [Releases](../../releases): скачайте файл на телефон,
+откройте и разрешите установку из этого источника. Свежий Debug-APK на каждый коммит лежит
+в артефактах вкладки Actions. Подробности и настройка ключа подписи — [`docs/CI.md`](docs/CI.md).
+
 ## Сборка
 
 ```bash
@@ -49,6 +55,7 @@ dotnet build MedicalResultsTracker/MedicalResultsTracker.csproj -t:Run -f net10.
 ```
 
 Целевые платформы: Android, iOS, Mac Catalyst, Windows (набор зависит от ОС сборки).
+CI собирает только Android — iOS требует macOS-раннера и сертификатов Apple.
 
 ## Устройство проекта
 

@@ -143,6 +143,10 @@ namespace MedicalResultsTracker.Services.Export
                 foreach (BloodParameter parameter in test.Parameters)
                 {
                     parameter.TestId = test.Id;
+
+                    // Новые идентификаторы строк: в базе может уже лежать строка с таким Id
+                    // от частично импортированной ранее копии, и вставка упала бы на первичном ключе.
+                    parameter.Id = Guid.NewGuid();
                 }
 
                 await _repository.SaveAsync(test).ConfigureAwait(false);
@@ -201,7 +205,7 @@ namespace MedicalResultsTracker.Services.Export
                 BloodParameter newest = row.Last();
                 string range = newest.Range.IsDefined ? newest.Range.ToString() : "—";
 
-                builder.Append($"| {newest.Name} | {newest.Unit ?? "—"} | {range} |");
+                builder.Append($"| {Cell(newest.Name)} | {Cell(newest.Unit) ?? "—"} | {range} |");
 
                 foreach (BloodTest test in ordered)
                 {
@@ -259,6 +263,9 @@ namespace MedicalResultsTracker.Services.Export
 
             return path;
         }
+
+        /// <summary>Вертикальная черта в названии разорвала бы markdown-таблицу.</summary>
+        private static string? Cell(string? value) => value?.Replace("|", "\\|");
 
         private static string FormatValue(BloodParameter? parameter) => parameter switch
         {

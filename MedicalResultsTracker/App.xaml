@@ -16,7 +16,8 @@
                 <Setter Property="Padding" Value="14" />
                 <Setter Property="StrokeThickness" Value="1" />
                 <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
-                <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}" />
+                <!--  Именно BackgroundColor: ресурсы Colors.xaml — это Color, а Background ждёт Brush.  -->
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}" />
                 <Setter Property="StrokeShape" Value="RoundRectangle 12" />
             </Style>
 

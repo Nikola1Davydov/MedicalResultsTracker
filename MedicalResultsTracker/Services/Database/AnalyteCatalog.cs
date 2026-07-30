@@ -11,6 +11,12 @@ namespace MedicalResultsTracker.Services.Database
 
         private bool _seeded;
 
+        /// <summary>
+        /// Каталог читается на каждое нажатие клавиши в поиске показателя, а таблица маленькая
+        /// и меняется редко — держим её в памяти и сбрасываем при любой записи.
+        /// </summary>
+        private IReadOnlyList<Analyte>? _cache;
+
         public AnalyteCatalog(IMedicalDatabase database)
         {
             _database = database;
@@ -45,6 +51,7 @@ namespace MedicalResultsTracker.Services.Database
                 if (missing.Count > 0)
                 {
                     await connection.InsertAllAsync(missing).ConfigureAwait(false);
+                    _cache = null;
                 }
 
                 _seeded = true;
@@ -57,13 +64,18 @@ namespace MedicalResultsTracker.Services.Database
 
         public async Task<IReadOnlyList<Analyte>> GetAllAsync()
         {
+            if (_cache is not null)
+            {
+                return _cache;
+            }
+
             await EnsureSeededAsync().ConfigureAwait(false);
 
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
 
             List<Analyte> analytes = await connection.Table<Analyte>().ToListAsync().ConfigureAwait(false);
 
-            return analytes
+            return _cache = analytes
                 .OrderBy(a => a.Category)
                 .ThenBy(a => a.SortOrder)
                 .ThenBy(a => a.Name)
@@ -152,6 +164,8 @@ namespace MedicalResultsTracker.Services.Database
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
 
             await connection.InsertOrReplaceAsync(analyte).ConfigureAwait(false);
+
+            _cache = null;
         }
 
         public async Task DeleteAsync(string code)
@@ -159,6 +173,8 @@ namespace MedicalResultsTracker.Services.Database
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
 
             await connection.ExecuteAsync("delete from analytes where Code = ?", code).ConfigureAwait(false);
+
+            _cache = null;
         }
     }
 }

@@ -60,14 +60,22 @@ namespace MedicalResultsTracker.Controls
             double min = points.Min(p => p.Value);
             double max = points.Max(p => p.Value);
 
-            // Полоса нормы должна помещаться в кадр, иначе непонятно, насколько далеко значение от неё.
-            if (Series?.RefMin is double refMin)
+            // Норму хочется видеть в кадре, но не любой ценой: у ферритина с нормой 30–300
+            // и значениями 18–42 растяжка до 300 сплющила бы линию в неразличимую полоску.
+            // Поэтому границу подтягиваем, только если она рядом с данными; иначе полоса
+            // просто обрежется по краю графика.
+            double span = max - min;
+            double allowance = span > double.Epsilon
+                ? span * 1.5d
+                : Math.Max(Math.Abs(max) * 0.5d, 1d);
+
+            if (Series?.RefMin is double refMin && refMin >= min - allowance && refMin <= max + allowance)
             {
                 min = Math.Min(min, refMin);
                 max = Math.Max(max, refMin);
             }
 
-            if (Series?.RefMax is double refMax)
+            if (Series?.RefMax is double refMax && refMax >= min - allowance && refMax <= max + allowance)
             {
                 min = Math.Min(min, refMax);
                 max = Math.Max(max, refMax);
@@ -85,11 +93,18 @@ namespace MedicalResultsTracker.Controls
                 return;
             }
 
-            float top = ToY(Series?.RefMax ?? max, plot, min, max);
-            float bottom = ToY(Series?.RefMin ?? min, plot, min, max);
+            // Полоса может уходить за пределы кадра — обрезаем её по графику,
+            // тогда видно, что норма продолжается за краем, и масштаб не ломается.
+            float top = Math.Clamp(ToY(Series?.RefMax ?? max, plot, min, max), plot.Top, plot.Bottom);
+            float bottom = Math.Clamp(ToY(Series?.RefMin ?? min, plot, min, max), plot.Top, plot.Bottom);
+
+            if (bottom - top < 0.5f)
+            {
+                return;
+            }
 
             canvas.FillColor = StatusPalette.RangeBand;
-            canvas.FillRectangle(plot.X, top, plot.Width, Math.Max(1f, bottom - top));
+            canvas.FillRectangle(plot.X, top, plot.Width, bottom - top);
         }
 
         private static void DrawLineAndPoints(

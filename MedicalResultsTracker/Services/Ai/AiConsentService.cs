@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MedicalResultsTracker.Services.Ai
 {
     /// <inheritdoc cref="IAiConsentService"/>
@@ -61,7 +63,9 @@ namespace MedicalResultsTracker.Services.Ai
 
             Preferences.Default.Set(ScopeKey, (int)consent.Scope);
             Preferences.Default.Set(ProviderKey, consent.Provider ?? string.Empty);
-            Preferences.Default.Set(GrantedKey, consent.GrantedUtc?.ToString("O") ?? string.Empty);
+            Preferences.Default.Set(
+                GrantedKey,
+                consent.GrantedUtc?.ToString("O", CultureInfo.InvariantCulture) ?? string.Empty);
 
             Changed?.Invoke(this, consent);
         }
@@ -82,7 +86,13 @@ namespace MedicalResultsTracker.Services.Ai
             {
                 Scope = scope,
                 Provider = string.IsNullOrEmpty(provider) ? null : provider,
-                GrantedUtc = DateTime.TryParse(granted, out DateTime parsed) ? parsed : null,
+                GrantedUtc = DateTime.TryParse(
+                    granted,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.RoundtripKind,
+                    out DateTime parsed)
+                    ? parsed
+                    : null,
             };
         }
     }
