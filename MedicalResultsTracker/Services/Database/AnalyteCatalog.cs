@@ -85,6 +85,19 @@ namespace MedicalResultsTracker.Services.Database
                 .ConfigureAwait(false);
         }
 
+        public async Task<Analyte?> FindByNameAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            IReadOnlyList<Analyte> all = await GetAllAsync().ConfigureAwait(false);
+            string trimmed = name.Trim();
+
+            return all.FirstOrDefault(a => string.Equals(a.Name.Trim(), trimmed, StringComparison.CurrentCultureIgnoreCase));
+        }
+
         public async Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20)
         {
             IReadOnlyList<Analyte> all = await GetAllAsync().ConfigureAwait(false);

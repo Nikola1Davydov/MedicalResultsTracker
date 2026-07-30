@@ -13,10 +13,7 @@ namespace MedicalResultsTracker.Services.Analysis
             _repository = repository;
         }
 
-        public string GetKey(BloodParameter parameter) =>
-            string.IsNullOrWhiteSpace(parameter.Code)
-                ? parameter.Name.Trim().ToLowerInvariant()
-                : parameter.Code.Trim().ToUpperInvariant();
+        public string GetKey(BloodParameter parameter) => AnalyteCode.KeyOf(parameter.Code, parameter.Name);
 
         public async Task<IReadOnlyList<ParameterTrend>> GetLatestTrendsAsync()
         {

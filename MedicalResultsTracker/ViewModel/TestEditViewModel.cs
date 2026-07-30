@@ -157,9 +157,17 @@ namespace MedicalResultsTracker.ViewModel
                 .Select((row, index) => row.ToModel(test.Id, index))
                 .ToList();
 
+            // Код проставляется до сохранения: именно по нему измерение найдёт своих предшественников.
+            // Без этого строка, набранная руками, и та же строка, выбранная из справочника,
+            // разъезжаются на два независимых графика.
+            foreach (BloodParameter parameter in test.Parameters)
+            {
+                parameter.Code = await ResolveCodeAsync(parameter);
+            }
+
             await _repository.SaveAsync(test);
 
-            // Новые показатели, которых нет в справочнике, запоминаем — в следующий раз подставятся сами.
+            // Показатели, которых нет в справочнике, запоминаем — в следующий раз подставятся сами.
             await RememberNewAnalytesAsync(test);
 
             await Shell.Current.GoToAsync("..");
@@ -295,20 +303,34 @@ namespace MedicalResultsTracker.ViewModel
             }
         }
 
+        /// <summary>
+        /// Подбирает код показателя: уже проставленный, затем совпадение по названию в каталоге,
+        /// и только потом новый код из названия.
+        /// </summary>
+        private async Task<string> ResolveCodeAsync(BloodParameter parameter)
+        {
+            if (!string.IsNullOrWhiteSpace(parameter.Code))
+            {
+                return parameter.Code.Trim().ToUpperInvariant();
+            }
+
+            Analyte? known = await _catalog.FindByNameAsync(parameter.Name);
+
+            return known?.Code ?? AnalyteCode.FromName(parameter.Name);
+        }
+
         private async Task RememberNewAnalytesAsync(BloodTest test)
         {
-            foreach (BloodParameter parameter in test.Parameters.Where(p => string.IsNullOrWhiteSpace(p.Code)))
+            foreach (BloodParameter parameter in test.Parameters)
             {
-                string code = MakeCode(parameter.Name);
-
-                if (await _catalog.FindAsync(code) is not null)
+                if (string.IsNullOrWhiteSpace(parameter.Code) || await _catalog.FindAsync(parameter.Code) is not null)
                 {
                     continue;
                 }
 
                 await _catalog.SaveAsync(new Analyte
                 {
-                    Code = code,
+                    Code = parameter.Code,
                     Name = parameter.Name,
                     Unit = parameter.Unit,
                     Category = "Мои показатели",
@@ -317,13 +339,6 @@ namespace MedicalResultsTracker.ViewModel
                     IsBuiltIn = false,
                 });
             }
-        }
-
-        private static string MakeCode(string name)
-        {
-            string cleaned = new(name.Trim().ToUpperInvariant().Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
-
-            return cleaned.Length > 32 ? cleaned[..32] : cleaned;
         }
 
         private void ResetToNew()

@@ -12,6 +12,12 @@ namespace MedicalResultsTracker.Services.Database
 
         Task<Analyte?> FindAsync(string code);
 
+        /// <summary>
+        /// Поиск по точному названию. Нужен, чтобы показатель, введённый руками, привязался
+        /// к уже существующей записи каталога, а не завёл рядом вторую с тем же смыслом.
+        /// </summary>
+        Task<Analyte?> FindByNameAsync(string name);
+
         /// <summary>Поиск по части названия или кода — для строки поиска в редакторе анализа.</summary>
         Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20);
 
