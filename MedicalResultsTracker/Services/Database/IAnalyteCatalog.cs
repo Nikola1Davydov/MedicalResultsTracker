@@ -1,0 +1,22 @@
+using MedicalResultsTracker.Model;
+
+namespace MedicalResultsTracker.Services.Database
+{
+    /// <summary>Справочник показателей: подсказывает название, единицы и типовую норму при ручном вводе.</summary>
+    public interface IAnalyteCatalog
+    {
+        /// <summary>Заполняет каталог встроенным набором при первом запуске. Пользовательские записи не трогает.</summary>
+        Task EnsureSeededAsync();
+
+        Task<IReadOnlyList<Analyte>> GetAllAsync();
+
+        Task<Analyte?> FindAsync(string code);
+
+        /// <summary>Поиск по части названия или кода — для строки поиска в редакторе анализа.</summary>
+        Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20);
+
+        Task SaveAsync(Analyte analyte);
+
+        Task DeleteAsync(string code);
+    }
+}

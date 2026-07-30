@@ -1,0 +1,216 @@
+using System.Globalization;
+using System.Text;
+using System.Text.Json.Serialization;
+using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Services.Analysis;
+using MedicalResultsTracker.Services.Database;
+
+namespace MedicalResultsTracker.Services.Export
+{
+    /// <summary>
+    /// Выгрузка истории в файл. Файл кладётся в кэш приложения, дальше пользователь сам решает,
+    /// что с ним делать через системный диалог "Поделиться" — приложение никуда ничего не отправляет.
+    /// </summary>
+    public sealed class CsvExportService : IExportService
+    {
+        // Точка с запятой + числа в текущей культуре: так файл открывается в Excel без "мастера импорта".
+        private const char Separator = ';';
+
+        private static readonly JsonSerializerOptions BackupJsonOptions = new()
+        {
+            WriteIndented = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        };
+
+        private readonly IBloodTestRepository _repository;
+        private readonly IAnalysisService _analysis;
+
+        public CsvExportService(IBloodTestRepository repository, IAnalysisService analysis)
+        {
+            _repository = repository;
+            _analysis = analysis;
+        }
+
+        public async Task<string> ExportMatrixCsvAsync()
+        {
+            IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
+
+            // Слева направо — от старых к новым, чтобы динамика читалась естественно.
+            List<BloodTest> ordered = tests.OrderBy(t => t.Date).ToList();
+
+            List<BloodParameter> allParameters = ordered.SelectMany(t => t.Parameters).ToList();
+
+            List<IGrouping<string, BloodParameter>> rows = allParameters
+                .GroupBy(_analysis.GetKey)
+                .OrderBy(g => g.Last().Name)
+                .ToList();
+
+            StringBuilder builder = new();
+
+            builder.Append(Join("Показатель", "Единицы", "Норма"));
+
+            foreach (BloodTest test in ordered)
+            {
+                builder.Append(Separator).Append(Escape(test.Date.ToString("dd.MM.yyyy")));
+            }
+
+            builder.AppendLine();
+
+            foreach (IGrouping<string, BloodParameter> row in rows)
+            {
+                BloodParameter newest = row.Last();
+
+                builder.Append(Join(newest.Name, newest.Unit ?? string.Empty, newest.Range.ToString()));
+
+                foreach (BloodTest test in ordered)
+                {
+                    BloodParameter? measurement = test.Parameters.FirstOrDefault(p => _analysis.GetKey(p) == row.Key);
+
+                    builder.Append(Separator).Append(Escape(FormatValue(measurement)));
+                }
+
+                builder.AppendLine();
+            }
+
+            return await WriteAsync($"medical-results-{DateTime.Now:yyyy-MM-dd}.csv", builder.ToString())
+                .ConfigureAwait(false);
+        }
+
+        public async Task<string> ExportFlatCsvAsync()
+        {
+            IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
+
+            StringBuilder builder = new();
+
+            builder.AppendLine(Join(
+                "Дата", "Лаборатория", "Код", "Показатель", "Значение", "Единицы", "Мин", "Макс", "Статус", "Комментарий"));
+
+            foreach (BloodTest test in tests.OrderBy(t => t.Date))
+            {
+                foreach (BloodParameter parameter in test.Parameters)
+                {
+                    builder.AppendLine(Join(
+                        test.Date.ToString("dd.MM.yyyy"),
+                        test.Laboratory ?? string.Empty,
+                        parameter.Code ?? string.Empty,
+                        parameter.Name,
+                        FormatValue(parameter),
+                        parameter.Unit ?? string.Empty,
+                        FormatNumber(parameter.RefMin),
+                        FormatNumber(parameter.RefMax),
+                        DescribeStatus(parameter.Status),
+                        parameter.Comment ?? string.Empty));
+                }
+            }
+
+            return await WriteAsync($"medical-results-flat-{DateTime.Now:yyyy-MM-dd}.csv", builder.ToString())
+                .ConfigureAwait(false);
+        }
+
+        public async Task<string> ExportBackupAsync()
+        {
+            IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
+
+            string json = JsonSerializer.Serialize(new BackupFile { Tests = tests.ToList() }, BackupJsonOptions);
+
+            return await WriteAsync($"medical-results-backup-{DateTime.Now:yyyy-MM-dd}.json", json)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<int> ImportBackupAsync(string filePath, bool replaceExisting = false)
+        {
+            string json = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+
+            BackupFile? backup = JsonSerializer.Deserialize<BackupFile>(json, BackupJsonOptions);
+
+            if (backup?.Tests is not { Count: > 0 })
+            {
+                return 0;
+            }
+
+            IReadOnlyList<BloodTest> existing = await _repository.GetAllAsync().ConfigureAwait(false);
+            HashSet<Guid> existingIds = existing.Select(t => t.Id).ToHashSet();
+
+            int imported = 0;
+
+            foreach (BloodTest test in backup.Tests)
+            {
+                if (existingIds.Contains(test.Id) && !replaceExisting)
+                {
+                    continue;
+                }
+
+                foreach (BloodParameter parameter in test.Parameters)
+                {
+                    parameter.TestId = test.Id;
+                }
+
+                await _repository.SaveAsync(test).ConfigureAwait(false);
+                imported++;
+            }
+
+            return imported;
+        }
+
+        public async Task ShareAsync(string filePath, string title)
+        {
+            await Share.Default.RequestAsync(new ShareFileRequest
+            {
+                Title = title,
+                File = new ShareFile(filePath),
+            }).ConfigureAwait(false);
+        }
+
+        private static async Task<string> WriteAsync(string fileName, string content)
+        {
+            string path = Path.Combine(FileSystem.CacheDirectory, fileName);
+
+            // BOM — иначе Excel на Windows ломает кириллицу.
+            await File.WriteAllTextAsync(path, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: true))
+                .ConfigureAwait(false);
+
+            return path;
+        }
+
+        private static string FormatValue(BloodParameter? parameter) => parameter switch
+        {
+            null => string.Empty,
+            { Value: double value } => value.ToString("0.####", CultureInfo.CurrentCulture),
+            _ => parameter.TextValue ?? string.Empty
+        };
+
+        private static string FormatNumber(double? value) =>
+            value?.ToString("0.####", CultureInfo.CurrentCulture) ?? string.Empty;
+
+        private static string DescribeStatus(ParameterStatus status) => status switch
+        {
+            ParameterStatus.Low => "ниже нормы",
+            ParameterStatus.High => "выше нормы",
+            ParameterStatus.Normal => "норма",
+            _ => string.Empty
+        };
+
+        private static string Join(params string[] values) => string.Join(Separator, values.Select(Escape));
+
+        private static string Escape(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            bool needsQuotes = value.Contains(Separator) || value.Contains('"') || value.Contains('\n') || value.Contains('\r');
+
+            return needsQuotes ? $"\"{value.Replace("\"", "\"\"")}\"" : value;
+        }
+
+        private sealed class BackupFile
+        {
+            public int Version { get; set; } = 1;
+
+            public DateTime ExportedUtc { get; set; } = DateTime.UtcNow;
+
+            public List<BloodTest> Tests { get; set; } = new();
+        }
+    }
+}

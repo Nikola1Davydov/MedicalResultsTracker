@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:SettingsViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="14">
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Style="{StaticResource SectionTitle}" Text="Хранение" />
+                    <Label Text="{Binding StorageSummary}" />
+                    <Label Style="{StaticResource Caption}" Text="Файл базы:" />
+                    <Label Style="{StaticResource Caption}" Text="{Binding DatabasePath}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Выгрузка" />
+                    <Button Command="{Binding ExportMatrixCommand}" Text="Таблица: показатели × даты (CSV)" />
+                    <Button Command="{Binding ExportFlatCommand}" Text="Список: одна строка на измерение (CSV)" />
+                    <Button Command="{Binding ExportBackupCommand}" Text="Резервная копия (JSON)" />
+                    <Button Command="{Binding ImportBackupCommand}" Text="Восстановить из копии" />
+                    <Label Style="{StaticResource Caption}" Text="Файл создаётся на устройстве, а дальше вы сами решаете, куда его отправить." />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="ИИ-помощник" />
+                    <Label Text="Приложение полностью работает без ИИ: все значения можно ввести руками. Помощник — необязательная надстройка, и каждое разрешение выдаётся отдельно." />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Распознавание бланка" />
+                            <Label Style="{StaticResource Caption}" Text="Фото или PDF уходит провайдеру только в момент нажатия «Распознать»." />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding AllowDocumentRecognition}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Пояснения к динамике" />
+                            <Label Style="{StaticResource Caption}" Text="Отправляются только выбранные показатели, без имени и других данных." />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding AllowResultCommentary}" />
+                    </Grid>
+
+                    <Label Style="{StaticResource Caption}" Text="{Binding AssistantSummary}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Опасная зона" />
+                    <Button Command="{Binding DeleteAllDataCommand}" Text="Удалить всю историю" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Style="{StaticResource Caption}" Text="Приложение ведёт личный журнал результатов и не ставит диагнозов. Любые выводы обсуждайте с врачом." />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

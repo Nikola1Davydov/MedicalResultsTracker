@@ -1,4 +1,5 @@
-﻿using MedicalResultsTracker.ViewModel;
+using MedicalResultsTracker.Services;
+using MedicalResultsTracker.ViewModel;
 using Microsoft.Extensions.Logging;
 
 namespace MedicalResultsTracker
@@ -16,7 +17,9 @@ namespace MedicalResultsTracker
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.RegisterServices();
             builder.Services.RegisterViewModels();
+            builder.Services.RegisterPages();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif

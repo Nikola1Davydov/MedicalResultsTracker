@@ -2,11 +2,11 @@ using MedicalResultsTracker.ViewModel;
 
 namespace MedicalResultsTracker.View
 {
-    public partial class MainPage : ContentPage
+    public partial class TrendsPage : ContentPage
     {
-        private readonly MainViewModel _viewModel;
+        private readonly TrendsViewModel _viewModel;
 
-        public MainPage(MainViewModel viewModel)
+        public TrendsPage(TrendsViewModel viewModel)
         {
             InitializeComponent();
 
@@ -17,7 +17,6 @@ namespace MedicalResultsTracker.View
         {
             base.OnAppearing();
 
-            // Данные могли измениться на другом экране — перечитываем при каждом показе.
             await _viewModel.InitializeAsync();
         }
     }
