@@ -111,6 +111,9 @@ namespace MedicalResultsTracker.ViewModel
         }, "Не удалось очистить историю");
 
         [RelayCommand]
+        private Task OpenCatalog() => Shell.Current.GoToAsync(AppRoutes.Catalog);
+
+        [RelayCommand]
         private Task ShareForAi() => RunAsync(async () =>
         {
             string text = await _export.BuildTextSummaryAsync();

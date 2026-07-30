@@ -21,6 +21,14 @@
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Справочник показателей" />
+                    <Label Style="{StaticResource Caption}" Text="Что подставляется при вводе анализа: названия, единицы и типовые нормы. Здесь же объединяются дубли и прячется лишнее." />
+                    <Button Command="{Binding OpenCatalogCommand}" Text="Открыть справочник" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
                     <Label Style="{StaticResource SectionTitle}" Text="Выгрузка" />
                     <Button Command="{Binding ExportMatrixCommand}" Text="Таблица: показатели × даты (CSV)" />
                     <Button Command="{Binding ExportFlatCommand}" Text="Список: одна строка на измерение (CSV)" />

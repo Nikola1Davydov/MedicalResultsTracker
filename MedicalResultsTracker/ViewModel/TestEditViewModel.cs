@@ -26,7 +26,7 @@ namespace MedicalResultsTracker.ViewModel
         private bool _isExisting;
 
         [ObservableProperty]
-        private Analyte? _selectedAnalyte;
+        private string _analyteQuery = string.Empty;
 
         [ObservableProperty]
         private string _assistantHint = string.Empty;
@@ -54,9 +54,12 @@ namespace MedicalResultsTracker.ViewModel
 
         public ObservableCollection<ParameterRowViewModel> Rows { get; } = new();
 
-        public ObservableCollection<Analyte> Catalog { get; } = new();
+        /// <summary>Подсказки из справочника под строкой поиска. Держим список коротким.</summary>
+        public ObservableCollection<Analyte> Suggestions { get; } = new();
 
         partial void OnAssistantHintChanged(string value) => HasAssistantHint = !string.IsNullOrWhiteSpace(value);
+
+        partial void OnAnalyteQueryChanged(string value) => _ = RefreshSuggestionsAsync(value);
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
@@ -78,16 +81,50 @@ namespace MedicalResultsTracker.ViewModel
         [RelayCommand]
         private void AddRow() => Rows.Add(new ParameterRowViewModel());
 
+        /// <summary>Добавляет показатель из подсказок и сбрасывает поиск — обычно следом ищут следующий.</summary>
         [RelayCommand]
-        private void AddFromCatalog()
+        private void AddAnalyte(Analyte? analyte)
         {
-            if (SelectedAnalyte is null)
+            if (analyte is null)
             {
                 return;
             }
 
-            Rows.Add(ParameterRowViewModel.FromAnalyte(SelectedAnalyte));
-            SelectedAnalyte = null;
+            Rows.Add(ParameterRowViewModel.FromAnalyte(analyte));
+            AnalyteQuery = string.Empty;
+        }
+
+        /// <summary>Заводит строку с тем названием, что набрано в поиске: расширенной панели в справочнике может и не быть.</summary>
+        [RelayCommand]
+        private void AddTypedName()
+        {
+            string name = AnalyteQuery.Trim();
+
+            Rows.Add(name.Length == 0
+                ? new ParameterRowViewModel()
+                : new ParameterRowViewModel { Name = name });
+
+            AnalyteQuery = string.Empty;
+        }
+
+        private async Task RefreshSuggestionsAsync(string query)
+        {
+            try
+            {
+                IReadOnlyList<Analyte> found = await _catalog.SearchAsync(query, limit: 8);
+
+                Suggestions.Clear();
+
+                foreach (Analyte analyte in found)
+                {
+                    Suggestions.Add(analyte);
+                }
+            }
+            catch (Exception exception)
+            {
+                // Подсказки — вспомогательная вещь: молча остаёмся без них, ввод продолжает работать.
+                Debug.WriteLine($"[MedicalResultsTracker] Не удалось получить подсказки: {exception}");
+            }
         }
 
         [RelayCommand]
@@ -269,12 +306,7 @@ namespace MedicalResultsTracker.ViewModel
 
         private async Task LoadAsync()
         {
-            Catalog.Clear();
-
-            foreach (Analyte analyte in await _catalog.GetAllAsync())
-            {
-                Catalog.Add(analyte);
-            }
+            await RefreshSuggestionsAsync(AnalyteQuery);
 
             if (!IsExisting)
             {

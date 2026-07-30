@@ -148,6 +148,26 @@ namespace MedicalResultsTracker.Services.Database
             return await connection.Table<BloodTest>().CountAsync().ConfigureAwait(false);
         }
 
+        public async Task<IReadOnlyDictionary<string, int>> GetUsageByCodeAsync()
+        {
+            SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
+
+            List<CodeUsage> usage = await connection.QueryAsync<CodeUsage>(
+                "select Code, count(*) as Total from blood_parameters where Code is not null and Code <> '' group by Code")
+                .ConfigureAwait(false);
+
+            return usage.ToDictionary(u => u.Code!, u => u.Total, StringComparer.OrdinalIgnoreCase);
+        }
+
+        public async Task<int> ReassignCodeAsync(string fromCode, string toCode)
+        {
+            SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
+
+            return await connection
+                .ExecuteAsync("update blood_parameters set Code = ? where Code = ?", toCode, fromCode)
+                .ConfigureAwait(false);
+        }
+
         private static async Task LoadParametersAsync(SQLiteAsyncConnection connection, BloodTest test)
         {
             Guid testId = test.Id;
@@ -158,6 +178,14 @@ namespace MedicalResultsTracker.Services.Database
                 .ConfigureAwait(false);
 
             test.Parameters = parameters.OrderBy(p => p.SortOrder).ThenBy(p => p.Name).ToList();
+        }
+
+        /// <summary>Строка результата агрегирующего запроса — sqlite-net раскладывает его по свойствам.</summary>
+        private sealed class CodeUsage
+        {
+            public string? Code { get; set; }
+
+            public int Total { get; set; }
         }
     }
 }

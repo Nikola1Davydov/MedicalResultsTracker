@@ -31,6 +31,12 @@ namespace MedicalResultsTracker.Model
         /// <summary>true — показатель из встроенного справочника, false — добавлен пользователем.</summary>
         public bool IsBuiltIn { get; set; }
 
+        /// <summary>
+        /// Скрыт из подсказок при вводе. Встроенные показатели не удаляются, а прячутся:
+        /// удалённый вернулся бы при следующем запуске, а список подсказок должен быть коротким.
+        /// </summary>
+        public bool IsHidden { get; set; }
+
         public int SortOrder { get; set; }
 
         [Ignore]

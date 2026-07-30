@@ -10,8 +10,11 @@ namespace MedicalResultsTracker
 
         public const string TestEdit = "testedit";
         public const string TrendDetail = "trenddetail";
+        public const string Catalog = "catalog";
+        public const string CatalogEdit = "catalogedit";
 
         public const string TestIdParameter = "testId";
         public const string SeriesKeyParameter = "seriesKey";
+        public const string AnalyteCodeParameter = "analyteCode";
     }
 }

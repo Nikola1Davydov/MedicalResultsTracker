@@ -13,6 +13,8 @@ namespace MedicalResultsTracker.ViewModel
             // Экраны с параметром маршрута создаются заново на каждый переход.
             .AddTransient<TestEditViewModel>()
             .AddTransient<TrendDetailViewModel>()
+            .AddTransient<CatalogViewModel>()
+            .AddTransient<CatalogEditViewModel>()
             ;
 
         public static IServiceCollection RegisterPages(this IServiceCollection services) => services
@@ -22,6 +24,8 @@ namespace MedicalResultsTracker.ViewModel
             .AddSingleton<SettingsPage>()
             .AddTransient<TestEditPage>()
             .AddTransient<TrendDetailPage>()
+            .AddTransient<CatalogPage>()
+            .AddTransient<CatalogEditPage>()
             ;
     }
 }

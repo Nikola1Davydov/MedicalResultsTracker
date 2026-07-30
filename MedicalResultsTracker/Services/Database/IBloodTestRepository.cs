@@ -24,5 +24,15 @@ namespace MedicalResultsTracker.Services.Database
         Task DeleteAllAsync();
 
         Task<int> CountAsync();
+
+        /// <summary>Сколько измерений сохранено по каждому коду показателя. Нужно справочнику, чтобы
+        /// не дать удалить используемую запись молча.</summary>
+        Task<IReadOnlyDictionary<string, int>> GetUsageByCodeAsync();
+
+        /// <summary>
+        /// Переписывает код у всех измерений — так объединяются дубли справочника.
+        /// Возвращает количество затронутых строк.
+        /// </summary>
+        Task<int> ReassignCodeAsync(string fromCode, string toCode);
     }
 }

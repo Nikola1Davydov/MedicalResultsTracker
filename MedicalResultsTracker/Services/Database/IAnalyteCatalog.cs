@@ -8,6 +8,7 @@ namespace MedicalResultsTracker.Services.Database
         /// <summary>Заполняет каталог встроенным набором при первом запуске. Пользовательские записи не трогает.</summary>
         Task EnsureSeededAsync();
 
+        /// <summary>Весь каталог, включая скрытые записи — для экрана справочника.</summary>
         Task<IReadOnlyList<Analyte>> GetAllAsync();
 
         Task<Analyte?> FindAsync(string code);
@@ -18,7 +19,10 @@ namespace MedicalResultsTracker.Services.Database
         /// </summary>
         Task<Analyte?> FindByNameAsync(string name);
 
-        /// <summary>Поиск по части названия или кода — для строки поиска в редакторе анализа.</summary>
+        /// <summary>
+        /// Поиск по части названия или кода — для подсказок в редакторе анализа.
+        /// Скрытые записи не предлагаются.
+        /// </summary>
         Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20);
 
         Task SaveAsync(Analyte analyte);

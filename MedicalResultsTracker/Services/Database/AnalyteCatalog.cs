@@ -100,7 +100,9 @@ namespace MedicalResultsTracker.Services.Database
 
         public async Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20)
         {
-            IReadOnlyList<Analyte> all = await GetAllAsync().ConfigureAwait(false);
+            IReadOnlyList<Analyte> all = (await GetAllAsync().ConfigureAwait(false))
+                .Where(a => !a.IsHidden)
+                .ToList();
 
             if (string.IsNullOrWhiteSpace(query))
             {
