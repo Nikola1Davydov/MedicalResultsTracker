@@ -33,8 +33,10 @@
 		<!-- Display name -->
 		<ApplicationTitle>Laborwerte</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.companyname.medicalresultstracker</ApplicationId>
+		<!-- App Identifier.
+		     После первой публикации в Play он не меняется никогда: сменить его — значит
+		     выпустить другое приложение и потерять установки. Поменять можно только сейчас. -->
+		<ApplicationId>de.davydov.laborwerte</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

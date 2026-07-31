@@ -932,5 +932,23 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund</summary>
         public static string Imp_AmbiguousNumber => Get("Imp_AmbiguousNumber");
+
+        /// <summary>Achtung: die Werte stammen aus verschiedenen Einheiten und sind nicht </summary>
+        public static string Trend_MixedUnits => Get("Trend_MixedUnits");
+
+        /// <summary>Noch keine Sicherung erstellt.</summary>
+        public static string Set_BackupNever => Get("Set_BackupNever");
+
+        /// <summary>Letzte Sicherung: heute.</summary>
+        public static string Set_BackupToday => Get("Set_BackupToday");
+
+        /// <summary>Letzte Sicherung: gestern.</summary>
+        public static string Set_BackupYesterday => Get("Set_BackupYesterday");
+
+        /// <summary>Letzte Sicherung: vor {0} Tagen.</summary>
+        public static string Set_BackupDaysAgo => Get("Set_BackupDaysAgo");
+
+        /// <summary>Die Daten liegen nur auf diesem Gerät. Geht es verloren, ist der Verla</summary>
+        public static string Set_BackupOverdue => Get("Set_BackupOverdue");
     }
 }

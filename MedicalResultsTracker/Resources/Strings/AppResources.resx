@@ -964,4 +964,22 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Imp_AmbiguousNumber" xml:space="preserve">
     <value>{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund prüfen.</value>
   </data>
+  <data name="Trend_MixedUnits" xml:space="preserve">
+    <value>Achtung: die Werte stammen aus verschiedenen Einheiten und sind nicht vergleichbar. Die App rechnet nichts um.</value>
+  </data>
+  <data name="Set_BackupNever" xml:space="preserve">
+    <value>Noch keine Sicherung erstellt.</value>
+  </data>
+  <data name="Set_BackupToday" xml:space="preserve">
+    <value>Letzte Sicherung: heute.</value>
+  </data>
+  <data name="Set_BackupYesterday" xml:space="preserve">
+    <value>Letzte Sicherung: gestern.</value>
+  </data>
+  <data name="Set_BackupDaysAgo" xml:space="preserve">
+    <value>Letzte Sicherung: vor {0} Tagen.</value>
+  </data>
+  <data name="Set_BackupOverdue" xml:space="preserve">
+    <value>Die Daten liegen nur auf diesem Gerät. Geht es verloren, ist der Verlauf weg.</value>
+  </data>
 </root>

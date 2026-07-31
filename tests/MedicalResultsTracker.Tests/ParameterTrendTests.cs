@@ -10,24 +10,25 @@ namespace MedicalResultsTracker.Tests
     /// </summary>
     public class ParameterTrendTests
     {
-        private static BloodParameter Measure(double? value, double? min, double? max) => new()
+        private static BloodParameter Measure(double? value, double? min, double? max, string? unit = null) => new()
         {
             Name = "Ferritin",
             Value = value,
             RefMin = min,
             RefMax = max,
+            Unit = unit,
         };
 
         [Theory]
-        [InlineData(50, 30, 300, ParameterStatus.Normal)]
-        [InlineData(18, 30, 300, ParameterStatus.Low)]
-        [InlineData(400, 30, 300, ParameterStatus.High)]
+        [InlineData(50, 30d, 300d, ParameterStatus.Normal)]
+        [InlineData(18, 30d, 300d, ParameterStatus.Low)]
+        [InlineData(400, 30d, 300d, ParameterStatus.High)]
         // Границы включительно: ровно на краю — ещё норма.
-        [InlineData(30, 30, 300, ParameterStatus.Normal)]
-        [InlineData(300, 30, 300, ParameterStatus.Normal)]
+        [InlineData(30, 30d, 300d, ParameterStatus.Normal)]
+        [InlineData(300, 30d, 300d, ParameterStatus.Normal)]
         // Односторонняя норма проверяет только свою сторону.
-        [InlineData(400, null, 300, ParameterStatus.High)]
-        [InlineData(400, 30, null, ParameterStatus.Normal)]
+        [InlineData(400, null, 300d, ParameterStatus.High)]
+        [InlineData(400, 30d, null, ParameterStatus.Normal)]
         public void JudgesOnlyAgainstTheRangeFromTheForm(
             double value, double? min, double? max, ParameterStatus expected) =>
             Assert.Equal(expected, Measure(value, min, max).Status);
@@ -42,9 +43,9 @@ namespace MedicalResultsTracker.Tests
 
         [Theory]
         // Внутри нормы расстояние нулевое, каким бы ни было само число.
-        [InlineData(50, 30, 300, 0d)]
-        [InlineData(18, 30, 300, 12d)]
-        [InlineData(400, 30, 300, 100d)]
+        [InlineData(50, 30d, 300d, 0d)]
+        [InlineData(18, 30d, 300d, 12d)]
+        [InlineData(400, 30d, 300d, 100d)]
         public void MeasuresHowFarOutsideTheRangeItIs(
             double value, double? min, double? max, double expected) =>
             Assert.Equal(expected, Measure(value, min, max).DistanceFromRange);
@@ -70,6 +71,42 @@ namespace MedicalResultsTracker.Tests
             };
 
             Assert.Equal(expected, trend.Assessment);
+        }
+
+        /// <summary>
+        /// 12 µg/l против 30 nmol/l — это не рост втрое, а другая единица. Приложение
+        /// не имеет права ни пересчитывать, ни делать вид, что числа сравнимы.
+        /// </summary>
+        [Fact]
+        public void RefusesToCompareAcrossDifferentUnits()
+        {
+            ParameterTrend trend = new()
+            {
+                Current = Measure(30, 30d, 100d, "nmol/l"),
+                Previous = Measure(12, 12d, 40d, "µg/l"),
+            };
+
+            Assert.False(trend.IsComparable);
+            Assert.Equal(TrendAssessment.Unknown, trend.Assessment);
+            Assert.Null(trend.Delta);
+            Assert.Null(trend.DeltaPercent);
+        }
+
+        [Theory]
+        [InlineData("ng/ml", "ng/ml")]
+        [InlineData("ng/ml", "NG/ML")]
+        [InlineData("ng/ml", " ng/ml ")]
+        [InlineData(null, null)]
+        public void ComparesWhenTheUnitIsTheSame(string? before, string? now)
+        {
+            ParameterTrend trend = new()
+            {
+                Current = Measure(50, 30d, 300d, now),
+                Previous = Measure(18, 30d, 300d, before),
+            };
+
+            Assert.True(trend.IsComparable);
+            Assert.Equal(TrendAssessment.Improved, trend.Assessment);
         }
 
         [Fact]

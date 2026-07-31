@@ -26,6 +26,10 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private bool _hasData;
 
+        /// <summary>Измерения сделаны в разных единицах — сравнивать их нельзя, и это надо сказать.</summary>
+        [ObservableProperty]
+        private bool _hasMixedUnits;
+
         private string? _key;
 
         public TrendDetailViewModel(IAnalysisService analysis)
@@ -77,6 +81,8 @@ namespace MedicalResultsTracker.ViewModel
             RangeText = range.IsDefined
                 ? string.Format(S.Trend_RefKnown, range, series.Unit).Trim()
                 : S.Trend_RefUnknown;
+            HasMixedUnits = series.HasMixedUnits;
+
             Subtitle = series.Points.Count == 1
                 ? S.Trend_SinglePoint
                 : string.Format(S.Trend_Since, series.Points.Count, series.Points[0].Date.ToString("d", CultureInfo.CurrentCulture));

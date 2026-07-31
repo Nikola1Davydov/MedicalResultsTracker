@@ -18,6 +18,26 @@ namespace MedicalResultsTracker.View
         private const double UnitWidth = 78;
         private const double ValueWidth = 96;
 
+        /// <summary>
+        /// Системный масштаб шрифта. Сам текст MAUI увеличивает без нашего участия, а вот
+        /// жёстко заданные высоты строк и ширины колонок — нет, и текст в ячейке обрезается.
+        /// Аудитория тут — люди, которые следят за анализами, крупный шрифт у них обычное дело.
+        /// </summary>
+        private static double FontScale
+        {
+            get
+            {
+#if ANDROID
+                float scale = Android.App.Application.Context.Resources?.Configuration?.FontScale ?? 1f;
+
+                // Выше двух таблица всё равно не помещается, а строки становятся неприлично высокими.
+                return Math.Clamp(scale, 1d, 2d);
+#else
+                return 1d;
+#endif
+            }
+        }
+
         private readonly MatrixViewModel _viewModel;
 
         public MatrixPage(MatrixViewModel viewModel)
@@ -37,6 +57,7 @@ namespace MedicalResultsTracker.View
 
         private void Build()
         {
+            double scale = FontScale;
             FixedColumn.Clear();
             FixedColumn.RowDefinitions.Clear();
             FixedColumn.ColumnDefinitions.Clear();
@@ -45,17 +66,17 @@ namespace MedicalResultsTracker.View
             ScrollingColumns.RowDefinitions.Clear();
             ScrollingColumns.ColumnDefinitions.Clear();
 
-            FixedColumn.ColumnDefinitions.Add(new ColumnDefinition(NameWidth));
-            ScrollingColumns.ColumnDefinitions.Add(new ColumnDefinition(RangeWidth));
-            ScrollingColumns.ColumnDefinitions.Add(new ColumnDefinition(UnitWidth));
+            FixedColumn.ColumnDefinitions.Add(new ColumnDefinition(NameWidth * scale));
+            ScrollingColumns.ColumnDefinitions.Add(new ColumnDefinition(RangeWidth * scale));
+            ScrollingColumns.ColumnDefinitions.Add(new ColumnDefinition(UnitWidth * scale));
 
             foreach (string _ in _viewModel.Dates)
             {
-                ScrollingColumns.ColumnDefinitions.Add(new ColumnDefinition(ValueWidth));
+                ScrollingColumns.ColumnDefinitions.Add(new ColumnDefinition(ValueWidth * scale));
             }
 
-            FixedColumn.RowDefinitions.Add(new RowDefinition(HeaderHeight));
-            ScrollingColumns.RowDefinitions.Add(new RowDefinition(HeaderHeight));
+            FixedColumn.RowDefinitions.Add(new RowDefinition(HeaderHeight * scale));
+            ScrollingColumns.RowDefinitions.Add(new RowDefinition(HeaderHeight * scale));
 
             FixedColumn.Add(Header(S.Csv_Parameter, TextAlignment.Start), 0, 0);
             ScrollingColumns.Add(Header(S.Csv_Reference, TextAlignment.Center), 0, 0);
@@ -71,8 +92,8 @@ namespace MedicalResultsTracker.View
                 MatrixRowViewModel row = _viewModel.Rows[r];
                 int line = r + 1;
 
-                FixedColumn.RowDefinitions.Add(new RowDefinition(RowHeight));
-                ScrollingColumns.RowDefinitions.Add(new RowDefinition(RowHeight));
+                FixedColumn.RowDefinitions.Add(new RowDefinition(RowHeight * scale));
+                ScrollingColumns.RowDefinitions.Add(new RowDefinition(RowHeight * scale));
 
                 Label name = Cell(row.Name, TextAlignment.Start);
                 name.FontAttributes = FontAttributes.Bold;

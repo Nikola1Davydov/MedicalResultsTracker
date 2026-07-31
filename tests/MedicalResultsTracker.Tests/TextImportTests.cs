@@ -56,16 +56,16 @@ namespace MedicalResultsTracker.Tests
 
         [Theory]
         // Односторонняя норма: заполняется только та граница, которая указана.
-        [InlineData("bis 5,2", null, 5.2)]
-        [InlineData("< 5,2", null, 5.2)]
-        [InlineData("≤ 5,2", null, 5.2)]
-        [InlineData("ab 1,5", 1.5, null)]
-        [InlineData("> 1,5", 1.5, null)]
-        [InlineData("до 5,2", null, 5.2)]
-        [InlineData("от 1,5", 1.5, null)]
+        [InlineData("bis 5,2", null, 5.2d)]
+        [InlineData("< 5,2", null, 5.2d)]
+        [InlineData("≤ 5,2", null, 5.2d)]
+        [InlineData("ab 1,5", 1.5d, null)]
+        [InlineData("> 1,5", 1.5d, null)]
+        [InlineData("до 5,2", null, 5.2d)]
+        [InlineData("от 1,5", 1.5d, null)]
         // Двусторонняя, разные виды тире.
-        [InlineData("30 – 300", 30, 300)]
-        [InlineData("30-300", 30, 300)]
+        [InlineData("30 – 300", 30d, 300d)]
+        [InlineData("30-300", 30d, 300d)]
         public void ReadsReferenceRangeGivenAsOneColumn(string printed, double? min, double? max)
         {
             AiDraftRow row = Import.Parse($"Ferritin | 18 | ng/ml | {printed}").Rows.Single();

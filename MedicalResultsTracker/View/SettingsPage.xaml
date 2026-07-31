@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.SettingsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctl="clr-namespace:MedicalResultsTracker.Controls"
     xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
@@ -50,6 +51,12 @@
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
                     <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_ExportTitle}" />
+                    <!--  Данные живут только здесь: выгрузка — единственное, что переживёт телефон.  -->
+                    <Label Style="{StaticResource Caption}" Text="{Binding BackupSummary}" />
+                    <Label
+                        IsVisible="{Binding BackupOverdue}"
+                        Text="{x:Static loc:S.Set_BackupOverdue}"
+                        TextColor="{x:Static ctl:StatusPalette.High}" />
                     <Button Command="{Binding ExportMatrixCommand}" Text="{x:Static loc:S.Set_ExportMatrix}" />
                     <Button Command="{Binding ExportFlatCommand}" Text="{x:Static loc:S.Set_ExportFlat}" />
                     <Button Command="{Binding ExportBackupCommand}" Text="{x:Static loc:S.Set_ExportBackup}" />

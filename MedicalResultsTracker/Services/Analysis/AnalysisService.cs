@@ -140,6 +140,7 @@ namespace MedicalResultsTracker.Services.Analysis
                             Status = x.Parameter.Status,
                             RefMin = x.Parameter.RefMin,
                             RefMax = x.Parameter.RefMax,
+                            Unit = x.Parameter.Unit,
                         }).ToList(),
                     };
                 })
