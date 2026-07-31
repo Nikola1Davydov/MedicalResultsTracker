@@ -1,6 +1,7 @@
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services;
 using MedicalResultsTracker.ViewModel;
+using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace MedicalResultsTracker
@@ -22,10 +23,15 @@ namespace MedicalResultsTracker
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Часть экранов собрана на Blazor Hybrid, часть осталась на XAML: оба слоя
+            // работают в одном процессе и берут сервисы из одного контейнера.
+            builder.Services.AddMauiBlazorWebView();
+
             builder.Services.RegisterServices();
             builder.Services.RegisterViewModels();
             builder.Services.RegisterPages();
 #if DEBUG
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 

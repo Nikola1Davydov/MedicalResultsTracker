@@ -1,0 +1,160 @@
+@using MedicalResultsTracker.Services.UI
+@implements IDisposable
+@inject IAnalysisService Analysis
+@inject IMatrixViewRepository Views
+@inject MatrixState State
+
+@*
+    Сводная таблица. Ради неё экран и переехал в веб-слой: колонка имён и строка дат
+    держатся на месте одной строчкой CSS (position: sticky), а раскладку сотен ячеек
+    делает движок браузера, а не наш код.
+*@
+
+<div class="screen">
+
+    <select class="views" value="@_selected" @onchange="OnViewChanged">
+        <option value="@AllValues">@S.Matrix_AllValues</option>
+        @foreach (MatrixView view in _views)
+        {
+            <option value="@view.Id">@view.Name</option>
+        }
+        <option value="@NewView">@S.Matrix_NewView</option>
+        @if (_selected != AllValues)
+        {
+            <option value="@EditView">@S.Matrix_EditView</option>
+        }
+    </select>
+
+    @if (_lines.Count == 0)
+    {
+        <p class="empty">@S.Matrix_Empty</p>
+    }
+    else
+    {
+        <div class="scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="name">@S.Csv_Parameter</th>
+                        <th class="range">@S.Csv_Reference</th>
+                        <th class="unit">@S.Csv_Unit</th>
+                        @foreach (DateTime date in _matrix.Dates)
+                        {
+                            <th class="date">@date.ToString("d", CultureInfo.CurrentCulture)</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MatrixLine line in _lines)
+                    {
+                        <tr>
+                            <th class="name" @onclick="() => OpenAsync(line.Key)">@line.Newest.Name</th>
+                            <td class="range">@Range(line.Newest)</td>
+                            <td class="unit">@(line.Newest.Unit ?? S.Common_None)</td>
+                            @foreach (BloodParameter? cell in line.Cells)
+                            {
+                                <td class="value @StatusClass(cell)">@(cell?.DisplayValue ?? S.Common_None)</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>
+
+@code {
+    private const string AllValues = "all";
+    private const string NewView = "new";
+    private const string EditView = "edit";
+
+    private ResultMatrix _matrix = new();
+    private IReadOnlyList<MatrixView> _views = Array.Empty<MatrixView>();
+    private List<MatrixLine> _lines = new();
+    private string _selected = AllValues;
+
+    protected override async Task OnInitializedAsync()
+    {
+        State.RefreshRequested += OnRefreshRequested;
+
+        await LoadAsync();
+    }
+
+    public void Dispose() => State.RefreshRequested -= OnRefreshRequested;
+
+    private void OnRefreshRequested() => _ = InvokeAsync(LoadAsync);
+
+    private async Task LoadAsync()
+    {
+        if (State.PendingViewId is Guid pending)
+        {
+            _selected = pending.ToString();
+            State.PendingViewId = null;
+        }
+
+        _views = await Views.GetAllAsync();
+        _matrix = await Analysis.BuildMatrixAsync();
+
+        // Выбранного набора могло не стать, пока экран был закрыт.
+        if (_selected != AllValues && !_views.Any(v => v.Id.ToString() == _selected))
+        {
+            _selected = AllValues;
+        }
+
+        _lines = Filter(_matrix.Lines, _views.FirstOrDefault(v => v.Id.ToString() == _selected)?.Codes);
+
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Набор задаёт и состав строк, и их порядок: пользователь выбирал показатели не случайно.
+    /// Без набора порядок по названию — другого осмысленного в общей таблице нет.
+    /// </summary>
+    private static List<MatrixLine> Filter(List<MatrixLine> lines, List<string>? codes) => codes is null
+        ? lines
+        : lines
+            .Where(line => codes.Contains(line.Key, StringComparer.OrdinalIgnoreCase))
+            .OrderBy(line => codes.FindIndex(c => string.Equals(c, line.Key, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+
+    /// <summary>
+    /// Два последних пункта списка — не наборы, а действия. Отдельные кнопки рядом со списком
+    /// отнимали бы ширину у таблицы, ради которой экран и делался.
+    /// </summary>
+    private async Task OnViewChanged(ChangeEventArgs args)
+    {
+        string picked = Convert.ToString(args.Value) ?? AllValues;
+
+        if (picked == NewView)
+        {
+            await Microsoft.Maui.Controls.Shell.Current.GoToAsync(AppRoutes.ViewEdit);
+            return;
+        }
+
+        if (picked == EditView)
+        {
+            await Microsoft.Maui.Controls.Shell.Current.GoToAsync(
+                $"{AppRoutes.ViewEdit}?{AppRoutes.ViewIdParameter}={_selected}");
+            return;
+        }
+
+        _selected = picked;
+
+        await LoadAsync();
+    }
+
+    private static Task OpenAsync(string key) => Microsoft.Maui.Controls.Shell.Current.GoToAsync(
+        $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(key)}");
+
+    private static string Range(BloodParameter parameter) =>
+        parameter.Range.IsDefined ? parameter.Range.ToString() : S.Common_None;
+
+    private static string StatusClass(BloodParameter? cell) => cell?.Status switch
+    {
+        ParameterStatus.Low => "low",
+        ParameterStatus.High => "high",
+        ParameterStatus.Normal => "normal",
+        _ => string.Empty
+    };
+}

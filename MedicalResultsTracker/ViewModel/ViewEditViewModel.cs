@@ -10,7 +10,7 @@ namespace MedicalResultsTracker.ViewModel
     {
         private readonly IMatrixViewRepository _views;
         private readonly IAnalyteCatalog _catalog;
-        private readonly MatrixViewModel _matrix;
+        private readonly MatrixState _matrix;
 
         [ObservableProperty]
         private string _name = string.Empty;
@@ -30,7 +30,7 @@ namespace MedicalResultsTracker.ViewModel
         /// <summary>Порядок выбора сохраняется: пользователь ставит галочки не случайно.</summary>
         private readonly List<string> _selected = new();
 
-        public ViewEditViewModel(IMatrixViewRepository views, IAnalyteCatalog catalog, MatrixViewModel matrix)
+        public ViewEditViewModel(IMatrixViewRepository views, IAnalyteCatalog catalog, MatrixState matrix)
         {
             _views = views;
             _catalog = catalog;

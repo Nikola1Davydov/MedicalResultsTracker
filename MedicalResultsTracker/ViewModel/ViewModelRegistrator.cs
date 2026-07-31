@@ -6,7 +6,6 @@ namespace MedicalResultsTracker.ViewModel
     {
         public static IServiceCollection RegisterViewModels(this IServiceCollection services) => services
             .AddSingleton<MainViewModel>()
-            .AddSingleton<MatrixViewModel>()
             .AddSingleton<TrendsViewModel>()
             .AddSingleton<SettingsViewModel>()
 
