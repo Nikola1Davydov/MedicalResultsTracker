@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="App_Title" xml:space="preserve">
+    <value>Laborwerte</value>
+  </data>
+  <data name="Tab_Dashboard" xml:space="preserve">
+    <value>Übersicht</value>
+  </data>
+  <data name="Tab_History" xml:space="preserve">
+    <value>Befunde</value>
+  </data>
+  <data name="Tab_Trends" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="Tab_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="Dash_Title" xml:space="preserve">
+    <value>Meine Laborwerte</value>
+  </data>
+  <data name="Dash_NoTests" xml:space="preserve">
+    <value>Noch kein Befund erfasst</value>
+  </data>
+  <data name="Dash_LastTest" xml:space="preserve">
+    <value>Letzter Befund: {0}</value>
+  </data>
+  <data name="Dash_EmptyHint" xml:space="preserve">
+    <value>Erfassen Sie den ersten Befund – den Verlauf zeigt die App dann von selbst.</value>
+  </data>
+  <data name="Dash_AddTest" xml:space="preserve">
+    <value>➕ Befund erfassen</value>
+  </data>
+  <data name="Dash_Export" xml:space="preserve">
+    <value>⬇ Exportieren</value>
+  </data>
+  <data name="Dash_StartTitle" xml:space="preserve">
+    <value>So fangen Sie an</value>
+  </data>
+  <data name="Dash_StartBody" xml:space="preserve">
+    <value>Nehmen Sie Ihren Laborbefund und tragen Sie die Werte ein: Bezeichnung, Zahl, Einheit und den Referenzbereich aus der entsprechenden Spalte.</value>
+  </data>
+  <data name="Dash_StartNote" xml:space="preserve">
+    <value>Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten übertragen.</value>
+  </data>
+  <data name="Dash_Favorites" xml:space="preserve">
+    <value>★ Favoriten</value>
+  </data>
+  <data name="Dash_FavHintTitle" xml:space="preserve">
+    <value>Werte im Blick behalten</value>
+  </data>
+  <data name="Dash_FavHintBody" xml:space="preserve">
+    <value>Markieren Sie im Werteverzeichnis mit dem Stern, was Sie dauerhaft verfolgen – diese Werte stehen dann ganz oben.</value>
+  </data>
+  <data name="Dash_OpenCatalog" xml:space="preserve">
+    <value>Werteverzeichnis öffnen</value>
+  </data>
+  <data name="Dash_OutOfRange" xml:space="preserve">
+    <value>Außerhalb des Referenzbereichs</value>
+  </data>
+  <data name="Dash_Changes" xml:space="preserve">
+    <value>Deutliche Veränderungen</value>
+  </data>
+  <data name="Dash_AiTitle" xml:space="preserve">
+    <value>KI fragen</value>
+  </data>
+  <data name="Dash_AiBody" xml:space="preserve">
+    <value>Die App stellt die Tabelle als Text zusammen und öffnet die Teilen-Auswahl. Wohin die Daten gehen, entscheiden Sie – von selbst sendet die App nichts.</value>
+  </data>
+  <data name="Dash_AiButton" xml:space="preserve">
+    <value>🤖 Tabelle an KI-Chat senden</value>
+  </data>
+  <data name="Dash_AiOff" xml:space="preserve">
+    <value>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</value>
+  </data>
+  <data name="Dash_AiOn" xml:space="preserve">
+    <value>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.</value>
+  </data>
+  <data name="Dash_Summary" xml:space="preserve">
+    <value>{0} Werte · {1} · {2}</value>
+  </data>
+  <data name="Dash_AllInRange" xml:space="preserve">
+    <value>alle Werte im Referenzbereich</value>
+  </data>
+  <data name="Dash_OneOut" xml:space="preserve">
+    <value>1 Wert außerhalb</value>
+  </data>
+  <data name="Dash_ManyOut" xml:space="preserve">
+    <value>{0} Werte außerhalb</value>
+  </data>
+  <data name="Dash_OneTest" xml:space="preserve">
+    <value>1 Befund im Verlauf</value>
+  </data>
+  <data name="Dash_ManyTests" xml:space="preserve">
+    <value>{0} Befunde im Verlauf</value>
+  </data>
+  <data name="Hist_Empty" xml:space="preserve">
+    <value>Hier erscheinen alle gespeicherten Befunde – einer pro Blutabnahme.</value>
+  </data>
+  <data name="Hist_Add" xml:space="preserve">
+    <value>➕ Befund erfassen</value>
+  </data>
+  <data name="Hist_Export" xml:space="preserve">
+    <value>⬇ Tabelle exportieren</value>
+  </data>
+  <data name="Hist_SubtitleOk" xml:space="preserve">
+    <value>{0} Werte · alle im Referenzbereich</value>
+  </data>
+  <data name="Hist_SubtitleOut" xml:space="preserve">
+    <value>{0} Werte · {1} außerhalb</value>
+  </data>
+  <data name="Edit_TitleNew" xml:space="preserve">
+    <value>Neuer Befund</value>
+  </data>
+  <data name="Edit_TitleExisting" xml:space="preserve">
+    <value>Befund</value>
+  </data>
+  <data name="Edit_Date" xml:space="preserve">
+    <value>Datum der Abnahme</value>
+  </data>
+  <data name="Edit_Lab" xml:space="preserve">
+    <value>Labor (optional)</value>
+  </data>
+  <data name="Edit_LabPlaceholder" xml:space="preserve">
+    <value>z. B. Synlab</value>
+  </data>
+  <data name="Edit_Note" xml:space="preserve">
+    <value>Notiz (optional)</value>
+  </data>
+  <data name="Edit_NotePlaceholder" xml:space="preserve">
+    <value>nüchtern, nach Vitaminkur …</value>
+  </data>
+  <data name="Edit_AddParam" xml:space="preserve">
+    <value>Wert hinzufügen</value>
+  </data>
+  <data name="Edit_SearchPlaceholder" xml:space="preserve">
+    <value>Bezeichnung eingeben</value>
+  </data>
+  <data name="Edit_AddTyped" xml:space="preserve">
+    <value>So übernehmen</value>
+  </data>
+  <data name="Edit_AddEmpty" xml:space="preserve">
+    <value>Leere Zeile</value>
+  </data>
+  <data name="Edit_CopyPrevious" xml:space="preserve">
+    <value>Wie beim letzten Mal</value>
+  </data>
+  <data name="Edit_PhotoTitle" xml:space="preserve">
+    <value>Aus einem Foto ausfüllen</value>
+  </data>
+  <data name="Edit_PhotoBody" xml:space="preserve">
+    <value>Den Befund liest Ihr KI-Chat, nicht die App. Anfrage kopieren, zusammen mit dem Foto in den Chat schicken, Antwort kopieren – und hier einfügen.</value>
+  </data>
+  <data name="Edit_CopyPrompt" xml:space="preserve">
+    <value>1. Anfrage kopieren</value>
+  </data>
+  <data name="Edit_Paste" xml:space="preserve">
+    <value>2. Aus Zwischenablage</value>
+  </data>
+  <data name="Edit_PhotoNote" xml:space="preserve">
+    <value>Die App sendet dabei nichts: Der Austausch mit dem Chat läuft von Hand über die Zwischenablage.</value>
+  </data>
+  <data name="Edit_RowName" xml:space="preserve">
+    <value>Bezeichnung</value>
+  </data>
+  <data name="Edit_RowValue" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Edit_RowUnit" xml:space="preserve">
+    <value>Einheit</value>
+  </data>
+  <data name="Edit_RowRefMin" xml:space="preserve">
+    <value>Referenz von</value>
+  </data>
+  <data name="Edit_RowRefMax" xml:space="preserve">
+    <value>Referenz bis</value>
+  </data>
+  <data name="Edit_Hint" xml:space="preserve">
+    <value>Zahlen dürfen mit Komma oder Punkt geschrieben werden. Den Referenzbereich übernehmen Sie aus Ihrem Befund – jedes Labor hat eigene Grenzen.</value>
+  </data>
+  <data name="Edit_NoPrevTitle" xml:space="preserve">
+    <value>Keine Daten</value>
+  </data>
+  <data name="Edit_NoPrevBody" xml:space="preserve">
+    <value>Es gibt keinen früheren Befund.</value>
+  </data>
+  <data name="Edit_EmptyTitle" xml:space="preserve">
+    <value>Leer</value>
+  </data>
+  <data name="Edit_EmptyBody" xml:space="preserve">
+    <value>Fügen Sie mindestens einen Wert hinzu.</value>
+  </data>
+  <data name="Edit_NoNameTitle" xml:space="preserve">
+    <value>Bezeichnung fehlt</value>
+  </data>
+  <data name="Edit_NoNameBody" xml:space="preserve">
+    <value>Jede ausgefüllte Zeile braucht eine Bezeichnung.</value>
+  </data>
+  <data name="Edit_DeleteTitle" xml:space="preserve">
+    <value>Befund löschen?</value>
+  </data>
+  <data name="Edit_DeleteBody" xml:space="preserve">
+    <value>Der Eintrag wird unwiderruflich vom Gerät gelöscht.</value>
+  </data>
+  <data name="Edit_PromptCopiedTitle" xml:space="preserve">
+    <value>Anfrage kopiert</value>
+  </data>
+  <data name="Edit_PromptCopiedBody" xml:space="preserve">
+    <value>Fügen Sie sie zusammen mit dem Foto des Befunds in einen beliebigen KI-Chat ein. Die Antwort kopieren und hier auf «Aus Zwischenablage» tippen.</value>
+  </data>
+  <data name="Edit_ClipEmptyTitle" xml:space="preserve">
+    <value>Zwischenablage ist leer</value>
+  </data>
+  <data name="Edit_ClipEmptyBody" xml:space="preserve">
+    <value>Kopieren Sie zuerst die Tabelle mit den Werten.</value>
+  </data>
+  <data name="Edit_NoRowsTitle" xml:space="preserve">
+    <value>Nichts erkannt</value>
+  </data>
+  <data name="Edit_NoRowsBody" xml:space="preserve">
+    <value>Im Text wurden keine Wertezeilen gefunden. Eine Zeile sollte so aussehen:
+
+Ferritin | 18 | ng/ml | 30 | 300</value>
+  </data>
+  <data name="Edit_Added" xml:space="preserve">
+    <value>{0} Zeilen übernommen. Bitte vor dem Speichern prüfen.</value>
+  </data>
+  <data name="Edit_AddedWarn" xml:space="preserve">
+    <value>{0} Nicht erkannt: {1}</value>
+  </data>
+  <data name="Edit_MyValues" xml:space="preserve">
+    <value>Meine Werte</value>
+  </data>
+  <data name="Trend_Empty" xml:space="preserve">
+    <value>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.</value>
+  </data>
+  <data name="Trend_OnlyFavorites" xml:space="preserve">
+    <value>★ Nur Favoriten</value>
+  </data>
+  <data name="Trend_AllOrHistory" xml:space="preserve">
+    <value>Alle / mit Verlauf</value>
+  </data>
+  <data name="Trend_FavoritesGroup" xml:space="preserve">
+    <value>★ Favoriten</value>
+  </data>
+  <data name="Trend_NoGroup" xml:space="preserve">
+    <value>Ohne Gruppe</value>
+  </data>
+  <data name="Trend_OneMeasurement" xml:space="preserve">
+    <value>eine Messung</value>
+  </data>
+  <data name="Trend_NoChange" xml:space="preserve">
+    <value>→ unverändert</value>
+  </data>
+  <data name="Trend_Values" xml:space="preserve">
+    <value>Werte</value>
+  </data>
+  <data name="Trend_RefKnown" xml:space="preserve">
+    <value>Referenz: {0} {1}</value>
+  </data>
+  <data name="Trend_RefUnknown" xml:space="preserve">
+    <value>Kein Referenzbereich angegeben</value>
+  </data>
+  <data name="Trend_SinglePoint" xml:space="preserve">
+    <value>Eine Messung – der Verlauf entsteht ab dem nächsten Befund.</value>
+  </data>
+  <data name="Trend_Since" xml:space="preserve">
+    <value>{0} Messungen seit {1}</value>
+  </data>
+  <data name="Trend_NoData" xml:space="preserve">
+    <value>Zu diesem Wert liegen keine Daten vor.</value>
+  </data>
+  <data name="Trend_ChartNoData" xml:space="preserve">
+    <value>Keine Daten</value>
+  </data>
+  <data name="Trend_Parameter" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Status_Low" xml:space="preserve">
+    <value>unter dem Referenzbereich</value>
+  </data>
+  <data name="Status_High" xml:space="preserve">
+    <value>über dem Referenzbereich</value>
+  </data>
+  <data name="Status_Normal" xml:space="preserve">
+    <value>im Referenzbereich</value>
+  </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>kein Referenzbereich</value>
+  </data>
+  <data name="Assess_Improved" xml:space="preserve">
+    <value>besser als beim letzten Mal</value>
+  </data>
+  <data name="Assess_Worsened" xml:space="preserve">
+    <value>schlechter als beim letzten Mal</value>
+  </data>
+  <data name="Assess_Stable" xml:space="preserve">
+    <value>unverändert</value>
+  </data>
+  <data name="Assess_Unknown" xml:space="preserve">
+    <value>kein Vergleich möglich</value>
+  </data>
+  <data name="Item_RefKnown" xml:space="preserve">
+    <value>Referenz {0}</value>
+  </data>
+  <data name="Item_RefUnknown" xml:space="preserve">
+    <value>kein Referenzbereich</value>
+  </data>
+  <data name="Item_Previous" xml:space="preserve">
+    <value>zuvor {0} · {1}</value>
+  </data>
+  <data name="Item_First" xml:space="preserve">
+    <value>erste Messung</value>
+  </data>
+  <data name="Cat_Title" xml:space="preserve">
+    <value>Werteverzeichnis</value>
+  </data>
+  <data name="Cat_Search" xml:space="preserve">
+    <value>Suche nach Bezeichnung</value>
+  </data>
+  <data name="Cat_OnlyFavorites" xml:space="preserve">
+    <value>Nur Favoriten</value>
+  </data>
+  <data name="Cat_ShowHidden" xml:space="preserve">
+    <value>Ausgeblendete zeigen</value>
+  </data>
+  <data name="Cat_AddOwn" xml:space="preserve">
+    <value>➕ Eigener Wert</value>
+  </data>
+  <data name="Cat_Hidden" xml:space="preserve">
+    <value>aus den Vorschlägen ausgeblendet</value>
+  </data>
+  <data name="Cat_Summary" xml:space="preserve">
+    <value>{0} Werte · {1} als Favorit</value>
+  </data>
+  <data name="Cat_SummaryHidden" xml:space="preserve">
+    <value>{0} Werte · {1} als Favorit · {2} ausgeblendet</value>
+  </data>
+  <data name="Cat_Unused" xml:space="preserve">
+    <value>nicht verwendet</value>
+  </data>
+  <data name="Cat_OneMeasurement" xml:space="preserve">
+    <value>1 Messung</value>
+  </data>
+  <data name="Cat_ManyMeasurements" xml:space="preserve">
+    <value>{0} Messungen</value>
+  </data>
+  <data name="Cat_BuiltIn" xml:space="preserve">
+    <value>vorgegeben</value>
+  </data>
+  <data name="Cat_Own" xml:space="preserve">
+    <value>eigener</value>
+  </data>
+  <data name="Cat_NoRef" xml:space="preserve">
+    <value>kein Referenzbereich</value>
+  </data>
+  <data name="Cat_OneParam" xml:space="preserve">
+    <value>1 Wert</value>
+  </data>
+  <data name="Cat_ManyParams" xml:space="preserve">
+    <value>{0} Werte</value>
+  </data>
+  <data name="CatEdit_Title" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="CatEdit_TitleNew" xml:space="preserve">
+    <value>Neuer Wert</value>
+  </data>
+  <data name="CatEdit_Name" xml:space="preserve">
+    <value>Bezeichnung</value>
+  </data>
+  <data name="CatEdit_NamePlaceholder" xml:space="preserve">
+    <value>z. B. Homocystein</value>
+  </data>
+  <data name="CatEdit_Unit" xml:space="preserve">
+    <value>Einheit</value>
+  </data>
+  <data name="CatEdit_UnitPlaceholder" xml:space="preserve">
+    <value>µmol/l</value>
+  </data>
+  <data name="CatEdit_Group" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="CatEdit_GroupPick" xml:space="preserve">
+    <value>Vorhandene wählen</value>
+  </data>
+  <data name="CatEdit_GroupNew" xml:space="preserve">
+    <value>… oder neue eingeben</value>
+  </data>
+  <data name="CatEdit_Notes" xml:space="preserve">
+    <value>Hinweis zum Referenzbereich</value>
+  </data>
+  <data name="CatEdit_NotesPlaceholder" xml:space="preserve">
+    <value>z. B. Bereich für Männer</value>
+  </data>
+  <data name="CatEdit_Note" xml:space="preserve">
+    <value>Diese Angaben werden beim Erfassen nur vorgeschlagen. In gespeicherten Messungen bleiben die Grenzen aus Ihrem Befund stehen.</value>
+  </data>
+  <data name="CatEdit_Code" xml:space="preserve">
+    <value>Code: {0}</value>
+  </data>
+  <data name="CatEdit_CodeNew" xml:space="preserve">
+    <value>Der Code entsteht aus der Bezeichnung</value>
+  </data>
+  <data name="CatEdit_Favorite" xml:space="preserve">
+    <value>★ Als Favorit</value>
+  </data>
+  <data name="CatEdit_FavoriteNote" xml:space="preserve">
+    <value>Der Wert erscheint oben auf der Startseite und in einer eigenen Gruppe im Verlauf.</value>
+  </data>
+  <data name="CatEdit_Hide" xml:space="preserve">
+    <value>Aus Vorschlägen ausblenden</value>
+  </data>
+  <data name="CatEdit_HideNote" xml:space="preserve">
+    <value>Der Eintrag bleibt erhalten, wird beim Erfassen aber nicht mehr vorgeschlagen.</value>
+  </data>
+  <data name="CatEdit_MergeTitle" xml:space="preserve">
+    <value>Mit anderem Wert zusammenführen</value>
+  </data>
+  <data name="CatEdit_MergeBody" xml:space="preserve">
+    <value>Steht derselbe Wert doppelt im Verzeichnis, verschieben Sie seine Messungen zum Haupteintrag – dann ist es im Diagramm wieder eine Linie.</value>
+  </data>
+  <data name="CatEdit_MergeTarget" xml:space="preserve">
+    <value>Wohin verschieben</value>
+  </data>
+  <data name="CatEdit_Merge" xml:space="preserve">
+    <value>Zusammenführen</value>
+  </data>
+  <data name="CatEdit_NoUsage" xml:space="preserve">
+    <value>Zu diesem Wert gibt es noch keine Messungen.</value>
+  </data>
+  <data name="CatEdit_OneUsage" xml:space="preserve">
+    <value>1 gespeicherte Messung.</value>
+  </data>
+  <data name="CatEdit_ManyUsage" xml:space="preserve">
+    <value>{0} gespeicherte Messungen.</value>
+  </data>
+  <data name="CatEdit_NoNameTitle" xml:space="preserve">
+    <value>Bezeichnung fehlt</value>
+  </data>
+  <data name="CatEdit_NoNameBody" xml:space="preserve">
+    <value>Geben Sie eine Bezeichnung an.</value>
+  </data>
+  <data name="CatEdit_ExistsTitle" xml:space="preserve">
+    <value>Gibt es bereits</value>
+  </data>
+  <data name="CatEdit_ExistsBody" xml:space="preserve">
+    <value>Ein Wert mit dieser Bezeichnung steht schon im Verzeichnis. Öffnen Sie ihn und bearbeiten Sie ihn dort.</value>
+  </data>
+  <data name="CatEdit_BuiltInTitle" xml:space="preserve">
+    <value>Vorgegebener Wert</value>
+  </data>
+  <data name="CatEdit_BuiltInBody" xml:space="preserve">
+    <value>Vorgegebene Werte lassen sich nicht löschen – sie kehren beim nächsten Start zurück. Blenden Sie ihn stattdessen mit dem Schalter aus.</value>
+  </data>
+  <data name="CatEdit_DeleteTitle" xml:space="preserve">
+    <value>Aus dem Verzeichnis löschen?</value>
+  </data>
+  <data name="CatEdit_DeleteBody" xml:space="preserve">
+    <value>Der Verzeichniseintrag wird gelöscht.</value>
+  </data>
+  <data name="CatEdit_DeleteBodyUsed" xml:space="preserve">
+    <value>Der Verzeichniseintrag wird gelöscht. Die gespeicherten Messungen ({0}) bleiben erhalten und ergeben weiterhin ein Diagramm – das Verzeichnis schlägt beim Erfassen nur Werte vor.</value>
+  </data>
+  <data name="CatEdit_MergePickTitle" xml:space="preserve">
+    <value>Wert wählen</value>
+  </data>
+  <data name="CatEdit_MergePickBody" xml:space="preserve">
+    <value>Geben Sie an, mit welchem Wert zusammengeführt werden soll.</value>
+  </data>
+  <data name="CatEdit_MergeConfirmTitle" xml:space="preserve">
+    <value>Werte zusammenführen?</value>
+  </data>
+  <data name="CatEdit_MergeConfirmBody" xml:space="preserve">
+    <value>Die Messungen von «{0}» ({1}) gehen an «{2}» über und bilden künftig eine Linie im Diagramm. Rückgängig macht das nur ein erneutes Zusammenführen in die andere Richtung.</value>
+  </data>
+  <data name="CatEdit_MergeDoneTitle" xml:space="preserve">
+    <value>Fertig</value>
+  </data>
+  <data name="CatEdit_MergeDoneBody" xml:space="preserve">
+    <value>Verschobene Messungen: {0}.</value>
+  </data>
+  <data name="Set_StorageTitle" xml:space="preserve">
+    <value>Speicherung</value>
+  </data>
+  <data name="Set_StorageEmpty" xml:space="preserve">
+    <value>Noch keine Befunde. Die Daten liegen ausschließlich auf diesem Gerät.</value>
+  </data>
+  <data name="Set_StorageOne" xml:space="preserve">
+    <value>1 Befund. Die Daten liegen ausschließlich auf diesem Gerät.</value>
+  </data>
+  <data name="Set_StorageMany" xml:space="preserve">
+    <value>{0} Befunde. Die Daten liegen ausschließlich auf diesem Gerät.</value>
+  </data>
+  <data name="Set_DbFile" xml:space="preserve">
+    <value>Datenbankdatei:</value>
+  </data>
+  <data name="Set_CatalogTitle" xml:space="preserve">
+    <value>Werteverzeichnis</value>
+  </data>
+  <data name="Set_CatalogBody" xml:space="preserve">
+    <value>Was beim Erfassen vorgeschlagen wird: Bezeichnungen, Einheiten und übliche Referenzbereiche. Hier werden auch Doppelte zusammengeführt und Überflüssiges ausgeblendet.</value>
+  </data>
+  <data name="Set_CatalogOpen" xml:space="preserve">
+    <value>Verzeichnis öffnen</value>
+  </data>
+  <data name="Set_ExportTitle" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Set_ExportMatrix" xml:space="preserve">
+    <value>Tabelle: Werte × Daten (CSV)</value>
+  </data>
+  <data name="Set_ExportFlat" xml:space="preserve">
+    <value>Liste: eine Zeile je Messung (CSV)</value>
+  </data>
+  <data name="Set_ExportBackup" xml:space="preserve">
+    <value>Sicherungskopie (JSON)</value>
+  </data>
+  <data name="Set_ImportBackup" xml:space="preserve">
+    <value>Aus Sicherungskopie wiederherstellen</value>
+  </data>
+  <data name="Set_ExportNote" xml:space="preserve">
+    <value>Die Datei entsteht auf dem Gerät; wohin sie geht, entscheiden Sie selbst.</value>
+  </data>
+  <data name="Set_AiTitle" xml:space="preserve">
+    <value>KI-Assistent</value>
+  </data>
+  <data name="Set_AiBody" xml:space="preserve">
+    <value>Die App funktioniert vollständig ohne KI: Alle Werte lassen sich von Hand eintragen. Der Assistent ist eine freiwillige Ergänzung, und jede Berechtigung wird einzeln erteilt.</value>
+  </data>
+  <data name="Set_AiManual" xml:space="preserve">
+    <value>Manueller Weg – funktioniert sofort und braucht keine Berechtigung: Die App bereitet die Tabelle als Text auf, den Empfänger wählen Sie selbst.</value>
+  </data>
+  <data name="Set_AiShare" xml:space="preserve">
+    <value>Tabelle an KI-Chat senden</value>
+  </data>
+  <data name="Set_AiCopy" xml:space="preserve">
+    <value>Tabelle in die Zwischenablage</value>
+  </data>
+  <data name="Set_AiScan" xml:space="preserve">
+    <value>Befund erkennen</value>
+  </data>
+  <data name="Set_AiScanNote" xml:space="preserve">
+    <value>Foto oder PDF geht erst beim Antippen von «Erkennen» an den Anbieter.</value>
+  </data>
+  <data name="Set_AiComment" xml:space="preserve">
+    <value>Erläuterungen zum Verlauf</value>
+  </data>
+  <data name="Set_AiCommentNote" xml:space="preserve">
+    <value>Übertragen werden nur die ausgewählten Werte, ohne Namen und weitere Daten.</value>
+  </data>
+  <data name="Set_AiOff" xml:space="preserve">
+    <value>Alles aus: Die App sendet kein einziges Byte nach außen.</value>
+  </data>
+  <data name="Set_AiGranted" xml:space="preserve">
+    <value>Berechtigungen erteilt für «{0}»{1} Ein Anbieter ist in diesem Build noch nicht angebunden, es findet also keine Übertragung statt.</value>
+  </data>
+  <data name="Set_DangerTitle" xml:space="preserve">
+    <value>Gefahrenzone</value>
+  </data>
+  <data name="Set_DeleteAll" xml:space="preserve">
+    <value>Gesamten Verlauf löschen</value>
+  </data>
+  <data name="Set_Disclaimer" xml:space="preserve">
+    <value>Die App führt ein persönliches Wertetagebuch und stellt keine Diagnosen. Besprechen Sie Schlussfolgerungen mit Ihrer Ärztin oder Ihrem Arzt.</value>
+  </data>
+  <data name="Set_CopiedTitle" xml:space="preserve">
+    <value>Kopiert</value>
+  </data>
+  <data name="Set_CopiedBody" xml:space="preserve">
+    <value>Die Tabelle liegt in der Zwischenablage – fügen Sie sie in einen beliebigen Chat ein.</value>
+  </data>
+  <data name="Set_ImportPick" xml:space="preserve">
+    <value>Sicherungsdatei wählen</value>
+  </data>
+  <data name="Set_ImportDoneTitle" xml:space="preserve">
+    <value>Import abgeschlossen</value>
+  </data>
+  <data name="Set_ImportNothing" xml:space="preserve">
+    <value>Es wurden keine neuen Befunde gefunden.</value>
+  </data>
+  <data name="Set_ImportCount" xml:space="preserve">
+    <value>Hinzugefügte Befunde: {0}.</value>
+  </data>
+  <data name="Set_DeleteAllTitle" xml:space="preserve">
+    <value>Gesamten Verlauf löschen?</value>
+  </data>
+  <data name="Set_DeleteAllBody" xml:space="preserve">
+    <value>Alle Befunde werden vom Gerät gelöscht. Das lässt sich nicht rückgängig machen – legen Sie vorher eine Sicherungskopie an.</value>
+  </data>
+  <data name="Err_Load" xml:space="preserve">
+    <value>Daten konnten nicht geladen werden</value>
+  </data>
+  <data name="Err_Refresh" xml:space="preserve">
+    <value>Daten konnten nicht aktualisiert werden</value>
+  </data>
+  <data name="Err_Export" xml:space="preserve">
+    <value>Tabelle konnte nicht exportiert werden</value>
+  </data>
+  <data name="Err_ExportList" xml:space="preserve">
+    <value>Liste konnte nicht exportiert werden</value>
+  </data>
+  <data name="Err_Backup" xml:space="preserve">
+    <value>Sicherungskopie konnte nicht erstellt werden</value>
+  </data>
+  <data name="Err_Import" xml:space="preserve">
+    <value>Sicherungskopie konnte nicht eingelesen werden</value>
+  </data>
+  <data name="Err_DeleteAll" xml:space="preserve">
+    <value>Verlauf konnte nicht gelöscht werden</value>
+  </data>
+  <data name="Err_Text" xml:space="preserve">
+    <value>Text konnte nicht vorbereitet werden</value>
+  </data>
+  <data name="Err_Copy" xml:space="preserve">
+    <value>Text konnte nicht kopiert werden</value>
+  </data>
+  <data name="Err_History" xml:space="preserve">
+    <value>Verlauf konnte nicht geladen werden</value>
+  </data>
+  <data name="Err_Charts" xml:space="preserve">
+    <value>Diagramme konnten nicht erstellt werden</value>
+  </data>
+  <data name="Err_Chart" xml:space="preserve">
+    <value>Diagramm konnte nicht erstellt werden</value>
+  </data>
+  <data name="Err_OpenTest" xml:space="preserve">
+    <value>Befund konnte nicht geöffnet werden</value>
+  </data>
+  <data name="Err_SaveTest" xml:space="preserve">
+    <value>Befund konnte nicht gespeichert werden</value>
+  </data>
+  <data name="Err_DeleteTest" xml:space="preserve">
+    <value>Befund konnte nicht gelöscht werden</value>
+  </data>
+  <data name="Err_CopyRows" xml:space="preserve">
+    <value>Werte konnten nicht übernommen werden</value>
+  </data>
+  <data name="Err_Parse" xml:space="preserve">
+    <value>Text konnte nicht ausgewertet werden</value>
+  </data>
+  <data name="Err_Prompt" xml:space="preserve">
+    <value>Anfrage konnte nicht kopiert werden</value>
+  </data>
+  <data name="Err_Settings" xml:space="preserve">
+    <value>Einstellungen konnten nicht geöffnet werden</value>
+  </data>
+  <data name="Err_Catalog" xml:space="preserve">
+    <value>Verzeichnis konnte nicht geöffnet werden</value>
+  </data>
+  <data name="Err_CatalogItem" xml:space="preserve">
+    <value>Wert konnte nicht geöffnet werden</value>
+  </data>
+  <data name="Err_CatalogSave" xml:space="preserve">
+    <value>Wert konnte nicht gespeichert werden</value>
+  </data>
+  <data name="Err_CatalogDelete" xml:space="preserve">
+    <value>Wert konnte nicht gelöscht werden</value>
+  </data>
+  <data name="Err_Merge" xml:space="preserve">
+    <value>Werte konnten nicht zusammengeführt werden</value>
+  </data>
+  <data name="Err_Favorite" xml:space="preserve">
+    <value>Favorit konnte nicht geändert werden</value>
+  </data>
+  <data name="Share_Results" xml:space="preserve">
+    <value>Laborwerte</value>
+  </data>
+  <data name="Share_ResultsTable" xml:space="preserve">
+    <value>Laborwerte (Tabelle)</value>
+  </data>
+  <data name="Share_ResultsList" xml:space="preserve">
+    <value>Laborwerte (Liste)</value>
+  </data>
+  <data name="Share_Backup" xml:space="preserve">
+    <value>Sicherungskopie des Verlaufs</value>
+  </data>
+  <data name="Csv_Parameter" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Csv_Unit" xml:space="preserve">
+    <value>Einheit</value>
+  </data>
+  <data name="Csv_Reference" xml:space="preserve">
+    <value>Referenzbereich</value>
+  </data>
+  <data name="Csv_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Csv_Lab" xml:space="preserve">
+    <value>Labor</value>
+  </data>
+  <data name="Csv_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Csv_Value" xml:space="preserve">
+    <value>Ergebnis</value>
+  </data>
+  <data name="Csv_Min" xml:space="preserve">
+    <value>von</value>
+  </data>
+  <data name="Csv_Max" xml:space="preserve">
+    <value>bis</value>
+  </data>
+  <data name="Csv_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Csv_Comment" xml:space="preserve">
+    <value>Kommentar</value>
+  </data>
+  <data name="Csv_StatusLow" xml:space="preserve">
+    <value>unter Referenz</value>
+  </data>
+  <data name="Csv_StatusHigh" xml:space="preserve">
+    <value>über Referenz</value>
+  </data>
+  <data name="Csv_StatusNormal" xml:space="preserve">
+    <value>im Referenzbereich</value>
+  </data>
+  <data name="Txt_Header" xml:space="preserve">
+    <value>Tagebuch der Laborwerte. Die Werte wurden von Hand aus Laborbefunden übernommen.</value>
+  </data>
+  <data name="Txt_NoPersonal" xml:space="preserve">
+    <value>Personenbezogene Daten sind hier nicht enthalten – nur Werte, Einheiten, Referenzbereiche aus dem Befund und Datumsangaben.</value>
+  </data>
+  <data name="Txt_RefNote" xml:space="preserve">
+    <value>Referenzbereiche unterscheiden sich je Labor; angegeben sind die aus dem jeweiligen Befund.</value>
+  </data>
+  <data name="Txt_Latest" xml:space="preserve">
+    <value>Letzter Befund: {0}.</value>
+  </data>
+  <data name="Txt_AllInRange" xml:space="preserve">
+    <value>Im letzten Befund liegen alle Werte im Referenzbereich.</value>
+  </data>
+  <data name="Txt_OutOfRange" xml:space="preserve">
+    <value>Außerhalb des Referenzbereichs im letzten Befund: {0}.</value>
+  </data>
+  <data name="Txt_Empty" xml:space="preserve">
+    <value>Es sind noch keine Befunde erfasst.</value>
+  </data>
+  <data name="Ai_NotConnected" xml:space="preserve">
+    <value>nicht angebunden</value>
+  </data>
+  <data name="Imp_EmptyText" xml:space="preserve">
+    <value>Der Text ist leer.</value>
+  </data>
+  <data name="Imp_BadDate" xml:space="preserve">
+    <value>Datum nicht erkannt: «{0}».</value>
+  </data>
+  <data name="Imp_SkippedLine" xml:space="preserve">
+    <value>Zeile übersprungen: «{0}».</value>
+  </data>
+  <data name="Imp_NoRows" xml:space="preserve">
+    <value>Es wurden keine Wertezeilen gefunden.</value>
+  </data>
+  <data name="Set_LanguageTitle" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Set_LanguageNote" xml:space="preserve">
+    <value>«System» übernimmt die Sprache des Geräts. Die Umstellung wirkt sofort, ohne Neustart.</value>
+  </data>
+</root>

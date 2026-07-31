@@ -1,4 +1,5 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Analysis;
@@ -31,7 +32,7 @@ namespace MedicalResultsTracker.ViewModel
         {
             _analysis = analysis;
 
-            Title = "Показатель";
+            Title = S.Csv_Parameter;
         }
 
         public ObservableCollection<SeriesRowViewModel> Values { get; } = new();
@@ -44,7 +45,7 @@ namespace MedicalResultsTracker.ViewModel
             }
         }
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось построить график");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Chart);
 
         private async Task LoadAsync()
         {
@@ -62,7 +63,7 @@ namespace MedicalResultsTracker.ViewModel
             if (series is null)
             {
                 IsEmpty = true;
-                Subtitle = "Данных по этому показателю нет.";
+                Subtitle = S.Trend_NoData;
                 return;
             }
 
@@ -73,10 +74,12 @@ namespace MedicalResultsTracker.ViewModel
 
             ReferenceRange range = new() { Min = series.RefMin, Max = series.RefMax };
 
-            RangeText = range.IsDefined ? $"Норма: {range} {series.Unit}".Trim() : "Норма не указана";
+            RangeText = range.IsDefined
+                ? string.Format(S.Trend_RefKnown, range, series.Unit).Trim()
+                : S.Trend_RefUnknown;
             Subtitle = series.Points.Count == 1
-                ? "Одно измерение — динамика появится после следующего анализа."
-                : $"{series.Points.Count} измерений с {series.Points[0].Date:dd.MM.yyyy}";
+                ? S.Trend_SinglePoint
+                : string.Format(S.Trend_Since, series.Points.Count, series.Points[0].Date.ToString("dd.MM.yyyy"));
 
             // Свежие значения сверху — так удобнее сверяться с последним бланком.
             for (int i = series.Points.Count - 1; i >= 0; i--)

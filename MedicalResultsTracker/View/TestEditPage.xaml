@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.TestEditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:model="clr-namespace:MedicalResultsTracker.Model"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
@@ -15,21 +16,21 @@
 
                 <Border Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource Caption}" Text="Дата сдачи" />
+                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_Date}" />
                         <DatePicker Date="{Binding Date}" Format="dd.MM.yyyy" />
 
-                        <Label Style="{StaticResource Caption}" Text="Лаборатория (необязательно)" />
-                        <Entry Placeholder="Например, Инвитро" Text="{Binding Laboratory}" />
+                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_Lab}" />
+                        <Entry Placeholder="{loc:Tr Edit_LabPlaceholder}" Text="{Binding Laboratory}" />
 
-                        <Label Style="{StaticResource Caption}" Text="Заметка (необязательно)" />
-                        <Entry Placeholder="Натощак, после курса витаминов…" Text="{Binding Notes}" />
+                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_Note}" />
+                        <Entry Placeholder="{loc:Tr Edit_NotePlaceholder}" Text="{Binding Notes}" />
                     </VerticalStackLayout>
                 </Border>
 
                 <Border Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="Добавить показатель" />
-                        <SearchBar Placeholder="Начните вводить название" Text="{Binding AnalyteQuery}" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Edit_AddParam}" />
+                        <SearchBar Placeholder="{loc:Tr Edit_SearchPlaceholder}" Text="{Binding AnalyteQuery}" />
 
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Suggestions}" Spacing="2">
                             <BindableLayout.ItemTemplate>
@@ -56,26 +57,35 @@
                             <Button
                                 Grid.Column="0"
                                 Command="{Binding AddTypedNameCommand}"
-                                Text="Добавить как есть" />
+                                Text="{loc:Tr Edit_AddTyped}" />
                             <Button
                                 Grid.Column="1"
                                 Command="{Binding AddRowCommand}"
-                                Text="Пустая строка" />
+                                Text="{loc:Tr Edit_AddEmpty}" />
                         </Grid>
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                            <Button
-                                Grid.Column="0"
-                                Command="{Binding CopyFromPreviousCommand}"
-                                Text="Как в прошлый раз" />
-                            <Button
-                                Grid.Column="1"
-                                Command="{Binding ScanDocumentCommand}"
-                                Text="📷 Распознать" />
-                        </Grid>
+                        <Button Command="{Binding CopyFromPreviousCommand}" Text="{loc:Tr Edit_CopyPrevious}" />
                         <Label
                             IsVisible="{Binding HasAssistantHint}"
                             Style="{StaticResource Caption}"
                             Text="{Binding AssistantHint}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Edit_PhotoTitle}" />
+                        <Label Text="{loc:Tr Edit_PhotoBody}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                Command="{Binding CopyImportPromptCommand}"
+                                Text="{loc:Tr Edit_CopyPrompt}" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding PasteRowsCommand}"
+                                Text="{loc:Tr Edit_Paste}" />
+                        </Grid>
+                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_PhotoNote}" />
                     </VerticalStackLayout>
                 </Border>
 
@@ -87,7 +97,7 @@
                                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                         <Entry
                                             Grid.Column="0"
-                                            Placeholder="Название показателя"
+                                            Placeholder="{loc:Tr Edit_RowName}"
                                             Text="{Binding Name}" />
                                         <Button
                                             Grid.Column="1"
@@ -100,23 +110,23 @@
                                         <Entry
                                             Grid.Column="0"
                                             Keyboard="Numeric"
-                                            Placeholder="Значение"
+                                            Placeholder="{loc:Tr Csv_Value}"
                                             Text="{Binding ValueText}" />
                                         <Entry
                                             Grid.Column="1"
-                                            Placeholder="Единицы"
+                                            Placeholder="{loc:Tr Csv_Unit}"
                                             Text="{Binding Unit}" />
                                     </Grid>
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                                         <Entry
                                             Grid.Column="0"
                                             Keyboard="Numeric"
-                                            Placeholder="Норма от"
+                                            Placeholder="{loc:Tr Edit_RowRefMin}"
                                             Text="{Binding RefMinText}" />
                                         <Entry
                                             Grid.Column="1"
                                             Keyboard="Numeric"
-                                            Placeholder="Норма до"
+                                            Placeholder="{loc:Tr Edit_RowRefMax}"
                                             Text="{Binding RefMaxText}" />
                                     </Grid>
                                     <Label
@@ -131,7 +141,7 @@
 
                 <Label
                     Style="{StaticResource Caption}"
-                    Text="Значения можно вводить и через точку, и через запятую. Норму берите из колонки «референсные значения» своего бланка — у каждой лаборатории она своя." />
+                    Text="{loc:Tr Edit_Hint}" />
 
             </VerticalStackLayout>
         </ScrollView>
@@ -144,11 +154,11 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding SaveCommand}"
-                Text="Сохранить" />
+                Text="{loc:Tr Common_Save}" />
             <Button
                 Grid.Column="1"
                 Command="{Binding CancelCommand}"
-                Text="Отмена" />
+                Text="{loc:Tr Common_Cancel}" />
             <Button
                 Grid.Column="2"
                 Command="{Binding DeleteCommand}"

@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="App_Title" xml:space="preserve">
+    <value>Мои анализы</value>
+  </data>
+  <data name="Tab_Dashboard" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="Tab_History" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="Tab_Trends" xml:space="preserve">
+    <value>Динамика</value>
+  </data>
+  <data name="Tab_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="Dash_Title" xml:space="preserve">
+    <value>Мои анализы</value>
+  </data>
+  <data name="Dash_NoTests" xml:space="preserve">
+    <value>Пока нет ни одного анализа</value>
+  </data>
+  <data name="Dash_LastTest" xml:space="preserve">
+    <value>Последний анализ: {0}</value>
+  </data>
+  <data name="Dash_EmptyHint" xml:space="preserve">
+    <value>Добавьте первый анализ — дальше приложение само покажет динамику.</value>
+  </data>
+  <data name="Dash_AddTest" xml:space="preserve">
+    <value>➕ Внести анализ</value>
+  </data>
+  <data name="Dash_Export" xml:space="preserve">
+    <value>⬇ Выгрузить</value>
+  </data>
+  <data name="Dash_StartTitle" xml:space="preserve">
+    <value>С чего начать</value>
+  </data>
+  <data name="Dash_StartBody" xml:space="preserve">
+    <value>Возьмите бланк анализа и внесите значения — название, число, единицы и норму из колонки «референсные значения».</value>
+  </data>
+  <data name="Dash_StartNote" xml:space="preserve">
+    <value>Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется.</value>
+  </data>
+  <data name="Dash_Favorites" xml:space="preserve">
+    <value>★ Избранное</value>
+  </data>
+  <data name="Dash_FavHintTitle" xml:space="preserve">
+    <value>Следить за показателем</value>
+  </data>
+  <data name="Dash_FavHintBody" xml:space="preserve">
+    <value>Отметьте звёздочкой в справочнике то, за чем следите постоянно, — эти показатели будут наверху главного экрана.</value>
+  </data>
+  <data name="Dash_OpenCatalog" xml:space="preserve">
+    <value>Открыть справочник</value>
+  </data>
+  <data name="Dash_OutOfRange" xml:space="preserve">
+    <value>Вне нормы</value>
+  </data>
+  <data name="Dash_Changes" xml:space="preserve">
+    <value>Заметные изменения</value>
+  </data>
+  <data name="Dash_AiTitle" xml:space="preserve">
+    <value>Спросить у ИИ</value>
+  </data>
+  <data name="Dash_AiBody" xml:space="preserve">
+    <value>Приложение соберёт таблицу текстом и откроет системный список приложений. Куда отправить — выбираете вы; само оно никуда ничего не шлёт.</value>
+  </data>
+  <data name="Dash_AiButton" xml:space="preserve">
+    <value>🤖 Отправить таблицу в ИИ-чат</value>
+  </data>
+  <data name="Dash_AiOff" xml:space="preserve">
+    <value>ИИ-помощник выключен. Данные не покидают устройство.</value>
+  </data>
+  <data name="Dash_AiOn" xml:space="preserve">
+    <value>ИИ-помощник: {0}. Разрешение можно отозвать в настройках.</value>
+  </data>
+  <data name="Dash_Summary" xml:space="preserve">
+    <value>{0} показателей · {1} · {2}</value>
+  </data>
+  <data name="Dash_AllInRange" xml:space="preserve">
+    <value>все показатели в пределах указанных норм</value>
+  </data>
+  <data name="Dash_OneOut" xml:space="preserve">
+    <value>1 показатель вне нормы</value>
+  </data>
+  <data name="Dash_ManyOut" xml:space="preserve">
+    <value>{0} показателей вне нормы</value>
+  </data>
+  <data name="Dash_OneTest" xml:space="preserve">
+    <value>1 анализ в истории</value>
+  </data>
+  <data name="Dash_ManyTests" xml:space="preserve">
+    <value>{0} анализов в истории</value>
+  </data>
+  <data name="Hist_Empty" xml:space="preserve">
+    <value>Здесь появятся все сохранённые анализы — по одному на каждую сдачу.</value>
+  </data>
+  <data name="Hist_Add" xml:space="preserve">
+    <value>➕ Внести анализ</value>
+  </data>
+  <data name="Hist_Export" xml:space="preserve">
+    <value>⬇ Выгрузить таблицу</value>
+  </data>
+  <data name="Hist_SubtitleOk" xml:space="preserve">
+    <value>{0} показателей · всё в пределах норм</value>
+  </data>
+  <data name="Hist_SubtitleOut" xml:space="preserve">
+    <value>{0} показателей · {1} вне нормы</value>
+  </data>
+  <data name="Edit_TitleNew" xml:space="preserve">
+    <value>Новый анализ</value>
+  </data>
+  <data name="Edit_TitleExisting" xml:space="preserve">
+    <value>Анализ</value>
+  </data>
+  <data name="Edit_Date" xml:space="preserve">
+    <value>Дата сдачи</value>
+  </data>
+  <data name="Edit_Lab" xml:space="preserve">
+    <value>Лаборатория (необязательно)</value>
+  </data>
+  <data name="Edit_LabPlaceholder" xml:space="preserve">
+    <value>Например, Инвитро</value>
+  </data>
+  <data name="Edit_Note" xml:space="preserve">
+    <value>Заметка (необязательно)</value>
+  </data>
+  <data name="Edit_NotePlaceholder" xml:space="preserve">
+    <value>Натощак, после курса витаминов…</value>
+  </data>
+  <data name="Edit_AddParam" xml:space="preserve">
+    <value>Добавить показатель</value>
+  </data>
+  <data name="Edit_SearchPlaceholder" xml:space="preserve">
+    <value>Начните вводить название</value>
+  </data>
+  <data name="Edit_AddTyped" xml:space="preserve">
+    <value>Добавить как есть</value>
+  </data>
+  <data name="Edit_AddEmpty" xml:space="preserve">
+    <value>Пустая строка</value>
+  </data>
+  <data name="Edit_CopyPrevious" xml:space="preserve">
+    <value>Как в прошлый раз</value>
+  </data>
+  <data name="Edit_PhotoTitle" xml:space="preserve">
+    <value>Заполнить из фотографии</value>
+  </data>
+  <data name="Edit_PhotoBody" xml:space="preserve">
+    <value>Распознаёт бланк ваш чат-бот, а не приложение. Скопируйте запрос, отправьте его в чат вместе с фотографией, ответ скопируйте — и вставьте сюда.</value>
+  </data>
+  <data name="Edit_CopyPrompt" xml:space="preserve">
+    <value>1. Скопировать запрос</value>
+  </data>
+  <data name="Edit_Paste" xml:space="preserve">
+    <value>2. Вставить из буфера</value>
+  </data>
+  <data name="Edit_PhotoNote" xml:space="preserve">
+    <value>Приложение при этом никуда ничего не отправляет: обмен с чатом идёт через буфер обмена, вручную.</value>
+  </data>
+  <data name="Edit_RowName" xml:space="preserve">
+    <value>Название показателя</value>
+  </data>
+  <data name="Edit_RowValue" xml:space="preserve">
+    <value>Значение</value>
+  </data>
+  <data name="Edit_RowUnit" xml:space="preserve">
+    <value>Единицы</value>
+  </data>
+  <data name="Edit_RowRefMin" xml:space="preserve">
+    <value>Норма от</value>
+  </data>
+  <data name="Edit_RowRefMax" xml:space="preserve">
+    <value>Норма до</value>
+  </data>
+  <data name="Edit_Hint" xml:space="preserve">
+    <value>Значения можно вводить и через точку, и через запятую. Норму берите из колонки «референсные значения» своего бланка — у каждой лаборатории она своя.</value>
+  </data>
+  <data name="Edit_NoPrevTitle" xml:space="preserve">
+    <value>Нет данных</value>
+  </data>
+  <data name="Edit_NoPrevBody" xml:space="preserve">
+    <value>Более раннего анализа в истории нет.</value>
+  </data>
+  <data name="Edit_EmptyTitle" xml:space="preserve">
+    <value>Пусто</value>
+  </data>
+  <data name="Edit_EmptyBody" xml:space="preserve">
+    <value>Добавьте хотя бы один показатель.</value>
+  </data>
+  <data name="Edit_NoNameTitle" xml:space="preserve">
+    <value>Не хватает названия</value>
+  </data>
+  <data name="Edit_NoNameBody" xml:space="preserve">
+    <value>У каждой заполненной строки должно быть название показателя.</value>
+  </data>
+  <data name="Edit_DeleteTitle" xml:space="preserve">
+    <value>Удалить анализ?</value>
+  </data>
+  <data name="Edit_DeleteBody" xml:space="preserve">
+    <value>Запись будет удалена с устройства безвозвратно.</value>
+  </data>
+  <data name="Edit_PromptCopiedTitle" xml:space="preserve">
+    <value>Запрос скопирован</value>
+  </data>
+  <data name="Edit_PromptCopiedBody" xml:space="preserve">
+    <value>Вставьте его в любой чат-бот вместе с фотографией бланка. Полученный ответ скопируйте и вернитесь сюда — кнопка «Вставить из буфера» разложит его по строкам.</value>
+  </data>
+  <data name="Edit_ClipEmptyTitle" xml:space="preserve">
+    <value>Буфер пуст</value>
+  </data>
+  <data name="Edit_ClipEmptyBody" xml:space="preserve">
+    <value>Сначала скопируйте таблицу с результатами.</value>
+  </data>
+  <data name="Edit_NoRowsTitle" xml:space="preserve">
+    <value>Не разобрано</value>
+  </data>
+  <data name="Edit_NoRowsBody" xml:space="preserve">
+    <value>В тексте не нашлось строк показателей. Каждая строка должна выглядеть так:
+
+Ферритин | 18 | мкг/л | 30 | 300</value>
+  </data>
+  <data name="Edit_Added" xml:space="preserve">
+    <value>Добавлено строк: {0}. Проверьте значения перед сохранением.</value>
+  </data>
+  <data name="Edit_AddedWarn" xml:space="preserve">
+    <value>{0} Не разобрано: {1}</value>
+  </data>
+  <data name="Edit_MyValues" xml:space="preserve">
+    <value>Мои показатели</value>
+  </data>
+  <data name="Trend_Empty" xml:space="preserve">
+    <value>Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями.</value>
+  </data>
+  <data name="Trend_OnlyFavorites" xml:space="preserve">
+    <value>★ Только избранное</value>
+  </data>
+  <data name="Trend_AllOrHistory" xml:space="preserve">
+    <value>Все / с историей</value>
+  </data>
+  <data name="Trend_FavoritesGroup" xml:space="preserve">
+    <value>★ Избранное</value>
+  </data>
+  <data name="Trend_NoGroup" xml:space="preserve">
+    <value>Без группы</value>
+  </data>
+  <data name="Trend_OneMeasurement" xml:space="preserve">
+    <value>одно измерение</value>
+  </data>
+  <data name="Trend_NoChange" xml:space="preserve">
+    <value>→ без изменений</value>
+  </data>
+  <data name="Trend_Values" xml:space="preserve">
+    <value>Значения</value>
+  </data>
+  <data name="Trend_RefKnown" xml:space="preserve">
+    <value>Норма: {0} {1}</value>
+  </data>
+  <data name="Trend_RefUnknown" xml:space="preserve">
+    <value>Норма не указана</value>
+  </data>
+  <data name="Trend_SinglePoint" xml:space="preserve">
+    <value>Одно измерение — динамика появится после следующего анализа.</value>
+  </data>
+  <data name="Trend_Since" xml:space="preserve">
+    <value>{0} измерений с {1}</value>
+  </data>
+  <data name="Trend_NoData" xml:space="preserve">
+    <value>Данных по этому показателю нет.</value>
+  </data>
+  <data name="Trend_ChartNoData" xml:space="preserve">
+    <value>Нет данных</value>
+  </data>
+  <data name="Trend_Parameter" xml:space="preserve">
+    <value>Показатель</value>
+  </data>
+  <data name="Status_Low" xml:space="preserve">
+    <value>ниже нормы</value>
+  </data>
+  <data name="Status_High" xml:space="preserve">
+    <value>выше нормы</value>
+  </data>
+  <data name="Status_Normal" xml:space="preserve">
+    <value>в норме</value>
+  </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>норма не задана</value>
+  </data>
+  <data name="Assess_Improved" xml:space="preserve">
+    <value>лучше, чем в прошлый раз</value>
+  </data>
+  <data name="Assess_Worsened" xml:space="preserve">
+    <value>хуже, чем в прошлый раз</value>
+  </data>
+  <data name="Assess_Stable" xml:space="preserve">
+    <value>без изменений</value>
+  </data>
+  <data name="Assess_Unknown" xml:space="preserve">
+    <value>не с чем сравнить</value>
+  </data>
+  <data name="Item_RefKnown" xml:space="preserve">
+    <value>норма {0}</value>
+  </data>
+  <data name="Item_RefUnknown" xml:space="preserve">
+    <value>норма не указана</value>
+  </data>
+  <data name="Item_Previous" xml:space="preserve">
+    <value>было {0} · {1}</value>
+  </data>
+  <data name="Item_First" xml:space="preserve">
+    <value>первое измерение</value>
+  </data>
+  <data name="Cat_Title" xml:space="preserve">
+    <value>Справочник</value>
+  </data>
+  <data name="Cat_Search" xml:space="preserve">
+    <value>Поиск по названию</value>
+  </data>
+  <data name="Cat_OnlyFavorites" xml:space="preserve">
+    <value>Только избранное</value>
+  </data>
+  <data name="Cat_ShowHidden" xml:space="preserve">
+    <value>Показать скрытые</value>
+  </data>
+  <data name="Cat_AddOwn" xml:space="preserve">
+    <value>➕ Свой показатель</value>
+  </data>
+  <data name="Cat_Hidden" xml:space="preserve">
+    <value>скрыт из подсказок</value>
+  </data>
+  <data name="Cat_Summary" xml:space="preserve">
+    <value>{0} показателей · в избранном {1}</value>
+  </data>
+  <data name="Cat_SummaryHidden" xml:space="preserve">
+    <value>{0} показателей · в избранном {1} · скрыто {2}</value>
+  </data>
+  <data name="Cat_Unused" xml:space="preserve">
+    <value>не использовался</value>
+  </data>
+  <data name="Cat_OneMeasurement" xml:space="preserve">
+    <value>1 измерение</value>
+  </data>
+  <data name="Cat_ManyMeasurements" xml:space="preserve">
+    <value>{0} измерений</value>
+  </data>
+  <data name="Cat_BuiltIn" xml:space="preserve">
+    <value>встроенный</value>
+  </data>
+  <data name="Cat_Own" xml:space="preserve">
+    <value>свой</value>
+  </data>
+  <data name="Cat_NoRef" xml:space="preserve">
+    <value>норма не задана</value>
+  </data>
+  <data name="Cat_OneParam" xml:space="preserve">
+    <value>1 показатель</value>
+  </data>
+  <data name="Cat_ManyParams" xml:space="preserve">
+    <value>{0} показателей</value>
+  </data>
+  <data name="CatEdit_Title" xml:space="preserve">
+    <value>Показатель</value>
+  </data>
+  <data name="CatEdit_TitleNew" xml:space="preserve">
+    <value>Новый показатель</value>
+  </data>
+  <data name="CatEdit_Name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="CatEdit_NamePlaceholder" xml:space="preserve">
+    <value>Например, Гомоцистеин</value>
+  </data>
+  <data name="CatEdit_Unit" xml:space="preserve">
+    <value>Единицы</value>
+  </data>
+  <data name="CatEdit_UnitPlaceholder" xml:space="preserve">
+    <value>мкмоль/л</value>
+  </data>
+  <data name="CatEdit_Group" xml:space="preserve">
+    <value>Группа</value>
+  </data>
+  <data name="CatEdit_GroupPick" xml:space="preserve">
+    <value>Выбрать существующую</value>
+  </data>
+  <data name="CatEdit_GroupNew" xml:space="preserve">
+    <value>…или впишите новую</value>
+  </data>
+  <data name="CatEdit_Notes" xml:space="preserve">
+    <value>Пояснение к норме</value>
+  </data>
+  <data name="CatEdit_NotesPlaceholder" xml:space="preserve">
+    <value>Например: диапазон для мужчин</value>
+  </data>
+  <data name="CatEdit_Note" xml:space="preserve">
+    <value>Эти значения только подставляются при вводе анализа. В сохранённых измерениях остаются те границы, что были на бланке.</value>
+  </data>
+  <data name="CatEdit_Code" xml:space="preserve">
+    <value>Код: {0}</value>
+  </data>
+  <data name="CatEdit_CodeNew" xml:space="preserve">
+    <value>Код будет создан из названия</value>
+  </data>
+  <data name="CatEdit_Favorite" xml:space="preserve">
+    <value>★ В избранном</value>
+  </data>
+  <data name="CatEdit_FavoriteNote" xml:space="preserve">
+    <value>Показатель попадёт наверх главного экрана и в отдельную группу в динамике.</value>
+  </data>
+  <data name="CatEdit_Hide" xml:space="preserve">
+    <value>Скрыть из подсказок</value>
+  </data>
+  <data name="CatEdit_HideNote" xml:space="preserve">
+    <value>Запись останется, но перестанет предлагаться при вводе.</value>
+  </data>
+  <data name="CatEdit_MergeTitle" xml:space="preserve">
+    <value>Объединить с другим</value>
+  </data>
+  <data name="CatEdit_MergeBody" xml:space="preserve">
+    <value>Если один и тот же показатель попал в справочник дважды — перенесите его измерения к основной записи, и на графике снова будет одна линия.</value>
+  </data>
+  <data name="CatEdit_MergeTarget" xml:space="preserve">
+    <value>Куда перенести</value>
+  </data>
+  <data name="CatEdit_Merge" xml:space="preserve">
+    <value>Объединить</value>
+  </data>
+  <data name="CatEdit_NoUsage" xml:space="preserve">
+    <value>Измерений с этим показателем пока нет.</value>
+  </data>
+  <data name="CatEdit_OneUsage" xml:space="preserve">
+    <value>1 сохранённое измерение.</value>
+  </data>
+  <data name="CatEdit_ManyUsage" xml:space="preserve">
+    <value>{0} сохранённых измерений.</value>
+  </data>
+  <data name="CatEdit_NoNameTitle" xml:space="preserve">
+    <value>Не хватает названия</value>
+  </data>
+  <data name="CatEdit_NoNameBody" xml:space="preserve">
+    <value>Укажите название показателя.</value>
+  </data>
+  <data name="CatEdit_ExistsTitle" xml:space="preserve">
+    <value>Такой показатель уже есть</value>
+  </data>
+  <data name="CatEdit_ExistsBody" xml:space="preserve">
+    <value>Показатель с таким названием уже в справочнике. Откройте его и отредактируйте.</value>
+  </data>
+  <data name="CatEdit_BuiltInTitle" xml:space="preserve">
+    <value>Встроенный показатель</value>
+  </data>
+  <data name="CatEdit_BuiltInBody" xml:space="preserve">
+    <value>Встроенные показатели не удаляются — при следующем запуске они вернутся. Уберите его из подсказок переключателем «Скрыть».</value>
+  </data>
+  <data name="CatEdit_DeleteTitle" xml:space="preserve">
+    <value>Удалить из справочника?</value>
+  </data>
+  <data name="CatEdit_DeleteBody" xml:space="preserve">
+    <value>Запись справочника будет удалена.</value>
+  </data>
+  <data name="CatEdit_DeleteBodyUsed" xml:space="preserve">
+    <value>Запись справочника будет удалена. Сохранённые измерения ({0}) останутся на месте и продолжат собираться в один график — справочник лишь подставляет значения при вводе.</value>
+  </data>
+  <data name="CatEdit_MergePickTitle" xml:space="preserve">
+    <value>Выберите показатель</value>
+  </data>
+  <data name="CatEdit_MergePickBody" xml:space="preserve">
+    <value>Укажите, с каким показателем объединить этот.</value>
+  </data>
+  <data name="CatEdit_MergeConfirmTitle" xml:space="preserve">
+    <value>Объединить показатели?</value>
+  </data>
+  <data name="CatEdit_MergeConfirmBody" xml:space="preserve">
+    <value>Измерения «{0}» ({1}) перейдут к «{2}» и дальше будут одной линией на графике. Отменить это можно только повторным объединением в обратную сторону.</value>
+  </data>
+  <data name="CatEdit_MergeDoneTitle" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="CatEdit_MergeDoneBody" xml:space="preserve">
+    <value>Перенесено измерений: {0}.</value>
+  </data>
+  <data name="Set_StorageTitle" xml:space="preserve">
+    <value>Хранение</value>
+  </data>
+  <data name="Set_StorageEmpty" xml:space="preserve">
+    <value>История пуста. Данные хранятся только на этом устройстве.</value>
+  </data>
+  <data name="Set_StorageOne" xml:space="preserve">
+    <value>1 анализ. Данные хранятся только на этом устройстве.</value>
+  </data>
+  <data name="Set_StorageMany" xml:space="preserve">
+    <value>{0} анализов. Данные хранятся только на этом устройстве.</value>
+  </data>
+  <data name="Set_DbFile" xml:space="preserve">
+    <value>Файл базы:</value>
+  </data>
+  <data name="Set_CatalogTitle" xml:space="preserve">
+    <value>Справочник показателей</value>
+  </data>
+  <data name="Set_CatalogBody" xml:space="preserve">
+    <value>Что подставляется при вводе анализа: названия, единицы и типовые нормы. Здесь же объединяются дубли и прячется лишнее.</value>
+  </data>
+  <data name="Set_CatalogOpen" xml:space="preserve">
+    <value>Открыть справочник</value>
+  </data>
+  <data name="Set_ExportTitle" xml:space="preserve">
+    <value>Выгрузка</value>
+  </data>
+  <data name="Set_ExportMatrix" xml:space="preserve">
+    <value>Таблица: показатели × даты (CSV)</value>
+  </data>
+  <data name="Set_ExportFlat" xml:space="preserve">
+    <value>Список: одна строка на измерение (CSV)</value>
+  </data>
+  <data name="Set_ExportBackup" xml:space="preserve">
+    <value>Резервная копия (JSON)</value>
+  </data>
+  <data name="Set_ImportBackup" xml:space="preserve">
+    <value>Восстановить из копии</value>
+  </data>
+  <data name="Set_ExportNote" xml:space="preserve">
+    <value>Файл создаётся на устройстве, а дальше вы сами решаете, куда его отправить.</value>
+  </data>
+  <data name="Set_AiTitle" xml:space="preserve">
+    <value>ИИ-помощник</value>
+  </data>
+  <data name="Set_AiBody" xml:space="preserve">
+    <value>Приложение полностью работает без ИИ: все значения можно ввести руками. Помощник — необязательная надстройка, и каждое разрешение выдаётся отдельно.</value>
+  </data>
+  <data name="Set_AiManual" xml:space="preserve">
+    <value>Ручная передача — работает уже сейчас и не требует никаких разрешений: приложение готовит таблицу текстом, а получателя вы выбираете сами.</value>
+  </data>
+  <data name="Set_AiShare" xml:space="preserve">
+    <value>Отправить таблицу в ИИ-чат</value>
+  </data>
+  <data name="Set_AiCopy" xml:space="preserve">
+    <value>Скопировать таблицу в буфер</value>
+  </data>
+  <data name="Set_AiScan" xml:space="preserve">
+    <value>Распознавание бланка</value>
+  </data>
+  <data name="Set_AiScanNote" xml:space="preserve">
+    <value>Фото или PDF уходит провайдеру только в момент нажатия «Распознать».</value>
+  </data>
+  <data name="Set_AiComment" xml:space="preserve">
+    <value>Пояснения к динамике</value>
+  </data>
+  <data name="Set_AiCommentNote" xml:space="preserve">
+    <value>Отправляются только выбранные показатели, без имени и других данных.</value>
+  </data>
+  <data name="Set_AiOff" xml:space="preserve">
+    <value>Всё выключено: приложение не отправляет наружу ни одного байта.</value>
+  </data>
+  <data name="Set_AiGranted" xml:space="preserve">
+    <value>Разрешения выданы для «{0}»{1} Провайдер в этой сборке ещё не подключён, поэтому фактической отправки не происходит.</value>
+  </data>
+  <data name="Set_DangerTitle" xml:space="preserve">
+    <value>Опасная зона</value>
+  </data>
+  <data name="Set_DeleteAll" xml:space="preserve">
+    <value>Удалить всю историю</value>
+  </data>
+  <data name="Set_Disclaimer" xml:space="preserve">
+    <value>Приложение ведёт личный журнал результатов и не ставит диагнозов. Любые выводы обсуждайте с врачом.</value>
+  </data>
+  <data name="Set_CopiedTitle" xml:space="preserve">
+    <value>Скопировано</value>
+  </data>
+  <data name="Set_CopiedBody" xml:space="preserve">
+    <value>Таблица в буфере обмена — вставьте её в любой чат.</value>
+  </data>
+  <data name="Set_ImportPick" xml:space="preserve">
+    <value>Выберите файл резервной копии</value>
+  </data>
+  <data name="Set_ImportDoneTitle" xml:space="preserve">
+    <value>Импорт завершён</value>
+  </data>
+  <data name="Set_ImportNothing" xml:space="preserve">
+    <value>Новых анализов в файле не найдено.</value>
+  </data>
+  <data name="Set_ImportCount" xml:space="preserve">
+    <value>Добавлено анализов: {0}.</value>
+  </data>
+  <data name="Set_DeleteAllTitle" xml:space="preserve">
+    <value>Удалить всю историю?</value>
+  </data>
+  <data name="Set_DeleteAllBody" xml:space="preserve">
+    <value>Все анализы будут удалены с устройства. Действие необратимо — сначала сделайте резервную копию.</value>
+  </data>
+  <data name="Err_Load" xml:space="preserve">
+    <value>Не удалось загрузить данные</value>
+  </data>
+  <data name="Err_Refresh" xml:space="preserve">
+    <value>Не удалось обновить данные</value>
+  </data>
+  <data name="Err_Export" xml:space="preserve">
+    <value>Не удалось выгрузить таблицу</value>
+  </data>
+  <data name="Err_ExportList" xml:space="preserve">
+    <value>Не удалось выгрузить список</value>
+  </data>
+  <data name="Err_Backup" xml:space="preserve">
+    <value>Не удалось создать резервную копию</value>
+  </data>
+  <data name="Err_Import" xml:space="preserve">
+    <value>Не удалось импортировать резервную копию</value>
+  </data>
+  <data name="Err_DeleteAll" xml:space="preserve">
+    <value>Не удалось очистить историю</value>
+  </data>
+  <data name="Err_Text" xml:space="preserve">
+    <value>Не удалось подготовить текст</value>
+  </data>
+  <data name="Err_Copy" xml:space="preserve">
+    <value>Не удалось скопировать текст</value>
+  </data>
+  <data name="Err_History" xml:space="preserve">
+    <value>Не удалось загрузить историю</value>
+  </data>
+  <data name="Err_Charts" xml:space="preserve">
+    <value>Не удалось построить графики</value>
+  </data>
+  <data name="Err_Chart" xml:space="preserve">
+    <value>Не удалось построить график</value>
+  </data>
+  <data name="Err_OpenTest" xml:space="preserve">
+    <value>Не удалось открыть анализ</value>
+  </data>
+  <data name="Err_SaveTest" xml:space="preserve">
+    <value>Не удалось сохранить анализ</value>
+  </data>
+  <data name="Err_DeleteTest" xml:space="preserve">
+    <value>Не удалось удалить анализ</value>
+  </data>
+  <data name="Err_CopyRows" xml:space="preserve">
+    <value>Не удалось скопировать показатели</value>
+  </data>
+  <data name="Err_Parse" xml:space="preserve">
+    <value>Не удалось разобрать текст</value>
+  </data>
+  <data name="Err_Prompt" xml:space="preserve">
+    <value>Не удалось скопировать запрос</value>
+  </data>
+  <data name="Err_Settings" xml:space="preserve">
+    <value>Не удалось открыть настройки</value>
+  </data>
+  <data name="Err_Catalog" xml:space="preserve">
+    <value>Не удалось открыть справочник</value>
+  </data>
+  <data name="Err_CatalogItem" xml:space="preserve">
+    <value>Не удалось открыть показатель</value>
+  </data>
+  <data name="Err_CatalogSave" xml:space="preserve">
+    <value>Не удалось сохранить показатель</value>
+  </data>
+  <data name="Err_CatalogDelete" xml:space="preserve">
+    <value>Не удалось удалить показатель</value>
+  </data>
+  <data name="Err_Merge" xml:space="preserve">
+    <value>Не удалось объединить показатели</value>
+  </data>
+  <data name="Err_Favorite" xml:space="preserve">
+    <value>Не удалось изменить избранное</value>
+  </data>
+  <data name="Share_Results" xml:space="preserve">
+    <value>Результаты анализов</value>
+  </data>
+  <data name="Share_ResultsTable" xml:space="preserve">
+    <value>Результаты анализов (таблица)</value>
+  </data>
+  <data name="Share_ResultsList" xml:space="preserve">
+    <value>Результаты анализов (список)</value>
+  </data>
+  <data name="Share_Backup" xml:space="preserve">
+    <value>Резервная копия истории</value>
+  </data>
+  <data name="Csv_Parameter" xml:space="preserve">
+    <value>Показатель</value>
+  </data>
+  <data name="Csv_Unit" xml:space="preserve">
+    <value>Единицы</value>
+  </data>
+  <data name="Csv_Reference" xml:space="preserve">
+    <value>Норма</value>
+  </data>
+  <data name="Csv_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Csv_Lab" xml:space="preserve">
+    <value>Лаборатория</value>
+  </data>
+  <data name="Csv_Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="Csv_Value" xml:space="preserve">
+    <value>Значение</value>
+  </data>
+  <data name="Csv_Min" xml:space="preserve">
+    <value>Мин</value>
+  </data>
+  <data name="Csv_Max" xml:space="preserve">
+    <value>Макс</value>
+  </data>
+  <data name="Csv_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Csv_Comment" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="Csv_StatusLow" xml:space="preserve">
+    <value>ниже нормы</value>
+  </data>
+  <data name="Csv_StatusHigh" xml:space="preserve">
+    <value>выше нормы</value>
+  </data>
+  <data name="Csv_StatusNormal" xml:space="preserve">
+    <value>норма</value>
+  </data>
+  <data name="Txt_Header" xml:space="preserve">
+    <value>Журнал результатов анализов. Значения внесены вручную из бланков лаборатории.</value>
+  </data>
+  <data name="Txt_NoPersonal" xml:space="preserve">
+    <value>Персональных данных здесь нет — только показатели, единицы, границы норм из бланка и даты.</value>
+  </data>
+  <data name="Txt_RefNote" xml:space="preserve">
+    <value>Границы норм у разных лабораторий отличаются; в таблице приведены те, что были напечатаны в бланке.</value>
+  </data>
+  <data name="Txt_Latest" xml:space="preserve">
+    <value>Последний анализ: {0}.</value>
+  </data>
+  <data name="Txt_AllInRange" xml:space="preserve">
+    <value>В последнем анализе все показатели в пределах указанных норм.</value>
+  </data>
+  <data name="Txt_OutOfRange" xml:space="preserve">
+    <value>Вне нормы в последнем анализе: {0}.</value>
+  </data>
+  <data name="Txt_Empty" xml:space="preserve">
+    <value>История анализов пуста.</value>
+  </data>
+  <data name="Ai_NotConnected" xml:space="preserve">
+    <value>не подключён</value>
+  </data>
+  <data name="Imp_EmptyText" xml:space="preserve">
+    <value>Пустой текст.</value>
+  </data>
+  <data name="Imp_BadDate" xml:space="preserve">
+    <value>Не разобрана дата: «{0}».</value>
+  </data>
+  <data name="Imp_SkippedLine" xml:space="preserve">
+    <value>Пропущена строка: «{0}».</value>
+  </data>
+  <data name="Imp_NoRows" xml:space="preserve">
+    <value>Не найдено ни одной строки показателей.</value>
+  </data>
+  <data name="Set_LanguageTitle" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Set_LanguageNote" xml:space="preserve">
+    <value>«System» — язык устройства. Переключение применяется сразу, без перезапуска.</value>
+  </data>
+</root>

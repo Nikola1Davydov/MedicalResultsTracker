@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Analysis;
 using MedicalResultsTracker.Services.Database;
@@ -17,10 +18,10 @@ namespace MedicalResultsTracker.ViewModel
         private readonly IAiAssistant _assistant;
 
         [ObservableProperty]
-        private string _lastTestTitle = "Пока нет ни одного анализа";
+        private string _lastTestTitle = S.Dash_NoTests;
 
         [ObservableProperty]
-        private string _summary = "Добавьте первый анализ — дальше приложение само покажет динамику.";
+        private string _summary = S.Dash_EmptyHint;
 
         [ObservableProperty]
         private bool _hasData;
@@ -61,7 +62,7 @@ namespace MedicalResultsTracker.ViewModel
             _consent = consent;
             _assistant = assistant;
 
-            Title = "Мои анализы";
+            Title = S.Dash_Title;
         }
 
         /// <summary>
@@ -76,10 +77,10 @@ namespace MedicalResultsTracker.ViewModel
         /// <summary>Заметно изменившиеся показатели, даже если они в норме.</summary>
         public ObservableCollection<TrendItemViewModel> Changes { get; } = new();
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось загрузить данные");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Load);
 
         [RelayCommand]
-        private Task Refresh() => RunAsync(LoadAsync, "Не удалось обновить данные");
+        private Task Refresh() => RunAsync(LoadAsync, S.Err_Refresh);
 
         [RelayCommand]
         private Task AddTest() => Shell.Current.GoToAsync(AppRoutes.TestEdit);
@@ -115,8 +116,8 @@ namespace MedicalResultsTracker.ViewModel
         private Task Export() => RunAsync(async () =>
         {
             string path = await _export.ExportMatrixCsvAsync();
-            await _export.ShareAsync(path, "Результаты анализов");
-        }, "Не удалось выгрузить таблицу");
+            await _export.ShareAsync(path, S.Share_Results);
+        }, S.Err_Export);
 
         /// <summary>
         /// Готовит таблицу текстом и открывает системный диалог «Поделиться».
@@ -127,8 +128,8 @@ namespace MedicalResultsTracker.ViewModel
         private Task AskAi() => RunAsync(async () =>
         {
             string text = await _export.BuildTextSummaryAsync();
-            await _export.ShareTextAsync(text, "Мои анализы");
-        }, "Не удалось подготовить текст");
+            await _export.ShareTextAsync(text, S.Dash_Title);
+        }, S.Err_Text);
 
         private async Task LoadAsync()
         {
@@ -141,8 +142,8 @@ namespace MedicalResultsTracker.ViewModel
             IsEmpty = latest is null;
 
             LastTestTitle = latest is null
-                ? "Пока нет ни одного анализа"
-                : $"Последний анализ: {latest.Title}";
+                ? S.Dash_NoTests
+                : string.Format(S.Dash_LastTest, latest.Title);
 
             Attention.Clear();
             Changes.Clear();
@@ -191,26 +192,26 @@ namespace MedicalResultsTracker.ViewModel
             HasChanges = Changes.Count > 0;
 
             Summary = latest is null
-                ? "Добавьте первый анализ — дальше приложение само покажет динамику."
+                ? S.Dash_EmptyHint
                 : BuildSummary(latest, count, Attention.Count);
 
             AssistantStatus = _consent.Current.Scope == AiConsentScope.None
-                ? "ИИ-помощник выключен. Данные не покидают устройство."
-                : $"ИИ-помощник: {_assistant.ProviderName}. Разрешение можно отозвать в настройках.";
+                ? S.Dash_AiOff
+                : string.Format(S.Dash_AiOn, _assistant.ProviderName);
         }
 
         private static string BuildSummary(BloodTest latest, int totalTests, int attentionCount)
         {
-            string tests = totalTests == 1 ? "1 анализ в истории" : $"{totalTests} анализов в истории";
+            string tests = totalTests == 1 ? S.Dash_OneTest : string.Format(S.Dash_ManyTests, totalTests);
 
             string attention = attentionCount switch
             {
-                0 => "все показатели в пределах указанных норм",
-                1 => "1 показатель вне нормы",
-                _ => $"{attentionCount} показателей вне нормы"
+                0 => S.Dash_AllInRange,
+                1 => S.Dash_OneOut,
+                _ => string.Format(S.Dash_ManyOut, attentionCount)
             };
 
-            return $"{latest.Parameters.Count} показателей · {attention} · {tests}";
+            return string.Format(S.Dash_Summary, latest.Parameters.Count, attention, tests);
         }
     }
 }

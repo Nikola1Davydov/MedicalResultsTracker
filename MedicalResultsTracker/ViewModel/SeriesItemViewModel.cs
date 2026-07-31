@@ -1,4 +1,5 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 
@@ -16,12 +17,12 @@ namespace MedicalResultsTracker.ViewModel
             Chart = new TrendChartDrawable { Series = series, Compact = true };
 
             IsFavorite = analyte?.IsFavorite ?? false;
-            Category = string.IsNullOrWhiteSpace(analyte?.Category) ? "Без группы" : analyte!.Category!.Trim();
+            Category = string.IsNullOrWhiteSpace(analyte?.Category) ? S.Trend_NoGroup : analyte!.Category!.Trim();
 
             SeriesPoint? latest = series.Latest;
 
             LatestText = latest is null
-                ? "—"
+                ? S.Common_None
                 : $"{latest.Value.ToString("0.####", CultureInfo.CurrentCulture)} {Unit}".Trim();
 
             StatusColor = StatusPalette.For(latest?.Status ?? ParameterStatus.Unknown);
@@ -34,12 +35,12 @@ namespace MedicalResultsTracker.ViewModel
                 {
                     > 0 => $"↑ {delta.ToString("0.####", CultureInfo.CurrentCulture)}",
                     < 0 => $"↓ {Math.Abs(delta).ToString("0.####", CultureInfo.CurrentCulture)}",
-                    _ => "→ без изменений"
+                    _ => S.Trend_NoChange
                 };
             }
             else
             {
-                DeltaText = "одно измерение";
+                DeltaText = S.Trend_OneMeasurement;
             }
 
             LastDateText = latest is null ? string.Empty : latest.Date.ToString("dd.MM.yyyy");
@@ -79,6 +80,6 @@ namespace MedicalResultsTracker.ViewModel
 
         public string Name { get; }
 
-        public string Subtitle => Count == 1 ? "1 показатель" : $"{Count} показателей";
+        public string Subtitle => Count == 1 ? S.Cat_OneParam : string.Format(S.Cat_ManyParams, Count);
     }
 }

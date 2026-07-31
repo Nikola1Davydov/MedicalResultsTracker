@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.CatalogPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
     x:DataType="vm:CatalogViewModel">
@@ -10,20 +11,20 @@
     <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="10">
 
         <VerticalStackLayout Grid.Row="0" Spacing="6">
-            <SearchBar Placeholder="Поиск по названию" Text="{Binding Query}" />
+            <SearchBar Placeholder="{loc:Tr Cat_Search}" Text="{Binding Query}" />
             <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <HorizontalStackLayout Grid.Column="0" Spacing="6">
                     <Label
                         Style="{StaticResource Caption}"
-                        Text="Только избранное"
+                        Text="{loc:Tr Cat_OnlyFavorites}"
                         VerticalOptions="Center" />
                     <Switch IsToggled="{Binding OnlyFavorites}" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Grid.Column="1" Spacing="6">
                     <Label
                         Style="{StaticResource Caption}"
-                        Text="Показать скрытые"
+                        Text="{loc:Tr Cat_ShowHidden}"
                         VerticalOptions="Center" />
                     <Switch IsToggled="{Binding ShowHidden}" />
                 </HorizontalStackLayout>
@@ -67,7 +68,7 @@
                                 <Label
                                     IsVisible="{Binding IsHidden}"
                                     Style="{StaticResource Caption}"
-                                    Text="скрыт из подсказок" />
+                                    Text="{loc:Tr Cat_Hidden}" />
                             </VerticalStackLayout>
                         </Grid>
                     </Border>
@@ -78,7 +79,7 @@
         <Button
             Grid.Row="2"
             Command="{Binding AddCommand}"
-            Text="➕ Свой показатель" />
+            Text="{loc:Tr Cat_AddOwn}" />
 
     </Grid>
 

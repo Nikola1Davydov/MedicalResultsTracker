@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Resources.Strings;
 
 namespace MedicalResultsTracker.Controls
 {
@@ -36,10 +37,11 @@ namespace MedicalResultsTracker.Controls
 
         public static string Describe(ParameterStatus status) => status switch
         {
-            ParameterStatus.Low => "ниже нормы",
-            ParameterStatus.High => "выше нормы",
-            ParameterStatus.Normal => "в норме",
-            _ => "норма не задана"
+            // Формулировки для экрана, а не для CSV: там намеренно короче.
+            ParameterStatus.Low => S.Status_Low,
+            ParameterStatus.High => S.Status_High,
+            ParameterStatus.Normal => S.Status_Normal,
+            _ => S.Status_Unknown
         };
 
         public static string Glyph(TrendDirection direction) => direction switch
@@ -52,10 +54,10 @@ namespace MedicalResultsTracker.Controls
 
         public static string Describe(TrendAssessment assessment) => assessment switch
         {
-            TrendAssessment.Improved => "лучше, чем в прошлый раз",
-            TrendAssessment.Worsened => "хуже, чем в прошлый раз",
-            TrendAssessment.Stable => "без изменений",
-            _ => "не с чем сравнить"
+            TrendAssessment.Improved => S.Assess_Improved,
+            TrendAssessment.Worsened => S.Assess_Worsened,
+            TrendAssessment.Stable => S.Assess_Stable,
+            _ => S.Assess_Unknown
         };
     }
 }

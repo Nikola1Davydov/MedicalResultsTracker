@@ -1,4 +1,5 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
 using System.Text;
 using System.Text.Json.Serialization;
 using MedicalResultsTracker.Model;
@@ -47,7 +48,7 @@ namespace MedicalResultsTracker.Services.Export
 
             StringBuilder builder = new();
 
-            builder.Append(Join("Показатель", "Единицы", "Норма"));
+            builder.Append(Join(S.Csv_Parameter, S.Csv_Unit, S.Csv_Reference));
 
             foreach (BloodTest test in ordered)
             {
@@ -83,7 +84,7 @@ namespace MedicalResultsTracker.Services.Export
             StringBuilder builder = new();
 
             builder.AppendLine(Join(
-                "Дата", "Лаборатория", "Код", "Показатель", "Значение", "Единицы", "Мин", "Макс", "Статус", "Комментарий"));
+                S.Csv_Date, S.Csv_Lab, S.Csv_Code, S.Csv_Parameter, S.Csv_Value, S.Csv_Unit, S.Csv_Min, S.Csv_Max, S.Csv_Status, S.Csv_Comment));
 
             foreach (BloodTest test in tests.OrderBy(t => t.Date))
             {
@@ -167,19 +168,19 @@ namespace MedicalResultsTracker.Services.Export
 
             if (ordered.Count == 0)
             {
-                return "История анализов пуста.";
+                return S.Txt_Empty;
             }
 
             StringBuilder builder = new();
 
-            builder.AppendLine("Журнал результатов анализов. Значения внесены вручную из бланков лаборатории.");
-            builder.AppendLine("Персональных данных здесь нет — только показатели, единицы, границы норм из бланка и даты.");
-            builder.AppendLine("Границы норм у разных лабораторий отличаются; в таблице приведены те, что были напечатаны в бланке.");
+            builder.AppendLine(S.Txt_Header);
+            builder.AppendLine(S.Txt_NoPersonal);
+            builder.AppendLine(S.Txt_RefNote);
             builder.AppendLine();
 
             BloodTest latest = ordered[^1];
 
-            builder.AppendLine($"Последний анализ: {latest.Title}.");
+            builder.AppendLine(string.Format(S.Txt_Latest, latest.Title));
             builder.AppendLine();
 
             List<IGrouping<string, BloodParameter>> rows = ordered
@@ -188,7 +189,7 @@ namespace MedicalResultsTracker.Services.Export
                 .OrderBy(g => g.Last().Name)
                 .ToList();
 
-            builder.Append("| Показатель | Ед. | Норма |");
+            builder.Append($"| {S.Csv_Parameter} | {S.Csv_Unit} | {S.Csv_Reference} |");
 
             foreach (BloodTest test in ordered)
             {
@@ -203,15 +204,15 @@ namespace MedicalResultsTracker.Services.Export
             foreach (IGrouping<string, BloodParameter> row in rows)
             {
                 BloodParameter newest = row.Last();
-                string range = newest.Range.IsDefined ? newest.Range.ToString() : "—";
+                string range = newest.Range.IsDefined ? newest.Range.ToString() : S.Common_None;
 
-                builder.Append($"| {Cell(newest.Name)} | {Cell(newest.Unit) ?? "—"} | {range} |");
+                builder.Append($"| {Cell(newest.Name)} | {Cell(newest.Unit) ?? S.Common_None} | {range} |");
 
                 foreach (BloodTest test in ordered)
                 {
                     BloodParameter? measurement = test.Parameters.FirstOrDefault(p => _analysis.GetKey(p) == row.Key);
 
-                    builder.Append($" {(measurement is null ? "—" : FormatValue(measurement))} |");
+                    builder.Append($" {(measurement is null ? S.Common_None : FormatValue(measurement))} |");
                 }
 
                 builder.AppendLine();
@@ -224,9 +225,9 @@ namespace MedicalResultsTracker.Services.Export
             builder.AppendLine();
 
             builder.AppendLine(outOfRange.Count == 0
-                ? "В последнем анализе все показатели в пределах указанных норм."
-                : "Вне нормы в последнем анализе: " + string.Join(", ", outOfRange.Select(p =>
-                    $"{p.Name} — {FormatValue(p)} {p.Unit} при норме {p.Range}".Trim())) + ".");
+                ? S.Txt_AllInRange
+                : string.Format(S.Txt_OutOfRange, string.Join(", ", outOfRange.Select(p =>
+                    $"{p.Name} {FormatValue(p)} {p.Unit} ({p.Range})".Replace("  ", " ").Trim()))));
 
             return builder.ToString();
         }
@@ -279,9 +280,9 @@ namespace MedicalResultsTracker.Services.Export
 
         private static string DescribeStatus(ParameterStatus status) => status switch
         {
-            ParameterStatus.Low => "ниже нормы",
-            ParameterStatus.High => "выше нормы",
-            ParameterStatus.Normal => "норма",
+            ParameterStatus.Low => S.Csv_StatusLow,
+            ParameterStatus.High => S.Csv_StatusHigh,
+            ParameterStatus.Normal => S.Csv_StatusNormal,
             _ => string.Empty
         };
 

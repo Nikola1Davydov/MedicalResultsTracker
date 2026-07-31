@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.TrendsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
     x:DataType="vm:TrendsViewModel">
@@ -13,16 +14,16 @@
             <Label
                 IsVisible="{Binding IsEmpty}"
                 Style="{StaticResource Caption}"
-                Text="Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями." />
+                Text="{loc:Tr Trend_Empty}" />
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Button
                     Grid.Column="0"
                     Command="{Binding ToggleFavoritesFilterCommand}"
-                    Text="★ Только избранное" />
+                    Text="{loc:Tr Trend_OnlyFavorites}" />
                 <Button
                     Grid.Column="1"
                     Command="{Binding ToggleHistoryFilterCommand}"
-                    Text="Все / с историей" />
+                    Text="{loc:Tr Trend_AllOrHistory}" />
             </Grid>
         </VerticalStackLayout>
 
