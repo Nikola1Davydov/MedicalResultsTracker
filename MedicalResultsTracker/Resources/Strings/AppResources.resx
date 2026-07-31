@@ -822,4 +822,43 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Set_LanguageNote" xml:space="preserve">
     <value>«System» übernimmt die Sprache des Geräts. Die Umstellung wirkt sofort, ohne Neustart.</value>
   </data>
+  <data name="Cat_Group_Cbc" xml:space="preserve">
+    <value>Blutbild</value>
+  </data>
+  <data name="Cat_Group_Liver" xml:space="preserve">
+    <value>Leberwerte</value>
+  </data>
+  <data name="Cat_Group_Kidney" xml:space="preserve">
+    <value>Nierenwerte</value>
+  </data>
+  <data name="Cat_Group_Lipids" xml:space="preserve">
+    <value>Blutfette</value>
+  </data>
+  <data name="Cat_Group_Metabolism" xml:space="preserve">
+    <value>Stoffwechsel</value>
+  </data>
+  <data name="Cat_Group_Iron" xml:space="preserve">
+    <value>Eisenstoffwechsel</value>
+  </data>
+  <data name="Cat_Group_Vitamins" xml:space="preserve">
+    <value>Vitamine</value>
+  </data>
+  <data name="Cat_Group_Electrolytes" xml:space="preserve">
+    <value>Elektrolyte</value>
+  </data>
+  <data name="Cat_Group_Thyroid" xml:space="preserve">
+    <value>Schilddrüse</value>
+  </data>
+  <data name="Cat_Group_Hormones" xml:space="preserve">
+    <value>Hormone</value>
+  </data>
+  <data name="Cat_Group_Inflammation" xml:space="preserve">
+    <value>Entzündung</value>
+  </data>
+  <data name="Cat_Group_Own" xml:space="preserve">
+    <value>Meine Werte</value>
+  </data>
+  <data name="Lang_System" xml:space="preserve">
+    <value>Systemsprache</value>
+  </data>
 </root>

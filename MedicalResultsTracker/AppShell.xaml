@@ -3,24 +3,25 @@
     x:Class="MedicalResultsTracker.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:view="clr-namespace:MedicalResultsTracker.View"
-    Title="MedicalResultsTracker">
+    Title="{loc:Tr App_Title}">
 
     <TabBar>
         <ShellContent
-            Title="Обзор"
+            Title="{loc:Tr Tab_Dashboard}"
             ContentTemplate="{DataTemplate view:MainPage}"
             Route="dashboard" />
         <ShellContent
-            Title="История"
+            Title="{loc:Tr Tab_History}"
             ContentTemplate="{DataTemplate view:HistoryPage}"
             Route="history" />
         <ShellContent
-            Title="Динамика"
+            Title="{loc:Tr Tab_Trends}"
             ContentTemplate="{DataTemplate view:TrendsPage}"
             Route="trends" />
         <ShellContent
-            Title="Настройки"
+            Title="{loc:Tr Tab_Settings}"
             ContentTemplate="{DataTemplate view:SettingsPage}"
             Route="settings" />
     </TabBar>

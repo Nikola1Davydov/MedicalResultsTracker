@@ -7,8 +7,6 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Справочник показателей: что подставляется при вводе анализа и как всё это сгруппировано.</summary>
     public partial class CatalogViewModel : BaseViewModel
     {
-        private static string NoCategory => S.Trend_NoGroup;
-
         private readonly IAnalyteCatalog _catalog;
         private readonly IBloodTestRepository _repository;
 
@@ -87,8 +85,8 @@ namespace MedicalResultsTracker.ViewModel
             Groups.Clear();
 
             foreach (IGrouping<string, Analyte> group in filtered
-                .GroupBy(a => string.IsNullOrWhiteSpace(a.Category) ? NoCategory : a.Category!.Trim())
-                .OrderBy(g => g.Key == NoCategory)
+                .GroupBy(a => AnalyteDisplay.Category(a.Category))
+                .OrderBy(g => g.Key == S.Trend_NoGroup)
                 .ThenBy(g => g.Key))
             {
                 List<CatalogItemViewModel> items = group

@@ -822,4 +822,43 @@
   <data name="Set_LanguageNote" xml:space="preserve">
     <value>«System» — язык устройства. Переключение применяется сразу, без перезапуска.</value>
   </data>
+  <data name="Cat_Group_Cbc" xml:space="preserve">
+    <value>Общий анализ крови</value>
+  </data>
+  <data name="Cat_Group_Liver" xml:space="preserve">
+    <value>Печёночные показатели</value>
+  </data>
+  <data name="Cat_Group_Kidney" xml:space="preserve">
+    <value>Почечные показатели</value>
+  </data>
+  <data name="Cat_Group_Lipids" xml:space="preserve">
+    <value>Липиды</value>
+  </data>
+  <data name="Cat_Group_Metabolism" xml:space="preserve">
+    <value>Обмен веществ</value>
+  </data>
+  <data name="Cat_Group_Iron" xml:space="preserve">
+    <value>Обмен железа</value>
+  </data>
+  <data name="Cat_Group_Vitamins" xml:space="preserve">
+    <value>Витамины</value>
+  </data>
+  <data name="Cat_Group_Electrolytes" xml:space="preserve">
+    <value>Электролиты</value>
+  </data>
+  <data name="Cat_Group_Thyroid" xml:space="preserve">
+    <value>Щитовидная железа</value>
+  </data>
+  <data name="Cat_Group_Hormones" xml:space="preserve">
+    <value>Гормоны</value>
+  </data>
+  <data name="Cat_Group_Inflammation" xml:space="preserve">
+    <value>Воспаление</value>
+  </data>
+  <data name="Cat_Group_Own" xml:space="preserve">
+    <value>Мои показатели</value>
+  </data>
+  <data name="Lang_System" xml:space="preserve">
+    <value>Язык системы</value>
+  </data>
 </root>
