@@ -66,6 +66,12 @@ namespace MedicalResultsTracker.ViewModel
             if (Application.Current?.Windows.FirstOrDefault() is Window window)
             {
                 window.Page = new AppShell();
+
+                // Пересборка возвращает на первую вкладку, а пользователь стоял в настройках —
+                // возвращаем его туда. Переход ставится в очередь: оболочка к этому моменту
+                // ещё не подключена, и Shell.Current указывал бы на старую.
+                Application.Current.Dispatcher.Dispatch(
+                    () => _ = Shell.Current.GoToAsync(AppRoutes.Settings));
             }
         }
 
