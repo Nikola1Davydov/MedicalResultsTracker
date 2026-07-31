@@ -358,7 +358,11 @@ namespace MedicalResultsTracker.ViewModel
         [RelayCommand]
         private Task CopyImportPrompt() => RunAsync(async () =>
         {
-            await Clipboard.Default.SetTextAsync(_import.PromptForChat);
+            // К запросу прикладывается справочник: чат-бот сам приведёт «Hb» и «Hemoglobin»
+            // к тому названию, под которым показатель уже лежит в таблице.
+            IReadOnlyList<Analyte> known = await _catalog.GetAllAsync();
+
+            await Clipboard.Default.SetTextAsync(_import.BuildPrompt(known));
 
             await Dialog.AlertAsync(
                 S.Edit_PromptCopiedTitle,
@@ -387,11 +391,11 @@ namespace MedicalResultsTracker.ViewModel
                 return;
             }
 
-            ApplyDraft(draft);
+            await ApplyDraftAsync(draft);
         }, S.Err_Parse);
 
         /// <summary>Черновик от ассистента только заполняет поля — сохранение всегда за пользователем.</summary>
-        private void ApplyDraft(AiDraft draft)
+        private async Task ApplyDraftAsync(AiDraft draft)
         {
             if (draft.Date is DateTime date)
             {
@@ -418,11 +422,55 @@ namespace MedicalResultsTracker.ViewModel
 
             _origin = DataOrigin.AssistedReview;
 
+            List<string> warnings = new(draft.Warnings);
+
+            List<string> otherUnits = await FindOtherUnitsAsync(draft);
+
+            if (otherUnits.Count > 0)
+            {
+                warnings.Add(string.Format(S.Edit_OtherUnits, string.Join("; ", otherUnits)));
+            }
+
             string added = string.Format(S.Edit_Added, draft.Rows.Count);
 
-            AssistantHint = draft.Warnings.Count > 0
-                ? string.Format(S.Edit_AddedWarn, added, string.Join("; ", draft.Warnings))
+            AssistantHint = warnings.Count > 0
+                ? string.Format(S.Edit_AddedWarn, added, string.Join("; ", warnings))
                 : added;
+        }
+
+        /// <summary>
+        /// Показатель узнан по названию, но единицы в бланке другие.
+        ///
+        /// Само по себе это не ошибка — лаборатории меряют по-разному. Но значения в разных
+        /// единицах несравнимы, а в таблице они встанут в одну строку, и график сложит их
+        /// в одну линию. Поэтому расхождение показывается сразу, до сохранения: пересчитывать
+        /// за пользователя приложение не имеет права, а промолчать — тем более.
+        /// </summary>
+        private async Task<List<string>> FindOtherUnitsAsync(AiDraft draft)
+        {
+            List<string> found = new();
+
+            foreach (AiDraftRow row in draft.Rows)
+            {
+                if (string.IsNullOrWhiteSpace(row.Unit))
+                {
+                    continue;
+                }
+
+                Analyte? known = await _catalog.FindByNameAsync(row.Name);
+
+                if (known is null || string.IsNullOrWhiteSpace(known.Unit))
+                {
+                    continue;
+                }
+
+                if (!string.Equals(known.Unit.Trim(), row.Unit.Trim(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    found.Add($"{row.Name}: {row.Unit} / {known.Unit}");
+                }
+            }
+
+            return found;
         }
 
         private async Task LoadAsync()
