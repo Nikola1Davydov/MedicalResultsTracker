@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.CatalogEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:MedicalResultsTracker.Model"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:CatalogEditViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="14">
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource Caption}" Text="Название" />
+                    <Entry Placeholder="Например, Гомоцистеин" Text="{Binding Name}" />
+
+                    <Label Style="{StaticResource Caption}" Text="Единицы" />
+                    <Entry Placeholder="мкмоль/л" Text="{Binding Unit}" />
+
+                    <Label Style="{StaticResource Caption}" Text="Группа" />
+                    <Picker
+                        ItemsSource="{Binding Categories}"
+                        SelectedItem="{Binding SelectedCategory}"
+                        Title="Выбрать существующую" />
+                    <Entry Placeholder="…или впишите новую" Text="{Binding Category}" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Style="{StaticResource Caption}" Text="Норма от" />
+                            <Entry Keyboard="Numeric" Text="{Binding RefMinText}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Style="{StaticResource Caption}" Text="Норма до" />
+                            <Entry Keyboard="Numeric" Text="{Binding RefMaxText}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Label Style="{StaticResource Caption}" Text="Пояснение к норме" />
+                    <Entry Placeholder="Например: диапазон для мужчин" Text="{Binding Notes}" />
+
+                    <Label Style="{StaticResource Caption}" Text="Эти значения только подставляются при вводе анализа. В сохранённых измерениях остаются те границы, что были на бланке." />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border IsVisible="{Binding IsExisting}" Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource Caption}" Text="{Binding CodeText}" />
+                    <Label Style="{StaticResource Caption}" Text="{Binding UsageText}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="★ В избранном" />
+                            <Label Style="{StaticResource Caption}" Text="Показатель попадёт наверх главного экрана и в отдельную группу в динамике." />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding IsFavorite}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Скрыть из подсказок" />
+                            <Label Style="{StaticResource Caption}" Text="Запись останется, но перестанет предлагаться при вводе." />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding IsHidden}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border IsVisible="{Binding IsExisting}" Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Объединить с другим" />
+                    <Label Style="{StaticResource Caption}" Text="Если один и тот же показатель попал в справочник дважды — перенесите его измерения к основной записи, и на графике снова будет одна линия." />
+                    <Picker
+                        ItemDisplayBinding="{Binding Name, x:DataType=model:Analyte}"
+                        ItemsSource="{Binding MergeTargets}"
+                        SelectedItem="{Binding MergeTarget}"
+                        Title="Куда перенести" />
+                    <Button Command="{Binding MergeCommand}" Text="Объединить" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="10">
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding SaveCommand}"
+                    Text="Сохранить" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding CancelCommand}"
+                    Text="Отмена" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding DeleteCommand}"
+                    IsVisible="{Binding IsExisting}"
+                    Text="🗑" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

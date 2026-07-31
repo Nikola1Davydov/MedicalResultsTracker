@@ -1,65 +1,184 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="MedicalResultsTracker.MainPage"
+    x:Class="MedicalResultsTracker.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:MainViewModel">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
 
-            <Label
-                SemanticProperties.HeadingLevel="Level1"
-                Style="{StaticResource Headline}"
-                Text="Добрый день, Nick" />
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Style="{StaticResource SectionTitle}" Text="{Binding LastTestTitle}" />
+                        <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <Label
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                SemanticProperties.HeadingLevel="Level2"
-                Style="{StaticResource SubHeadline}"
-                Text="Последний тест: 18 Mar 2026" />
-            <HorizontalStackLayout HeightRequest="85" Spacing="10">
-                <Button HorizontalOptions="Fill" Text="📷 Scan Test" />
-                <Button HorizontalOptions="Fill" Text="➕ Add" />
-                <Button HorizontalOptions="Fill" Text="📁 Import PDF" />
-            </HorizontalStackLayout>
-            <VerticalStackLayout Background="AliceBlue">
-                <Label
-                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                    SemanticProperties.HeadingLevel="Level2"
-                    Style="{StaticResource SubHeadline}"
-                    Text="Blood Test - 18 Mar Status: ⚠️ 2 values out of range" />
-                <HorizontalStackLayout>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <Button
-                        HorizontalOptions="Fill"
-                        SemanticProperties.Hint="Counts the number of times you click"
-                        Text="View details" />
+                        Grid.Column="0"
+                        Command="{Binding AddTestCommand}"
+                        Text="➕ Внести анализ" />
                     <Button
-                        HorizontalOptions="Fill"
-                        SemanticProperties.Hint="Counts the number of times you click"
-                        Text="Compare with previous" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-            <VerticalStackLayout>
-                <Label
-                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                    SemanticProperties.HeadingLevel="Level2"
-                    Style="{StaticResource SubHeadline}"
-                    Text="Key Indicators" />
-                <Label Text="Testosterone 2.65 ↓ (Low)" TextColor="Red" />
-                <Label Text="Vitamin D 32 ↓ (bitte achten)" TextColor="Orange" />
-            </VerticalStackLayout>
-            <VerticalStackLayout>
-                <Label
-                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                    SemanticProperties.HeadingLevel="Level2"
-                    Style="{StaticResource SubHeadline}"
-                    Text="Trends Preview" />
-                <Label Text="some diagramms" TextColor="Red" />
-            </VerticalStackLayout>
-            <HorizontalStackLayout />
+                        Grid.Column="1"
+                        Command="{Binding ExportCommand}"
+                        IsEnabled="{Binding HasData}"
+                        Text="⬇ Выгрузить" />
+                </Grid>
 
-        </VerticalStackLayout>
+                <!--  Пустое состояние: объясняем, что делать дальше.  -->
+                <Border IsVisible="{Binding IsEmpty}" Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="С чего начать" />
+                        <Label Text="Возьмите бланк анализа и внесите значения — название, число, единицы и норму из колонки «референсные значения»." />
+                        <Label Style="{StaticResource Caption}" Text="Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется." />
+                    </VerticalStackLayout>
+                </Border>
 
-    </ScrollView>
+                <Border IsVisible="{Binding ShowFavoritesHint}" Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="Следить за показателем" />
+                        <Label Text="Отметьте звёздочкой в справочнике то, за чем следите постоянно, — эти показатели будут наверху главного экрана." />
+                        <Button Command="{Binding OpenCatalogCommand}" Text="Открыть справочник" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout IsVisible="{Binding HasFavorites}" Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="★ Избранное" />
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Favorites}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SeriesItemViewModel">
+                                <Border Style="{StaticResource Card}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=OpenFavoriteCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="*,110" ColumnSpacing="10">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                            <Label FontAttributes="Bold" Text="{Binding Name}" />
+                                            <Label Text="{Binding LatestText}" TextColor="{Binding StatusColor}" />
+                                            <Label Style="{StaticResource Caption}" Text="{Binding DeltaText}" />
+                                            <Label Style="{StaticResource Caption}" Text="{Binding LastDateText}" />
+                                        </VerticalStackLayout>
+                                        <GraphicsView
+                                            Grid.Column="1"
+                                            Drawable="{Binding Chart}"
+                                            HeightRequest="56" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout IsVisible="{Binding HasAttention}" Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Вне нормы" />
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Attention}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:TrendItemViewModel">
+                                <Border Style="{StaticResource Card}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=OpenTrendCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="4,*,Auto" ColumnSpacing="10">
+                                        <BoxView Grid.Column="0" Color="{Binding StatusColor}" />
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                            <Label FontAttributes="Bold" Text="{Binding Name}" />
+                                            <Label Style="{StaticResource Caption}" Text="{Binding RangeText}" />
+                                            <Label Style="{StaticResource Caption}" Text="{Binding ComparisonHint}" />
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout
+                                            Grid.Column="2"
+                                            HorizontalOptions="End"
+                                            Spacing="2">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"
+                                                Text="{Binding Value}"
+                                                TextColor="{Binding StatusColor}" />
+                                            <Label
+                                                HorizontalTextAlignment="End"
+                                                Style="{StaticResource Caption}"
+                                                Text="{Binding StatusText}" />
+                                            <Label
+                                                HorizontalTextAlignment="End"
+                                                Style="{StaticResource Caption}"
+                                                Text="{Binding DeltaText}"
+                                                TextColor="{Binding AssessmentColor}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout IsVisible="{Binding HasChanges}" Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Заметные изменения" />
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Changes}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:TrendItemViewModel">
+                                <Border Style="{StaticResource Card}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=OpenTrendCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                            <Label FontAttributes="Bold" Text="{Binding Name}" />
+                                            <Label
+                                                Style="{StaticResource Caption}"
+                                                Text="{Binding AssessmentText}"
+                                                TextColor="{Binding AssessmentColor}" />
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout
+                                            Grid.Column="1"
+                                            HorizontalOptions="End"
+                                            Spacing="2">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End"
+                                                Text="{Binding Value}" />
+                                            <Label
+                                                HorizontalTextAlignment="End"
+                                                Style="{StaticResource Caption}"
+                                                Text="{Binding DeltaText}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10"
+                    IsVisible="{Binding HasData}">
+                    <Button
+                        Grid.Column="0"
+                        Command="{Binding OpenHistoryCommand}"
+                        Text="История" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding OpenTrendsCommand}"
+                        Text="Динамика" />
+                </Grid>
+
+                <Border IsVisible="{Binding HasData}" Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="Спросить у ИИ" />
+                        <Label Text="Приложение соберёт таблицу текстом и откроет системный список приложений. Куда отправить — выбираете вы; само оно никуда ничего не шлёт." />
+                        <Button Command="{Binding AskAiCommand}" Text="🤖 Отправить таблицу в ИИ-чат" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Style="{StaticResource Caption}" Text="{Binding AssistantStatus}" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
 
 </ContentPage>

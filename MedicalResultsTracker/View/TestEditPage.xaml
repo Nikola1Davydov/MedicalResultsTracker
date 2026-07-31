@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.TestEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:MedicalResultsTracker.Model"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:TestEditViewModel">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource Caption}" Text="Дата сдачи" />
+                        <DatePicker Date="{Binding Date}" Format="dd.MM.yyyy" />
+
+                        <Label Style="{StaticResource Caption}" Text="Лаборатория (необязательно)" />
+                        <Entry Placeholder="Например, Инвитро" Text="{Binding Laboratory}" />
+
+                        <Label Style="{StaticResource Caption}" Text="Заметка (необязательно)" />
+                        <Entry Placeholder="Натощак, после курса витаминов…" Text="{Binding Notes}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="Добавить показатель" />
+                        <SearchBar Placeholder="Начните вводить название" Text="{Binding AnalyteQuery}" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Suggestions}" Spacing="2">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:Analyte">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TestEditViewModel}}, Path=AddAnalyteCommand}" CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+                                        <Label
+                                            Grid.Column="0"
+                                            Padding="0,8"
+                                            Text="{Binding Name}" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Padding="0,8"
+                                            Style="{StaticResource Caption}"
+                                            Text="{Binding Unit}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                Command="{Binding AddTypedNameCommand}"
+                                Text="Добавить как есть" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding AddRowCommand}"
+                                Text="Пустая строка" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                Command="{Binding CopyFromPreviousCommand}"
+                                Text="Как в прошлый раз" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding ScanDocumentCommand}"
+                                Text="📷 Распознать" />
+                        </Grid>
+                        <Label
+                            IsVisible="{Binding HasAssistantHint}"
+                            Style="{StaticResource Caption}"
+                            Text="{Binding AssistantHint}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Rows}" Spacing="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ParameterRowViewModel">
+                            <Border Style="{StaticResource Card}">
+                                <VerticalStackLayout Spacing="6">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <Entry
+                                            Grid.Column="0"
+                                            Placeholder="Название показателя"
+                                            Text="{Binding Name}" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TestEditViewModel}}, Path=RemoveRowCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Text="✕"
+                                            WidthRequest="48" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Entry
+                                            Grid.Column="0"
+                                            Keyboard="Numeric"
+                                            Placeholder="Значение"
+                                            Text="{Binding ValueText}" />
+                                        <Entry
+                                            Grid.Column="1"
+                                            Placeholder="Единицы"
+                                            Text="{Binding Unit}" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Entry
+                                            Grid.Column="0"
+                                            Keyboard="Numeric"
+                                            Placeholder="Норма от"
+                                            Text="{Binding RefMinText}" />
+                                        <Entry
+                                            Grid.Column="1"
+                                            Keyboard="Numeric"
+                                            Placeholder="Норма до"
+                                            Text="{Binding RefMaxText}" />
+                                    </Grid>
+                                    <Label
+                                        Style="{StaticResource Caption}"
+                                        Text="{Binding StatusText}"
+                                        TextColor="{Binding StatusColor}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Label
+                    Style="{StaticResource Caption}"
+                    Text="Значения можно вводить и через точку, и через запятую. Норму берите из колонки «референсные значения» своего бланка — у каждой лаборатории она своя." />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid
+            Grid.Row="1"
+            Padding="16,8"
+            ColumnDefinitions="*,*,Auto"
+            ColumnSpacing="10">
+            <Button
+                Grid.Column="0"
+                Command="{Binding SaveCommand}"
+                Text="Сохранить" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding CancelCommand}"
+                Text="Отмена" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding DeleteCommand}"
+                IsVisible="{Binding IsExisting}"
+                Text="🗑" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

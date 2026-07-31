@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.CatalogPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:CatalogViewModel">
+
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="10">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="6">
+            <SearchBar Placeholder="Поиск по названию" Text="{Binding Query}" />
+            <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                    <Label
+                        Style="{StaticResource Caption}"
+                        Text="Только избранное"
+                        VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding OnlyFavorites}" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Grid.Column="1" Spacing="6">
+                    <Label
+                        Style="{StaticResource Caption}"
+                        Text="Показать скрытые"
+                        VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding ShowHidden}" />
+                </HorizontalStackLayout>
+            </Grid>
+        </VerticalStackLayout>
+
+        <CollectionView
+            Grid.Row="1"
+            IsGrouped="True"
+            ItemsSource="{Binding Groups}"
+            SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="vm:CatalogGroupViewModel">
+                    <VerticalStackLayout Padding="0,12,0,4" Spacing="0">
+                        <Label Style="{StaticResource SectionTitle}" Text="{Binding Name}" />
+                        <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:CatalogItemViewModel">
+                    <Border Style="{StaticResource Card}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CatalogViewModel}}, Path=ToggleFavoriteCommand}"
+                                CommandParameter="{Binding .}"
+                                FontSize="20"
+                                Text="{Binding FavoriteGlyph}"
+                                VerticalOptions="Center"
+                                WidthRequest="52" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CatalogViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
+                                </VerticalStackLayout.GestureRecognizers>
+                                <Label FontAttributes="Bold" Text="{Binding Name}" />
+                                <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
+                                <Label
+                                    IsVisible="{Binding IsHidden}"
+                                    Style="{StaticResource Caption}"
+                                    Text="скрыт из подсказок" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button
+            Grid.Row="2"
+            Command="{Binding AddCommand}"
+            Text="➕ Свой показатель" />
+
+    </Grid>
+
+</ContentPage>

@@ -13,5 +13,9 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
         <PackageReference Include="Serilog" Version="4.3.1" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+
+        <!-- Локальное хранилище: лёгкий SQLite без ORM-обвязки. -->
+        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
     </ItemGroup>
 </Project>
