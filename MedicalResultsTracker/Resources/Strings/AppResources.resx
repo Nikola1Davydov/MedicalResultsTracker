@@ -961,4 +961,7 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Set_HistoryOpen" xml:space="preserve">
     <value>Befunde öffnen</value>
   </data>
+  <data name="Imp_AmbiguousNumber" xml:space="preserve">
+    <value>{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund prüfen.</value>
+  </data>
 </root>

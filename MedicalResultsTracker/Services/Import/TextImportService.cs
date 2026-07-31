@@ -151,12 +151,19 @@ namespace MedicalResultsTracker.Services.Import
                     continue;
                 }
 
-                AiDraftRow? row = ParseRow(parts);
+                AiDraftRow? row = ParseRow(parts, out bool ambiguous);
 
                 if (row is null)
                 {
                     draft.Warnings.Add(string.Format(S.Imp_SkippedLine, Shorten(line)));
                     continue;
+                }
+
+                // Точка могла означать и разряды, и дробную часть. Прочитано как разряды,
+                // но человек должен увидеть это до сохранения.
+                if (ambiguous)
+                {
+                    draft.Warnings.Add(string.Format(S.Imp_AmbiguousNumber, row.Name, Get(parts, 1)));
                 }
 
                 draft.Rows.Add(row);
@@ -170,8 +177,10 @@ namespace MedicalResultsTracker.Services.Import
             return draft;
         }
 
-        private static AiDraftRow? ParseRow(string[] parts)
+        private static AiDraftRow? ParseRow(string[] parts, out bool ambiguous)
         {
+            ambiguous = false;
+
             string name = parts[0].Trim();
 
             if (name.Length == 0)
@@ -180,7 +189,7 @@ namespace MedicalResultsTracker.Services.Import
             }
 
             string valueText = Get(parts, 1);
-            double? value = ParseNumber(valueText);
+            double? value = ParseNumber(valueText, out ambiguous);
 
             AiDraftRow row = new()
             {
@@ -313,24 +322,95 @@ namespace MedicalResultsTracker.Services.Import
                 .ToArray();
         }
 
-        private static double? ParseNumber(string? text)
+        private static double? ParseNumber(string? text) => ParseNumber(text, out _);
+
+        /// <summary>
+        /// Разбирает число из бланка. Формат заранее не известен: бланк немецкий, но текст
+        /// приходит от чат-бота, а тот пишет и «1.234,5», и «1,234.5», и «1234.5».
+        ///
+        /// <paramref name="ambiguous"/> — запись, которую нельзя прочитать однозначно. Значение
+        /// всё равно возвращается, иначе строка потеряется, но вызывающий обязан о нём
+        /// предупредить: ошибка здесь стоит множителя в тысячу.
+        /// </summary>
+        private static double? ParseNumber(string? text, out bool ambiguous)
         {
+            ambiguous = false;
+
             if (string.IsNullOrWhiteSpace(text))
             {
                 return null;
             }
 
-            // Неразрывный пробел приходит из чатов и таблиц регулярно: «1 234,5».
-            string normalized = text
-                .Replace(',', '.')
+            // Разделители разрядов, которые не являются ни точкой, ни запятой: пробелы
+            // разных видов регулярно приходят из чатов и таблиц, апостроф — швейцарская запись.
+            string value = text
                 .Replace('\u00A0', ' ')
+                .Replace('\u202F', ' ')
+                .Replace('\u2009', ' ')
                 .Replace(" ", string.Empty)
-                .Replace(" ", string.Empty)
+                .Replace("'", string.Empty)
                 .Trim();
 
-            return double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out double value)
-                ? value
+            int commas = value.Count(c => c == ',');
+            int dots = value.Count(c => c == '.');
+
+            if (commas > 0 && dots > 0)
+            {
+                // Оба знака сразу: десятичный — тот, что правее, второй разделяет разряды.
+                value = value.LastIndexOf(',') > value.LastIndexOf('.')
+                    ? value.Replace(".", string.Empty).Replace(',', '.')
+                    : value.Replace(",", string.Empty);
+            }
+            else if (commas > 1 || dots > 1)
+            {
+                // Знак повторяется — десятичным он быть не может: «1.234.567».
+                value = value.Replace(",", string.Empty).Replace(".", string.Empty);
+            }
+            else if (commas == 1)
+            {
+                // Запятая в бланке — всегда десятичный разделитель.
+                value = value.Replace(',', '.');
+            }
+            else if (dots == 1)
+            {
+                value = ReadSingleDot(value, out ambiguous);
+            }
+
+            return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed)
+                ? parsed
                 : null;
+        }
+
+        /// <summary>
+        /// Одна точка и больше ничего. В немецком бланке точка разделяет разряды: «254.000» —
+        /// это 254 000 тромбоцитов, а вовсе не 254. Прочти это по-английски — и в историю
+        /// молча уедет число в тысячу раз меньше.
+        ///
+        /// По одному токену определить нельзя, поэтому решают две вещи: ровно три цифры справа
+        /// (иначе разрядом быть не может) и целая часть от одной до трёх цифр без ведущего
+        /// нуля: «0.123» — это дробь, а не разряды.
+        /// </summary>
+        private static string ReadSingleDot(string value, out bool ambiguous)
+        {
+            ambiguous = false;
+
+            int dot = value.IndexOf('.');
+            string head = value[..dot].TrimStart('+', '-');
+            string tail = value[(dot + 1)..];
+
+            bool looksGrouped =
+                tail.Length == 3 && tail.All(char.IsAsciiDigit) &&
+                head.Length is >= 1 and <= 3 && head.All(char.IsAsciiDigit) &&
+                head[0] != '0';
+
+            if (!looksGrouped)
+            {
+                return value;
+            }
+
+            ambiguous = true;
+
+            return value.Replace(".", string.Empty);
         }
 
         private static string Get(string[] parts, int index) => index < parts.Length ? parts[index].Trim() : string.Empty;

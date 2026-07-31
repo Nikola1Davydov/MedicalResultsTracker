@@ -6,4 +6,5 @@
   <Project Path="MedicalResultsTracker/MedicalResultsTracker.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
+  <Project Path="tests/MedicalResultsTracker.Tests/MedicalResultsTracker.Tests.csproj" />
 </Solution>

@@ -961,4 +961,7 @@
   <data name="Set_HistoryOpen" xml:space="preserve">
     <value>Открыть анализы</value>
   </data>
+  <data name="Imp_AmbiguousNumber" xml:space="preserve">
+    <value>{0}: «{1}» прочитано как разделитель тысяч. Сверьте с бланком.</value>
+  </data>
 </root>

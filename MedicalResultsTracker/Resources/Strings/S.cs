@@ -929,5 +929,8 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Befunde öffnen</summary>
         public static string Set_HistoryOpen => Get("Set_HistoryOpen");
+
+        /// <summary>{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund</summary>
+        public static string Imp_AmbiguousNumber => Get("Imp_AmbiguousNumber");
     }
 }
