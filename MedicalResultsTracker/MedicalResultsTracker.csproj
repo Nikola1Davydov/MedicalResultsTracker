@@ -1,4 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!-- Sdk.Razor, а не Sdk: часть экранов собрана на Blazor Hybrid и лежит в Components,
+     статика для них — в wwwroot. Остальные экраны по-прежнему на XAML, оба слоя живут вместе. -->
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
