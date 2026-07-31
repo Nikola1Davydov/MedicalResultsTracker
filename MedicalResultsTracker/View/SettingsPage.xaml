@@ -13,51 +13,51 @@
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_LanguageTitle}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_LanguageTitle}" />
                     <Picker
                         ItemDisplayBinding="{Binding Name, x:DataType=loc:LanguageOption}"
                         ItemsSource="{Binding Languages}"
                         SelectedItem="{Binding SelectedLanguage}" />
-                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_LanguageNote}" />
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_LanguageNote}" />
                 </VerticalStackLayout>
             </Border>
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_StorageTitle}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_StorageTitle}" />
                     <Label Text="{Binding StorageSummary}" />
-                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_DbFile}" />
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_DbFile}" />
                     <Label Style="{StaticResource Caption}" Text="{Binding DatabasePath}" />
                 </VerticalStackLayout>
             </Border>
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_CatalogTitle}" />
-                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_CatalogBody}" />
-                    <Button Command="{Binding OpenCatalogCommand}" Text="{loc:Tr Set_CatalogOpen}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_CatalogTitle}" />
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_CatalogBody}" />
+                    <Button Command="{Binding OpenCatalogCommand}" Text="{x:Static loc:S.Set_CatalogOpen}" />
                 </VerticalStackLayout>
             </Border>
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_ExportTitle}" />
-                    <Button Command="{Binding ExportMatrixCommand}" Text="{loc:Tr Set_ExportMatrix}" />
-                    <Button Command="{Binding ExportFlatCommand}" Text="{loc:Tr Set_ExportFlat}" />
-                    <Button Command="{Binding ExportBackupCommand}" Text="{loc:Tr Set_ExportBackup}" />
-                    <Button Command="{Binding ImportBackupCommand}" Text="{loc:Tr Set_ImportBackup}" />
-                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_ExportNote}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_ExportTitle}" />
+                    <Button Command="{Binding ExportMatrixCommand}" Text="{x:Static loc:S.Set_ExportMatrix}" />
+                    <Button Command="{Binding ExportFlatCommand}" Text="{x:Static loc:S.Set_ExportFlat}" />
+                    <Button Command="{Binding ExportBackupCommand}" Text="{x:Static loc:S.Set_ExportBackup}" />
+                    <Button Command="{Binding ImportBackupCommand}" Text="{x:Static loc:S.Set_ImportBackup}" />
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_ExportNote}" />
                 </VerticalStackLayout>
             </Border>
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_AiTitle}" />
-                    <Label Text="{loc:Tr Set_AiBody}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_AiTitle}" />
+                    <Label Text="{x:Static loc:S.Set_AiBody}" />
 
-                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_AiManual}" />
-                    <Button Command="{Binding ShareForAiCommand}" Text="{loc:Tr Set_AiShare}" />
-                    <Button Command="{Binding CopyForAiCommand}" Text="{loc:Tr Set_AiCopy}" />
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_AiManual}" />
+                    <Button Command="{Binding ShareForAiCommand}" Text="{x:Static loc:S.Set_AiShare}" />
+                    <Button Command="{Binding CopyForAiCommand}" Text="{x:Static loc:S.Set_AiCopy}" />
 
                     <!--  Переключателей согласия здесь нет намеренно: провайдер не подключён,
                           и тумблер, который ничего не переключает, — худший вид интерфейса.
@@ -69,12 +69,12 @@
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_DangerTitle}" />
-                    <Button Command="{Binding DeleteAllDataCommand}" Text="{loc:Tr Set_DeleteAll}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_DangerTitle}" />
+                    <Button Command="{Binding DeleteAllDataCommand}" Text="{x:Static loc:S.Set_DeleteAll}" />
                 </VerticalStackLayout>
             </Border>
 
-            <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_Disclaimer}" />
+            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_Disclaimer}" />
 
         </VerticalStackLayout>
     </ScrollView>

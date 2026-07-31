@@ -14,16 +14,16 @@
             <Label
                 IsVisible="{Binding IsEmpty}"
                 Style="{StaticResource Caption}"
-                Text="{loc:Tr Trend_Empty}" />
+                Text="{x:Static loc:S.Trend_Empty}" />
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Button
                     Grid.Column="0"
                     Command="{Binding ToggleFavoritesFilterCommand}"
-                    Text="{loc:Tr Trend_OnlyFavorites}" />
+                    Text="{x:Static loc:S.Trend_OnlyFavorites}" />
                 <Button
                     Grid.Column="1"
                     Command="{Binding ToggleHistoryFilterCommand}"
-                    Text="{loc:Tr Trend_AllOrHistory}" />
+                    Text="{x:Static loc:S.Trend_AllOrHistory}" />
             </Grid>
         </VerticalStackLayout>
 

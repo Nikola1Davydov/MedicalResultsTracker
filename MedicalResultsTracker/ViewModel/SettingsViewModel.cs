@@ -60,8 +60,13 @@ namespace MedicalResultsTracker.ViewModel
 
             Localization.Current.SetLanguage(value.Code);
 
-            // Тексты, собранные в коде, привязка не пересоберёт — перечитываем их сами.
-            _ = RunAsync(LoadAsync, S.Err_Settings);
+            // Разметка читает строки в момент построения экрана, и уведомления об изменении
+            // недостаточно: часть текстов уже «застыла» в свойствах. Поэтому оболочка
+            // пересобирается целиком — так язык меняется гарантированно и весь сразу.
+            if (Application.Current?.Windows.FirstOrDefault() is Window window)
+            {
+                window.Page = new AppShell();
+            }
         }
 
         [RelayCommand]

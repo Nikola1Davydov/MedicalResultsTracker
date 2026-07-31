@@ -5,23 +5,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:view="clr-namespace:MedicalResultsTracker.View"
-    Title="{loc:Tr App_Title}">
+    Title="{x:Static loc:S.App_Title}">
 
     <TabBar>
         <ShellContent
-            Title="{loc:Tr Tab_Dashboard}"
+            Title="{x:Static loc:S.Tab_Dashboard}"
             ContentTemplate="{DataTemplate view:MainPage}"
             Route="dashboard" />
         <ShellContent
-            Title="{loc:Tr Tab_History}"
+            Title="{x:Static loc:S.Tab_History}"
             ContentTemplate="{DataTemplate view:HistoryPage}"
             Route="history" />
         <ShellContent
-            Title="{loc:Tr Tab_Trends}"
+            Title="{x:Static loc:S.Tab_Trends}"
             ContentTemplate="{DataTemplate view:TrendsPage}"
             Route="trends" />
         <ShellContent
-            Title="{loc:Tr Tab_Settings}"
+            Title="{x:Static loc:S.Tab_Settings}"
             ContentTemplate="{DataTemplate view:SettingsPage}"
             Route="settings" />
     </TabBar>

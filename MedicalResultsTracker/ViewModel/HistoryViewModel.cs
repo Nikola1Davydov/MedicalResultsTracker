@@ -47,6 +47,8 @@ namespace MedicalResultsTracker.ViewModel
 
         private async Task LoadAsync()
         {
+            Title = S.Tab_History;
+
             IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync();
 
             Tests.Clear();

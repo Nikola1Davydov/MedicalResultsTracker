@@ -1,25 +1,23 @@
-using System.ComponentModel;
 using System.Globalization;
 
 namespace MedicalResultsTracker.Resources.Strings
 {
     /// <summary>
-    /// Источник строк для XAML и переключатель языка.
-    /// Индексатор нужен, чтобы разметка подписывалась на изменение: при смене языка
-    /// достаточно сообщить об обновлении индексатора, и все надписи перечитываются
-    /// без перезапуска приложения.
+    /// Выбор языка. Разметка читает строки через <c>{x:Static loc:S.Ключ}</c>: опечатка
+    /// в ключе становится ошибкой компиляции, а не пустой надписью на экране.
+    /// Цена — строка берётся один раз при построении экрана, поэтому после смены языка
+    /// оболочка пересоздаётся целиком (см. SettingsViewModel).
     /// </summary>
-    public sealed class Localization : INotifyPropertyChanged
+    public sealed class Localization
     {
         private const string LanguageKey = "app.language";
+        private const string DefaultCode = "de";
 
         public static Localization Current { get; } = new();
 
         private Localization()
         {
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>Языки, между которыми можно переключаться. Пустой код — «как в системе».</summary>
         public static IReadOnlyList<LanguageOption> Available { get; } = new[]
@@ -29,10 +27,12 @@ namespace MedicalResultsTracker.Resources.Strings
             new LanguageOption("ru", "Русский"),
         };
 
-        public string this[string key] => S.Get(key);
-
-        /// <summary>Код выбранного языка или пустая строка, если язык берётся из системы.</summary>
-        public string SelectedCode => Preferences.Default.Get(LanguageKey, string.Empty);
+        /// <summary>
+        /// Код выбранного языка. По умолчанию немецкий, а не системный: приложение делается
+        /// для немецкого рынка, и на любом телефоне оно должно открываться по-немецки,
+        /// пока пользователь не выберет другое.
+        /// </summary>
+        public string SelectedCode => Preferences.Default.Get(LanguageKey, DefaultCode);
 
         /// <summary>
         /// Применяет сохранённый выбор. Вызывается до построения интерфейса,
@@ -45,10 +45,6 @@ namespace MedicalResultsTracker.Resources.Strings
             Preferences.Default.Set(LanguageKey, code ?? string.Empty);
 
             Apply(code);
-
-            // Пустая строка в имени свойства — «изменилось всё», включая индексатор.
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCode)));
         }
 
         private static void Apply(string code)

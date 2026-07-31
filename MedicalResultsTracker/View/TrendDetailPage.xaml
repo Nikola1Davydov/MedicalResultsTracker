@@ -22,7 +22,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Trend_Values}" />
+            <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Trend_Values}" />
 
             <VerticalStackLayout BindableLayout.ItemsSource="{Binding Values}" Spacing="6">
                 <BindableLayout.ItemTemplate>

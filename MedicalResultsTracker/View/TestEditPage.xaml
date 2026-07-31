@@ -16,21 +16,21 @@
 
                 <Border Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_Date}" />
+                        <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_Date}" />
                         <DatePicker Date="{Binding Date}" Format="dd.MM.yyyy" />
 
-                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_Lab}" />
-                        <Entry Placeholder="{loc:Tr Edit_LabPlaceholder}" Text="{Binding Laboratory}" />
+                        <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_Lab}" />
+                        <Entry Placeholder="{x:Static loc:S.Edit_LabPlaceholder}" Text="{Binding Laboratory}" />
 
-                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_Note}" />
-                        <Entry Placeholder="{loc:Tr Edit_NotePlaceholder}" Text="{Binding Notes}" />
+                        <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_Note}" />
+                        <Entry Placeholder="{x:Static loc:S.Edit_NotePlaceholder}" Text="{Binding Notes}" />
                     </VerticalStackLayout>
                 </Border>
 
                 <Border Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Edit_AddParam}" />
-                        <SearchBar Placeholder="{loc:Tr Edit_SearchPlaceholder}" Text="{Binding AnalyteQuery}" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Edit_AddParam}" />
+                        <SearchBar Placeholder="{x:Static loc:S.Edit_SearchPlaceholder}" Text="{Binding AnalyteQuery}" />
 
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Suggestions}" Spacing="2">
                             <BindableLayout.ItemTemplate>
@@ -57,13 +57,13 @@
                             <Button
                                 Grid.Column="0"
                                 Command="{Binding AddTypedNameCommand}"
-                                Text="{loc:Tr Edit_AddTyped}" />
+                                Text="{x:Static loc:S.Edit_AddTyped}" />
                             <Button
                                 Grid.Column="1"
                                 Command="{Binding AddRowCommand}"
-                                Text="{loc:Tr Edit_AddEmpty}" />
+                                Text="{x:Static loc:S.Edit_AddEmpty}" />
                         </Grid>
-                        <Button Command="{Binding CopyFromPreviousCommand}" Text="{loc:Tr Edit_CopyPrevious}" />
+                        <Button Command="{Binding CopyFromPreviousCommand}" Text="{x:Static loc:S.Edit_CopyPrevious}" />
                         <Label
                             IsVisible="{Binding HasAssistantHint}"
                             Style="{StaticResource Caption}"
@@ -73,19 +73,19 @@
 
                 <Border Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Edit_PhotoTitle}" />
-                        <Label Text="{loc:Tr Edit_PhotoBody}" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Edit_PhotoTitle}" />
+                        <Label Text="{x:Static loc:S.Edit_PhotoBody}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                             <Button
                                 Grid.Column="0"
                                 Command="{Binding CopyImportPromptCommand}"
-                                Text="{loc:Tr Edit_CopyPrompt}" />
+                                Text="{x:Static loc:S.Edit_CopyPrompt}" />
                             <Button
                                 Grid.Column="1"
                                 Command="{Binding PasteRowsCommand}"
-                                Text="{loc:Tr Edit_Paste}" />
+                                Text="{x:Static loc:S.Edit_Paste}" />
                         </Grid>
-                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_PhotoNote}" />
+                        <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_PhotoNote}" />
                     </VerticalStackLayout>
                 </Border>
 
@@ -97,7 +97,7 @@
                                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                         <Entry
                                             Grid.Column="0"
-                                            Placeholder="{loc:Tr Edit_RowName}"
+                                            Placeholder="{x:Static loc:S.Edit_RowName}"
                                             Text="{Binding Name}" />
                                         <Button
                                             Grid.Column="1"
@@ -110,23 +110,23 @@
                                         <Entry
                                             Grid.Column="0"
                                             Keyboard="Numeric"
-                                            Placeholder="{loc:Tr Csv_Value}"
+                                            Placeholder="{x:Static loc:S.Csv_Value}"
                                             Text="{Binding ValueText}" />
                                         <Entry
                                             Grid.Column="1"
-                                            Placeholder="{loc:Tr Csv_Unit}"
+                                            Placeholder="{x:Static loc:S.Csv_Unit}"
                                             Text="{Binding Unit}" />
                                     </Grid>
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                                         <Entry
                                             Grid.Column="0"
                                             Keyboard="Numeric"
-                                            Placeholder="{loc:Tr Edit_RowRefMin}"
+                                            Placeholder="{x:Static loc:S.Edit_RowRefMin}"
                                             Text="{Binding RefMinText}" />
                                         <Entry
                                             Grid.Column="1"
                                             Keyboard="Numeric"
-                                            Placeholder="{loc:Tr Edit_RowRefMax}"
+                                            Placeholder="{x:Static loc:S.Edit_RowRefMax}"
                                             Text="{Binding RefMaxText}" />
                                     </Grid>
                                     <Label
@@ -141,7 +141,7 @@
 
                 <Label
                     Style="{StaticResource Caption}"
-                    Text="{loc:Tr Edit_Hint}" />
+                    Text="{x:Static loc:S.Edit_Hint}" />
 
             </VerticalStackLayout>
         </ScrollView>
@@ -154,11 +154,11 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding SaveCommand}"
-                Text="{loc:Tr Common_Save}" />
+                Text="{x:Static loc:S.Common_Save}" />
             <Button
                 Grid.Column="1"
                 Command="{Binding CancelCommand}"
-                Text="{loc:Tr Common_Cancel}" />
+                Text="{x:Static loc:S.Common_Cancel}" />
             <Button
                 Grid.Column="2"
                 Command="{Binding DeleteCommand}"
