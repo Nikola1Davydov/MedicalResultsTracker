@@ -37,10 +37,11 @@ namespace MedicalResultsTracker.Controls
 
         public static string Describe(ParameterStatus status) => status switch
         {
-            ParameterStatus.Low => S.Csv_StatusLow,
-            ParameterStatus.High => S.Csv_StatusHigh,
+            // Формулировки для экрана, а не для CSV: там намеренно короче.
+            ParameterStatus.Low => S.Status_Low,
+            ParameterStatus.High => S.Status_High,
             ParameterStatus.Normal => S.Status_Normal,
-            _ => S.Cat_NoRef
+            _ => S.Status_Unknown
         };
 
         public static string Glyph(TrendDirection direction) => direction switch

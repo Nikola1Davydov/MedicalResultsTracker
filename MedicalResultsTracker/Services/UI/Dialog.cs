@@ -11,9 +11,11 @@ namespace MedicalResultsTracker.Services.UI
         public static Task AlertAsync(string title, string message) =>
             CurrentPage is Page page ? page.DisplayAlert(title, message, S.Common_Ok) : Task.CompletedTask;
 
-        public static Task<bool> ConfirmAsync(string title, string message, string accept, string cancel = S.Common_Cancel) =>
+        /// <param name="cancel">По умолчанию — локализованная «Отмена»; значением параметра
+        /// ресурс быть не может, поэтому подставляется в теле.</param>
+        public static Task<bool> ConfirmAsync(string title, string message, string accept, string? cancel = null) =>
             CurrentPage is Page page
-                ? page.DisplayAlert(title, message, accept, cancel)
+                ? page.DisplayAlert(title, message, accept, cancel ?? S.Common_Cancel)
                 : Task.FromResult(false);
 
         private static Page? CurrentPage => Application.Current?.Windows.FirstOrDefault()?.Page;
