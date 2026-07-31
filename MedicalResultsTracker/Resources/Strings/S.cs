@@ -839,5 +839,53 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Die Tabelle füllt sich, sobald der erste Befund erfasst ist. Zeilen si</summary>
         public static string Matrix_Empty => Get("Matrix_Empty");
+
+        /// <summary>Alle Werte</summary>
+        public static string Matrix_AllValues => Get("Matrix_AllValues");
+
+        /// <summary>Neue Ansicht</summary>
+        public static string ViewEdit_TitleNew => Get("ViewEdit_TitleNew");
+
+        /// <summary>Name der Ansicht</summary>
+        public static string ViewEdit_Name => Get("ViewEdit_Name");
+
+        /// <summary>z. B. Eisen &amp; Blutbild</summary>
+        public static string ViewEdit_NamePlaceholder => Get("ViewEdit_NamePlaceholder");
+
+        /// <summary>Noch nichts ausgewählt. Tippen Sie die Werte an, die in die Ansicht so</summary>
+        public static string ViewEdit_NothingPicked => Get("ViewEdit_NothingPicked");
+
+        /// <summary>1 Wert ausgewählt</summary>
+        public static string ViewEdit_OnePicked => Get("ViewEdit_OnePicked");
+
+        /// <summary>{0} Werte ausgewählt · Reihenfolge wie ausgewählt</summary>
+        public static string ViewEdit_ManyPicked => Get("ViewEdit_ManyPicked");
+
+        /// <summary>Name fehlt</summary>
+        public static string ViewEdit_NoNameTitle => Get("ViewEdit_NoNameTitle");
+
+        /// <summary>Geben Sie der Ansicht einen Namen.</summary>
+        public static string ViewEdit_NoNameBody => Get("ViewEdit_NoNameBody");
+
+        /// <summary>Nichts ausgewählt</summary>
+        public static string ViewEdit_EmptyTitle => Get("ViewEdit_EmptyTitle");
+
+        /// <summary>Wählen Sie mindestens einen Wert aus.</summary>
+        public static string ViewEdit_EmptyBody => Get("ViewEdit_EmptyBody");
+
+        /// <summary>Ansicht löschen?</summary>
+        public static string ViewEdit_DeleteTitle => Get("ViewEdit_DeleteTitle");
+
+        /// <summary>Nur die Ansicht wird gelöscht. Die Messungen bleiben unberührt.</summary>
+        public static string ViewEdit_DeleteBody => Get("ViewEdit_DeleteBody");
+
+        /// <summary>Ansicht konnte nicht geöffnet werden</summary>
+        public static string Err_View => Get("Err_View");
+
+        /// <summary>Ansicht konnte nicht gespeichert werden</summary>
+        public static string Err_ViewSave => Get("Err_ViewSave");
+
+        /// <summary>Ansicht konnte nicht gelöscht werden</summary>
+        public static string Err_ViewDelete => Get("Err_ViewDelete");
     }
 }

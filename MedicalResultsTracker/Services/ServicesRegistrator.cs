@@ -12,6 +12,7 @@ namespace MedicalResultsTracker.Services
             .AddSingleton<IMedicalDatabase, MedicalDatabase>()
             .AddSingleton<IBloodTestRepository, BloodTestRepository>()
             .AddSingleton<IAnalyteCatalog, AnalyteCatalog>()
+            .AddSingleton<IMatrixViewRepository, MatrixViewRepository>()
             .AddSingleton<IAnalysisService, AnalysisService>()
             .AddSingleton<IExportService, ExportService>()
             .AddSingleton<ITextImportService, TextImportService>()

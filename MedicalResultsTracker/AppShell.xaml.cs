@@ -13,6 +13,7 @@ namespace MedicalResultsTracker
             Routing.RegisterRoute(AppRoutes.TrendDetail, typeof(TrendDetailPage));
             Routing.RegisterRoute(AppRoutes.Catalog, typeof(CatalogPage));
             Routing.RegisterRoute(AppRoutes.CatalogEdit, typeof(CatalogEditPage));
+            Routing.RegisterRoute(AppRoutes.ViewEdit, typeof(ViewEditPage));
         }
     }
 }

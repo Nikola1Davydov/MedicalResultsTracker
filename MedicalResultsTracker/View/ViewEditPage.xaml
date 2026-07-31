@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.ViewEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:ViewEditViewModel">
+
+    <Grid Padding="16,8" RowDefinitions="Auto,*,Auto" RowSpacing="10">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="6">
+            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.ViewEdit_Name}" />
+            <Entry Placeholder="{x:Static loc:S.ViewEdit_NamePlaceholder}" Text="{Binding Name}" />
+            <SearchBar Placeholder="{x:Static loc:S.Cat_Search}" Text="{Binding Query}" />
+            <Label Style="{StaticResource Caption}" Text="{Binding SelectionSummary}" />
+        </VerticalStackLayout>
+
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding Items}"
+            SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="4" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:ViewItemViewModel">
+                    <Border Style="{StaticResource Card}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEditViewModel}}, Path=ToggleCommand}" CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <CheckBox
+                                Grid.Column="0"
+                                InputTransparent="True"
+                                IsChecked="{Binding IsSelected}"
+                                VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="{Binding Name}" />
+                                <Label Style="{StaticResource Caption}" Text="{Binding Group}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Grid
+            Grid.Row="2"
+            ColumnDefinitions="*,*,Auto"
+            ColumnSpacing="10">
+            <Button
+                Grid.Column="0"
+                Command="{Binding SaveCommand}"
+                Text="{x:Static loc:S.Common_Save}" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding CancelCommand}"
+                Text="{x:Static loc:S.Common_Cancel}" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding DeleteCommand}"
+                IsVisible="{Binding IsExisting}"
+                Text="🗑" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

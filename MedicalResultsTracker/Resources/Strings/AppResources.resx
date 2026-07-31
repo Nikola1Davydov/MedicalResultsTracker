@@ -867,4 +867,52 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Matrix_Empty" xml:space="preserve">
     <value>Die Tabelle füllt sich, sobald der erste Befund erfasst ist. Zeilen sind Werte, Spalten die Abnahmedaten – nach rechts geht es weiter.</value>
   </data>
+  <data name="Matrix_AllValues" xml:space="preserve">
+    <value>Alle Werte</value>
+  </data>
+  <data name="ViewEdit_TitleNew" xml:space="preserve">
+    <value>Neue Ansicht</value>
+  </data>
+  <data name="ViewEdit_Name" xml:space="preserve">
+    <value>Name der Ansicht</value>
+  </data>
+  <data name="ViewEdit_NamePlaceholder" xml:space="preserve">
+    <value>z. B. Eisen &amp; Blutbild</value>
+  </data>
+  <data name="ViewEdit_NothingPicked" xml:space="preserve">
+    <value>Noch nichts ausgewählt. Tippen Sie die Werte an, die in die Ansicht sollen.</value>
+  </data>
+  <data name="ViewEdit_OnePicked" xml:space="preserve">
+    <value>1 Wert ausgewählt</value>
+  </data>
+  <data name="ViewEdit_ManyPicked" xml:space="preserve">
+    <value>{0} Werte ausgewählt · Reihenfolge wie ausgewählt</value>
+  </data>
+  <data name="ViewEdit_NoNameTitle" xml:space="preserve">
+    <value>Name fehlt</value>
+  </data>
+  <data name="ViewEdit_NoNameBody" xml:space="preserve">
+    <value>Geben Sie der Ansicht einen Namen.</value>
+  </data>
+  <data name="ViewEdit_EmptyTitle" xml:space="preserve">
+    <value>Nichts ausgewählt</value>
+  </data>
+  <data name="ViewEdit_EmptyBody" xml:space="preserve">
+    <value>Wählen Sie mindestens einen Wert aus.</value>
+  </data>
+  <data name="ViewEdit_DeleteTitle" xml:space="preserve">
+    <value>Ansicht löschen?</value>
+  </data>
+  <data name="ViewEdit_DeleteBody" xml:space="preserve">
+    <value>Nur die Ansicht wird gelöscht. Die Messungen bleiben unberührt.</value>
+  </data>
+  <data name="Err_View" xml:space="preserve">
+    <value>Ansicht konnte nicht geöffnet werden</value>
+  </data>
+  <data name="Err_ViewSave" xml:space="preserve">
+    <value>Ansicht konnte nicht gespeichert werden</value>
+  </data>
+  <data name="Err_ViewDelete" xml:space="preserve">
+    <value>Ansicht konnte nicht gelöscht werden</value>
+  </data>
 </root>

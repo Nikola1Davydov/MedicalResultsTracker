@@ -43,6 +43,8 @@ namespace MedicalResultsTracker.Services.Database
                     await connection.CreateTableAsync<BloodTest>().ConfigureAwait(false);
                     await connection.CreateTableAsync<BloodParameter>().ConfigureAwait(false);
                     await connection.CreateTableAsync<Analyte>().ConfigureAwait(false);
+                    await connection.CreateTableAsync<MatrixView>().ConfigureAwait(false);
+                    await connection.CreateTableAsync<MatrixViewItem>().ConfigureAwait(false);
 
                     _connection = connection;
                 }
