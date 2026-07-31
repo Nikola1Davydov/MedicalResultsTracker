@@ -1,3 +1,4 @@
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services;
 using MedicalResultsTracker.ViewModel;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,10 @@ namespace MedicalResultsTracker
     {
         public static MauiApp CreateMauiApp()
         {
+            // До построения интерфейса: иначе первый экран отрисуется на языке системы,
+            // даже если пользователь выбрал другой.
+            Localization.Current.Restore();
+
             MauiAppBuilder builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

@@ -24,6 +24,12 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private string _assistantSummary = string.Empty;
 
+        [ObservableProperty]
+        private LanguageOption? _selectedLanguage;
+
+        /// <summary>Защита от рекурсии: при загрузке язык проставляется программно.</summary>
+        private bool _suppressLanguageChange;
+
         public SettingsViewModel(
             IMedicalDatabase database,
             IBloodTestRepository repository,
@@ -40,7 +46,22 @@ namespace MedicalResultsTracker.ViewModel
             Title = S.Tab_Settings;
         }
 
+        public IReadOnlyList<LanguageOption> Languages => Localization.Available;
+
         public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Settings);
+
+        partial void OnSelectedLanguageChanged(LanguageOption? value)
+        {
+            if (_suppressLanguageChange || value is null || value.Code == Localization.Current.SelectedCode)
+            {
+                return;
+            }
+
+            Localization.Current.SetLanguage(value.Code);
+
+            // Тексты, собранные в коде, привязка не пересоберёт — перечитываем их сами.
+            _ = RunAsync(LoadAsync, S.Err_Settings);
+        }
 
         [RelayCommand]
         private Task ExportMatrix() => RunAsync(async () =>
@@ -123,6 +144,12 @@ namespace MedicalResultsTracker.ViewModel
 
         private async Task LoadAsync()
         {
+            Title = S.Tab_Settings;
+
+            _suppressLanguageChange = true;
+            SelectedLanguage = Localization.Available.FirstOrDefault(l => l.Code == Localization.Current.SelectedCode);
+            _suppressLanguageChange = false;
+
             DatabasePath = _database.DatabasePath;
 
             int count = await _repository.CountAsync();

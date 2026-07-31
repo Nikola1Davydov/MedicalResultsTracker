@@ -816,4 +816,10 @@
   <data name="Imp_NoRows" xml:space="preserve">
     <value>Не найдено ни одной строки показателей.</value>
   </data>
+  <data name="Set_LanguageTitle" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Set_LanguageNote" xml:space="preserve">
+    <value>«System» — язык устройства. Переключение применяется сразу, без перезапуска.</value>
+  </data>
 </root>

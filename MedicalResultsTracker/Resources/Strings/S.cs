@@ -5,7 +5,7 @@ namespace MedicalResultsTracker.Resources.Strings
 {
     /// <summary>
     /// Тексты интерфейса. Немецкий — язык по умолчанию, русский подхватывается,
-    /// если системная локаль русская.
+    /// если он выбран в настройках или стоит в системе.
     /// Файл сгенерирован из AppResources.resx: править нужно resx, а не его.
     /// </summary>
     public static class S
@@ -784,5 +784,11 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Es wurden keine Wertezeilen gefunden.</summary>
         public static string Imp_NoRows => Get("Imp_NoRows");
+
+        /// <summary>Sprache</summary>
+        public static string Set_LanguageTitle => Get("Set_LanguageTitle");
+
+        /// <summary>«System» übernimmt die Sprache des Geräts. Die Umstellung wirkt sofort</summary>
+        public static string Set_LanguageNote => Get("Set_LanguageNote");
     }
 }

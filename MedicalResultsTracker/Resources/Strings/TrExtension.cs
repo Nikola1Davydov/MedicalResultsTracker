@@ -4,15 +4,21 @@ namespace MedicalResultsTracker.Resources.Strings
 {
     /// <summary>
     /// Разметка для XAML: <c>Text="{loc:Tr Dash_Title}"</c>.
-    /// Язык определяется системной локалью при запуске — переключателя внутри приложения нет.
+    /// Возвращает не строку, а привязку к <see cref="Localization"/>: иначе смена языка
+    /// в настройках потребовала бы перезапуска приложения.
     /// </summary>
     [ContentProperty(nameof(Key))]
     [AcceptEmptyServiceProvider]
-    public sealed class TrExtension : IMarkupExtension<string>
+    public sealed class TrExtension : IMarkupExtension<BindingBase>
     {
         public string Key { get; set; } = string.Empty;
 
-        public string ProvideValue(IServiceProvider serviceProvider) => S.Get(Key);
+        public BindingBase ProvideValue(IServiceProvider serviceProvider) => new Binding
+        {
+            Mode = BindingMode.OneWay,
+            Path = $"[{Key}]",
+            Source = Localization.Current,
+        };
 
         object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider) => ProvideValue(serviceProvider);
     }

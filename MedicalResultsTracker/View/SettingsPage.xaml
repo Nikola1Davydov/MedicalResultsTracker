@@ -12,6 +12,17 @@
         <VerticalStackLayout Padding="16" Spacing="14">
 
             <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_LanguageTitle}" />
+                    <Picker
+                        ItemDisplayBinding="{Binding Name, x:DataType=loc:LanguageOption}"
+                        ItemsSource="{Binding Languages}"
+                        SelectedItem="{Binding SelectedLanguage}" />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_LanguageNote}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Set_StorageTitle}" />
                     <Label Text="{Binding StorageSummary}" />
