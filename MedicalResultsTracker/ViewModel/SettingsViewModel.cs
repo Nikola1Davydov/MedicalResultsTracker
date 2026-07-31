@@ -24,15 +24,6 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private string _assistantSummary = string.Empty;
 
-        [ObservableProperty]
-        private bool _allowDocumentRecognition;
-
-        [ObservableProperty]
-        private bool _allowResultCommentary;
-
-        /// <summary>Защита от рекурсии: при загрузке переключатели ставятся программно.</summary>
-        private bool _suppressConsentUpdates;
-
         public SettingsViewModel(
             IMedicalDatabase database,
             IBloodTestRepository repository,
@@ -130,31 +121,6 @@ namespace MedicalResultsTracker.ViewModel
             await Dialog.AlertAsync(S.Set_CopiedTitle, S.Set_CopiedBody);
         }, S.Err_Copy);
 
-        partial void OnAllowDocumentRecognitionChanged(bool value) =>
-            UpdateConsent(AiConsentScope.DocumentRecognition, value);
-
-        partial void OnAllowResultCommentaryChanged(bool value) =>
-            UpdateConsent(AiConsentScope.ResultCommentary, value);
-
-        private void UpdateConsent(AiConsentScope scope, bool granted)
-        {
-            if (_suppressConsentUpdates)
-            {
-                return;
-            }
-
-            if (granted)
-            {
-                _consent.Grant(scope, _assistant.ProviderName);
-            }
-            else
-            {
-                _consent.Revoke(scope);
-            }
-
-            UpdateAssistantSummary();
-        }
-
         private async Task LoadAsync()
         {
             DatabasePath = _database.DatabasePath;
@@ -167,11 +133,6 @@ namespace MedicalResultsTracker.ViewModel
                 1 => S.Set_StorageOne,
                 _ => string.Format(S.Set_StorageMany, count)
             };
-
-            _suppressConsentUpdates = true;
-            AllowDocumentRecognition = _consent.IsAllowed(AiConsentScope.DocumentRecognition);
-            AllowResultCommentary = _consent.IsAllowed(AiConsentScope.ResultCommentary);
-            _suppressConsentUpdates = false;
 
             UpdateAssistantSummary();
         }

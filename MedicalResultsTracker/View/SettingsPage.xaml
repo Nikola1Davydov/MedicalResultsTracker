@@ -48,22 +48,10 @@
                     <Button Command="{Binding ShareForAiCommand}" Text="{loc:Tr Set_AiShare}" />
                     <Button Command="{Binding CopyForAiCommand}" Text="{loc:Tr Set_AiCopy}" />
 
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="{loc:Tr Set_AiScan}" />
-                            <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_AiScanNote}" />
-                        </VerticalStackLayout>
-                        <Switch Grid.Column="1" IsToggled="{Binding AllowDocumentRecognition}" />
-                    </Grid>
-
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="{loc:Tr Set_AiComment}" />
-                            <Label Style="{StaticResource Caption}" Text="{loc:Tr Set_AiCommentNote}" />
-                        </VerticalStackLayout>
-                        <Switch Grid.Column="1" IsToggled="{Binding AllowResultCommentary}" />
-                    </Grid>
-
+                    <!--  Переключателей согласия здесь нет намеренно: провайдер не подключён,
+                          и тумблер, который ничего не переключает, — худший вид интерфейса.
+                          Механизм согласия (IAiConsentService) остаётся в коде и вернётся
+                          на экран вместе с провайдером.  -->
                     <Label Style="{StaticResource Caption}" Text="{Binding AssistantSummary}" />
                 </VerticalStackLayout>
             </Border>

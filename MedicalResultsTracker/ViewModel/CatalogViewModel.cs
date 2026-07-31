@@ -7,7 +7,7 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Справочник показателей: что подставляется при вводе анализа и как всё это сгруппировано.</summary>
     public partial class CatalogViewModel : BaseViewModel
     {
-        private const string NoCategory = S.Trend_NoGroup;
+        private static string NoCategory => S.Trend_NoGroup;
 
         private readonly IAnalyteCatalog _catalog;
         private readonly IBloodTestRepository _repository;

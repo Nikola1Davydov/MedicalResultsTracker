@@ -1,6 +1,5 @@
 using System.Globalization;
 using MedicalResultsTracker.Resources.Strings;
-using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
 
 namespace MedicalResultsTracker.Services.Import

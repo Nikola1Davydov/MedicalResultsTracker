@@ -9,7 +9,7 @@ namespace MedicalResultsTracker.ViewModel
     public partial class TrendsViewModel : BaseViewModel
     {
         /// <summary>Группа избранного всегда первая — за этими показателями следят намеренно.</summary>
-        private const string FavoritesGroup = S.Trend_FavoritesGroup;
+        private static string FavoritesGroup => S.Trend_FavoritesGroup;
 
         private readonly IAnalysisService _analysis;
         private readonly IAnalyteCatalog _catalog;
