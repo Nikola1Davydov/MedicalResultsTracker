@@ -13,6 +13,10 @@
             ContentTemplate="{DataTemplate view:MainPage}"
             Route="dashboard" />
         <ShellContent
+            Title="{x:Static loc:S.Tab_Matrix}"
+            ContentTemplate="{DataTemplate view:MatrixPage}"
+            Route="matrix" />
+        <ShellContent
             Title="{x:Static loc:S.Tab_History}"
             ContentTemplate="{DataTemplate view:HistoryPage}"
             Route="history" />

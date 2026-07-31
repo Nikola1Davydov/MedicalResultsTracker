@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.MatrixPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:MatrixViewModel">
+
+    <Grid Padding="12,8" RowDefinitions="Auto,*" RowSpacing="8">
+
+        <Label
+            Grid.Row="0"
+            IsVisible="{Binding IsEmpty}"
+            Style="{StaticResource Caption}"
+            Text="{x:Static loc:S.Matrix_Empty}" />
+
+        <RefreshView
+            Grid.Row="1"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy}">
+            <ScrollView Orientation="Vertical">
+                <!--  Названия показателей стоят на месте, значения уезжают вправо:
+                      без этого при десятке сдач непонятно, чья это строка.  -->
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="0">
+                    <Grid x:Name="FixedColumn" Grid.Column="0" />
+                    <ScrollView Grid.Column="1" Orientation="Horizontal">
+                        <Grid x:Name="ScrollingColumns" />
+                    </ScrollView>
+                </Grid>
+            </ScrollView>
+        </RefreshView>
+
+    </Grid>
+
+</ContentPage>

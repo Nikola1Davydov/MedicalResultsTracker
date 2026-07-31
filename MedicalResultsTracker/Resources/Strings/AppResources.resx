@@ -861,4 +861,10 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Lang_System" xml:space="preserve">
     <value>Systemsprache</value>
   </data>
+  <data name="Tab_Matrix" xml:space="preserve">
+    <value>Tabelle</value>
+  </data>
+  <data name="Matrix_Empty" xml:space="preserve">
+    <value>Die Tabelle füllt sich, sobald der erste Befund erfasst ist. Zeilen sind Werte, Spalten die Abnahmedaten – nach rechts geht es weiter.</value>
+  </data>
 </root>

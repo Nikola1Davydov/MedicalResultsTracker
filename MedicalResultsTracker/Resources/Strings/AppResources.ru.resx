@@ -861,4 +861,10 @@
   <data name="Lang_System" xml:space="preserve">
     <value>Язык системы</value>
   </data>
+  <data name="Tab_Matrix" xml:space="preserve">
+    <value>Таблица</value>
+  </data>
+  <data name="Matrix_Empty" xml:space="preserve">
+    <value>Таблица заполнится, когда появится первый анализ. Строки — показатели, столбцы — даты сдач, и дальше вправо.</value>
+  </data>
 </root>
