@@ -937,4 +937,13 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Edit_OtherUnits" xml:space="preserve">
     <value>Andere Einheit als bisher: {0}. Werte in verschiedenen Einheiten sind nicht vergleichbar – bitte prüfen.</value>
   </data>
+  <data name="Set_AboutTitle" xml:space="preserve">
+    <value>Über die App</value>
+  </data>
+  <data name="Set_AboutBody" xml:space="preserve">
+    <value>Die Version entspricht dem Release auf GitHub. Alle Daten bleiben auf diesem Gerät.</value>
+  </data>
+  <data name="Set_Version" xml:space="preserve">
+    <value>Version {0} (Build {1})</value>
+  </data>
 </root>

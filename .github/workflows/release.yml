@@ -20,6 +20,12 @@ on:
 permissions:
   contents: write
 
+# Отменять релиз на полпути нельзя: он мог уже создать тег и залить файл.
+# Поэтому запуски выстраиваются в очередь, а не вытесняют друг друга.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   android:
     runs-on: ubuntu-latest
@@ -42,7 +48,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
-          key: nuget-${{ runner.os }}-${{ hashFiles('**/Directory.build.props', '**/*.csproj') }}
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/Directory.Build.props', '**/*.csproj') }}
           restore-keys: nuget-${{ runner.os }}-
 
       - name: Install MAUI Android workload
@@ -78,8 +84,42 @@ jobs:
             display="0.0.${GITHUB_RUN_NUMBER}"
           fi
 
+          # versionCode (ApplicationVersion) выводится из самого тега, а не из номера запуска.
+          # Иначе пересборка того же тега дала бы APK с другим номером версии — и тег перестал бы
+          # однозначно означать сборку. Ограничение схемы: minor и patch меньше 1000.
+          if [ -n "$tag" ]; then
+            core="${display%%[-+]*}"
+            major="$(printf '%s' "$core" | cut -d. -f1)"
+            minor="$(printf '%s' "$core" | cut -d. -f2)"
+            patch="$(printf '%s' "$core" | cut -d. -f3)"
+            code=$(( ${major:-0} * 1000000 + ${minor:-0} * 1000 + ${patch:-0} ))
+
+            # Android требует versionCode не меньше единицы.
+            [ "$code" -lt 1 ] && code=1
+          else
+            code="$GITHUB_RUN_NUMBER"
+          fi
+
           echo "display=$display" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      # Один тег — одна сборка. Если тег уже указывает на другой коммит, значит под тем же
+      # номером версии выйдет другой код: у пользователя на телефоне «1.2.0» будет означать
+      # не то же, что в репозитории. Такой запуск останавливаем, а не перезаписываем молча.
+      - name: Check tag is free
+        if: steps.version.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          existing="$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq '.sha' 2>/dev/null || true)"
+
+          if [ -n "$existing" ] && [ "$existing" != "$GITHUB_SHA" ]; then
+            echo "::error::Тег $TAG уже стоит на коммите $existing, а собирается $GITHUB_SHA. Возьмите следующий номер версии."
+            exit 1
+          fi
 
       # Ключ подписи. Постоянный ключ из секретов позволяет ставить новую версию поверх старой;
       # без него генерируется одноразовый, и обновление поверх установленной сборки Android отклонит.
@@ -110,6 +150,7 @@ jobs:
         env:
           KEYSTORE: ${{ steps.signing.outputs.path }}
           DISPLAY_VERSION: ${{ steps.version.outputs.display }}
+          VERSION_CODE: ${{ steps.version.outputs.code }}
           STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -123,7 +164,7 @@ jobs:
             -c Release -f net10.0-android \
             -p:AndroidPackageFormat=apk \
             -p:ApplicationDisplayVersion="$DISPLAY_VERSION" \
-            -p:ApplicationVersion="$GITHUB_RUN_NUMBER" \
+            -p:ApplicationVersion="$VERSION_CODE" \
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore="$KEYSTORE" \
             -p:AndroidSigningStorePass="$store_pass" \
@@ -188,8 +229,10 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view "$TAG" >/dev/null 2>&1; then
+            # Сюда доходим только если тег указывает на этот же коммит: шаг «Check tag is free»
+            # уже отсёк случай, когда под тем же номером версии лежит другой код.
             gh release upload "$TAG" "$APK" --clobber
-            echo "Релиз $TAG уже был — файл обновлён."
+            echo "Релиз $TAG уже был на этом коммите — файл обновлён."
           else
             gh release create "$TAG" "$APK" \
               --title "$TITLE" \
@@ -203,7 +246,7 @@ jobs:
           {
             echo "### APK собран"
             echo
-            echo "Версия: \`${{ steps.version.outputs.display }}\`"
+            echo "Версия: \`${{ steps.version.outputs.display }}\` (versionCode \`${{ steps.version.outputs.code }}\`)"
             if [ "${{ steps.signing.outputs.persistent }}" = "true" ]; then
               echo "Подпись: постоянный ключ из секретов — обновления встанут поверх."
             else
