@@ -64,6 +64,8 @@ namespace MedicalResultsTracker.ViewModel
 
         private async Task LoadAsync()
         {
+            Title = S.Cat_Title;
+
             _all = await _catalog.GetAllAsync();
             _usage = await _repository.GetUsageByCodeAsync();
 

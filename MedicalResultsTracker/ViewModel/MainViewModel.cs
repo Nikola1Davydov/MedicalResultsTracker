@@ -133,6 +133,8 @@ namespace MedicalResultsTracker.ViewModel
 
         private async Task LoadAsync()
         {
+            Title = S.Dash_Title;
+
             IReadOnlyList<ParameterTrend> trends = await _analysis.GetLatestTrendsAsync();
             BloodTest? latest = await _repository.GetLatestAsync();
             int count = await _repository.CountAsync();

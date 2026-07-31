@@ -12,6 +12,7 @@ namespace MedicalResultsTracker.Resources.Strings
     public sealed class Localization : INotifyPropertyChanged
     {
         private const string LanguageKey = "app.language";
+        private const string DefaultCode = "de";
 
         public static Localization Current { get; } = new();
 
@@ -31,8 +32,12 @@ namespace MedicalResultsTracker.Resources.Strings
 
         public string this[string key] => S.Get(key);
 
-        /// <summary>Код выбранного языка или пустая строка, если язык берётся из системы.</summary>
-        public string SelectedCode => Preferences.Default.Get(LanguageKey, string.Empty);
+        /// <summary>
+        /// Код выбранного языка. По умолчанию немецкий, а не системный: приложение делается
+        /// для немецкого рынка, и на любом телефоне оно должно открываться по-немецки,
+        /// пока пользователь не выберет другое.
+        /// </summary>
+        public string SelectedCode => Preferences.Default.Get(LanguageKey, DefaultCode);
 
         /// <summary>
         /// Применяет сохранённый выбор. Вызывается до построения интерфейса,
@@ -46,7 +51,9 @@ namespace MedicalResultsTracker.Resources.Strings
 
             Apply(code);
 
-            // Пустая строка в имени свойства — «изменилось всё», включая индексатор.
+            // Пустое имя — «изменилось всё»; "Item[]" — соглашение для индексатора.
+            // Шлём оба: какое из них поймёт привязка, зависит от версии MAUI.
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCode)));
         }

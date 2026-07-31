@@ -62,6 +62,8 @@ namespace MedicalResultsTracker.ViewModel
 
         private async Task LoadAsync()
         {
+            Title = S.Tab_Trends;
+
             IReadOnlyList<ParameterSeries> series = await _analysis.GetSeriesAsync();
             IReadOnlyList<Analyte> catalog = await _catalog.GetAllAsync();
 
