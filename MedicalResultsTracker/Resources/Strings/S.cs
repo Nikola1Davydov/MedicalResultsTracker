@@ -887,5 +887,20 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Ansicht konnte nicht gelöscht werden</summary>
         public static string Err_ViewDelete => Get("Err_ViewDelete");
+
+        /// <summary>Für diesen Tag gibt es schon Werte</summary>
+        public static string Edit_MergeTitle => Get("Edit_MergeTitle");
+
+        /// <summary>Zum {0} sind diese Werte bereits erfasst – mit einem anderen Ergebnis:</summary>
+        public static string Edit_MergeBody => Get("Edit_MergeBody");
+
+        /// <summary>Ersetzen</summary>
+        public static string Edit_MergeReplace => Get("Edit_MergeReplace");
+
+        /// <summary>Bisherige behalten</summary>
+        public static string Edit_MergeKeep => Get("Edit_MergeKeep");
+
+        /// <summary>… und {0} weitere</summary>
+        public static string Edit_MergeMore => Get("Edit_MergeMore");
     }
 }

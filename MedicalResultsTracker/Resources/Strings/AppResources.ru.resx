@@ -915,4 +915,23 @@
   <data name="Err_ViewDelete" xml:space="preserve">
     <value>Не удалось удалить набор</value>
   </data>
+  <data name="Edit_MergeTitle" xml:space="preserve">
+    <value>За это число уже есть значения</value>
+  </data>
+  <data name="Edit_MergeBody" xml:space="preserve">
+    <value>За {0} эти показатели уже записаны, и значения другие:
+
+{1}
+
+Заменить прежние значения новыми?</value>
+  </data>
+  <data name="Edit_MergeReplace" xml:space="preserve">
+    <value>Заменить</value>
+  </data>
+  <data name="Edit_MergeKeep" xml:space="preserve">
+    <value>Оставить прежние</value>
+  </data>
+  <data name="Edit_MergeMore" xml:space="preserve">
+    <value>…и ещё {0}</value>
+  </data>
 </root>

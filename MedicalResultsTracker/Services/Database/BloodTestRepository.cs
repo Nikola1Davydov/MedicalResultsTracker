@@ -93,6 +93,32 @@ namespace MedicalResultsTracker.Services.Database
             return test;
         }
 
+        public async Task<BloodTest?> GetByDateAsync(DateTime date, Guid exceptId)
+        {
+            SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
+
+            // Сравниваем сутками, а не значением: время в дате может быть каким угодно.
+            DateTime from = date.Date;
+            DateTime to = from.AddDays(1);
+
+            List<BloodTest> sameDay = await connection.Table<BloodTest>()
+                .Where(t => t.Date >= from && t.Date < to)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            BloodTest? test = sameDay
+                .Where(t => t.Id != exceptId)
+                .OrderBy(t => t.ModifiedUtc)
+                .FirstOrDefault();
+
+            if (test is not null)
+            {
+                await LoadParametersAsync(connection, test).ConfigureAwait(false);
+            }
+
+            return test;
+        }
+
         public async Task SaveAsync(BloodTest test)
         {
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);

@@ -915,4 +915,23 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Err_ViewDelete" xml:space="preserve">
     <value>Ansicht konnte nicht gelöscht werden</value>
   </data>
+  <data name="Edit_MergeTitle" xml:space="preserve">
+    <value>Für diesen Tag gibt es schon Werte</value>
+  </data>
+  <data name="Edit_MergeBody" xml:space="preserve">
+    <value>Zum {0} sind diese Werte bereits erfasst – mit einem anderen Ergebnis:
+
+{1}
+
+Sollen die neuen Werte die bisherigen ersetzen?</value>
+  </data>
+  <data name="Edit_MergeReplace" xml:space="preserve">
+    <value>Ersetzen</value>
+  </data>
+  <data name="Edit_MergeKeep" xml:space="preserve">
+    <value>Bisherige behalten</value>
+  </data>
+  <data name="Edit_MergeMore" xml:space="preserve">
+    <value>… und {0} weitere</value>
+  </data>
 </root>

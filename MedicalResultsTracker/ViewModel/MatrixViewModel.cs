@@ -13,7 +13,6 @@ namespace MedicalResultsTracker.ViewModel
     /// </summary>
     public partial class MatrixViewModel : BaseViewModel
     {
-        private readonly IBloodTestRepository _repository;
         private readonly IAnalysisService _analysis;
         private readonly IMatrixViewRepository _views;
 
@@ -26,12 +25,8 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private MatrixViewOption? _selectedView;
 
-        public MatrixViewModel(
-            IBloodTestRepository repository,
-            IAnalysisService analysis,
-            IMatrixViewRepository views)
+        public MatrixViewModel(IAnalysisService analysis, IMatrixViewRepository views)
         {
-            _repository = repository;
             _analysis = analysis;
             _views = views;
 
@@ -106,47 +101,38 @@ namespace MedicalResultsTracker.ViewModel
 
             await RefreshViewsAsync();
 
-            IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync();
+            // Столбцы уже сведены по датам: два бланка от одного числа — один столбец.
+            ResultMatrix matrix = await _analysis.BuildMatrixAsync();
 
             // Набор задаёт и состав строк, и их порядок: пользователь выбирал показатели не случайно.
             List<string>? filter = SelectedView?.Codes;
 
-            // Старые слева, новые справа: так таблица читается как история, а не задом наперёд.
-            List<BloodTest> ordered = tests.OrderBy(t => t.Date).ToList();
-
             Dates.Clear();
             Rows.Clear();
 
-            foreach (BloodTest test in ordered)
+            foreach (DateTime date in matrix.Dates)
             {
-                Dates.Add(test.Date.ToString("d", CultureInfo.CurrentCulture));
+                Dates.Add(date.ToString("d", CultureInfo.CurrentCulture));
             }
 
-            IEnumerable<IGrouping<string, BloodParameter>> groups = ordered
-                .SelectMany(t => t.Parameters)
-                .GroupBy(_analysis.GetKey);
+            IEnumerable<MatrixLine> lines = filter is null
+                ? matrix.Lines
+                : matrix.Lines
+                    .Where(line => filter.Contains(line.Key, StringComparer.OrdinalIgnoreCase))
+                    .OrderBy(line => filter.FindIndex(c => string.Equals(c, line.Key, StringComparison.OrdinalIgnoreCase)));
 
-            groups = filter is null
-                ? groups.OrderBy(g => g.Last().Name, StringComparer.CurrentCulture)
-                : groups.Where(g => filter.Contains(g.Key, StringComparer.OrdinalIgnoreCase))
-                        .OrderBy(g => filter.FindIndex(c => string.Equals(c, g.Key, StringComparison.OrdinalIgnoreCase)));
-
-            foreach (IGrouping<string, BloodParameter> group in groups)
+            foreach (MatrixLine line in lines)
             {
-                BloodParameter newest = group.Last();
-
                 MatrixRowViewModel row = new()
                 {
-                    Key = group.Key,
-                    Name = newest.Name,
-                    Unit = newest.Unit ?? string.Empty,
-                    Range = newest.Range.IsDefined ? newest.Range.ToString() : S.Common_None,
+                    Key = line.Key,
+                    Name = line.Newest.Name,
+                    Unit = line.Newest.Unit ?? string.Empty,
+                    Range = line.Newest.Range.IsDefined ? line.Newest.Range.ToString() : S.Common_None,
                 };
 
-                foreach (BloodTest test in ordered)
+                foreach (BloodParameter? cell in line.Cells)
                 {
-                    BloodParameter? cell = test.Parameters.FirstOrDefault(p => _analysis.GetKey(p) == group.Key);
-
                     row.Cells.Add(new MatrixCellViewModel
                     {
                         Text = cell?.DisplayValue ?? S.Common_None,

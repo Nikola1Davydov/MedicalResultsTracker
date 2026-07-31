@@ -15,6 +15,46 @@ namespace MedicalResultsTracker.Services.Analysis
 
         public string GetKey(BloodParameter parameter) => AnalyteCode.KeyOf(parameter.Code, parameter.Name);
 
+        public async Task<ResultMatrix> BuildMatrixAsync()
+        {
+            IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
+
+            // Столбец — календарная дата. Внутри дня более поздняя запись перекрывает раннюю:
+            // если человек дописал бланк вторым заходом, показать надо то, что он дописал.
+            List<(DateTime Date, List<BloodParameter> Parameters)> columns = tests
+                .GroupBy(test => test.Date.Date)
+                .OrderBy(group => group.Key)
+                .Select(group => (
+                    Date: group.Key,
+                    Parameters: group
+                        .OrderBy(test => test.ModifiedUtc)
+                        .SelectMany(test => test.Parameters)
+                        .ToList()))
+                .ToList();
+
+            List<MatrixLine> lines = columns
+                .SelectMany(column => column.Parameters)
+                .GroupBy(GetKey)
+                .Select(group => new MatrixLine
+                {
+                    Key = group.Key,
+
+                    // Столбцы идут от старых к новым, значит последнее измерение — самое свежее.
+                    Newest = group.Last(),
+                    Cells = columns
+                        .Select(column => column.Parameters.LastOrDefault(p => GetKey(p) == group.Key))
+                        .ToList(),
+                })
+                .OrderBy(line => line.Newest.Name, StringComparer.CurrentCulture)
+                .ToList();
+
+            return new ResultMatrix
+            {
+                Dates = columns.Select(column => column.Date).ToList(),
+                Lines = lines,
+            };
+        }
+
         public async Task<IReadOnlyList<ParameterTrend>> GetLatestTrendsAsync()
         {
             IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
