@@ -114,11 +114,25 @@ jobs:
           TAG: ${{ steps.version.outputs.tag }}
         run: |
           set -euo pipefail
-          existing="$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq '.sha' 2>/dev/null || true)"
 
-          if [ -n "$existing" ] && [ "$existing" != "$GITHUB_SHA" ]; then
+          existing=""
+
+          # Несуществующий тег — обычное дело: это первый выпуск с таким номером.
+          # Ответ об ошибке gh печатает в stdout, поэтому мало проверить, что вывод непустой:
+          # принимаем только то, что действительно выглядит как SHA коммита.
+          if raw="$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq '.sha' 2>/dev/null)"; then
+            if printf '%s' "$raw" | grep -Eq '^[0-9a-f]{40}$'; then
+              existing="$raw"
+            fi
+          fi
+
+          if [ -z "$existing" ]; then
+            echo "Тег $TAG свободен."
+          elif [ "$existing" != "$GITHUB_SHA" ]; then
             echo "::error::Тег $TAG уже стоит на коммите $existing, а собирается $GITHUB_SHA. Возьмите следующий номер версии."
             exit 1
+          else
+            echo "Тег $TAG уже стоит на этом же коммите — файл релиза будет обновлён."
           fi
 
       # Ключ подписи. Постоянный ключ из секретов позволяет ставить новую версию поверх старой;
