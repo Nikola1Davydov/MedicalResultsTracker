@@ -1,3 +1,4 @@
+using System.Globalization;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
@@ -10,6 +11,9 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Ввод и правка одного анализа. Работает и как экран просмотра.</summary>
     public partial class TestEditViewModel : BaseViewModel, IQueryAttributable
     {
+        /// <summary>Длинный список расхождений в диалог не влезет — остальные считаем числом.</summary>
+        private const int MaxConflictsShown = 8;
+
         private readonly IBloodTestRepository _repository;
         private readonly IAnalyteCatalog _catalog;
         private readonly ITextImportService _import;
@@ -201,13 +205,124 @@ namespace MedicalResultsTracker.ViewModel
                 parameter.Code = await ResolveCodeAsync(parameter);
             }
 
-            await _repository.SaveAsync(test);
+            // Одна дата — один столбец в таблице. Второй бланк от того же числа (другая лаборатория,
+            // ещё одна фотография) дописывается в существующую запись, а не заводит вторую.
+            // Правку уже сохранённого анализа не трогаем: там пользователь работает с конкретной записью.
+            BloodTest? sameDay = IsExisting ? null : await _repository.GetByDateAsync(Date, _testId);
+
+            if (sameDay is null)
+            {
+                await _repository.SaveAsync(test);
+            }
+            else
+            {
+                await MergeIntoAsync(sameDay, test);
+                await _repository.SaveAsync(sameDay);
+            }
 
             // Показатели, которых нет в справочнике, запоминаем — в следующий раз подставятся сами.
             await RememberNewAnalytesAsync(test);
 
             await Shell.Current.GoToAsync("..");
         }, S.Err_SaveTest);
+
+        /// <summary>
+        /// Дописывает новый бланк в анализ за то же число.
+        ///
+        /// Показатель, которого там не было, добавляется молча. Совпавшее значение —
+        /// тоже молча, спрашивать не о чем. И только разошедшиеся значения показываются
+        /// одним списком: заменить старые новыми или оставить как было.
+        /// </summary>
+        private async Task MergeIntoAsync(BloodTest target, BloodTest incoming)
+        {
+            List<BloodParameter> added = new();
+            List<(BloodParameter Old, BloodParameter New)> changed = new();
+
+            foreach (BloodParameter parameter in incoming.Parameters)
+            {
+                string key = AnalyteCode.KeyOf(parameter.Code, parameter.Name);
+
+                BloodParameter? old = target.Parameters
+                    .FirstOrDefault(p => AnalyteCode.KeyOf(p.Code, p.Name) == key);
+
+                if (old is null)
+                {
+                    added.Add(parameter);
+                }
+                else if (!SameResult(old, parameter))
+                {
+                    changed.Add((old, parameter));
+                }
+            }
+
+            bool replace = true;
+
+            if (changed.Count > 0)
+            {
+                string list = string.Join("\n", changed
+                    .Take(MaxConflictsShown)
+                    .Select(c => $"{c.Old.Name}: {c.Old.DisplayValue} → {c.New.DisplayValue}"));
+
+                if (changed.Count > MaxConflictsShown)
+                {
+                    list += "\n" + string.Format(S.Edit_MergeMore, changed.Count - MaxConflictsShown);
+                }
+
+                replace = await Dialog.ConfirmAsync(
+                    S.Edit_MergeTitle,
+                    string.Format(S.Edit_MergeBody, Date.ToString("d", CultureInfo.CurrentCulture), list),
+                    S.Edit_MergeReplace,
+                    S.Edit_MergeKeep);
+            }
+
+            if (replace)
+            {
+                foreach ((BloodParameter old, BloodParameter fresh) in changed)
+                {
+                    // Значение переносим вместе с единицами и нормой: они относятся к этому результату.
+                    old.Code = fresh.Code;
+                    old.Name = fresh.Name;
+                    old.Unit = fresh.Unit;
+                    old.Value = fresh.Value;
+                    old.TextValue = fresh.TextValue;
+                    old.RefMin = fresh.RefMin;
+                    old.RefMax = fresh.RefMax;
+                    old.Comment = fresh.Comment;
+                }
+            }
+
+            // Новые показатели добавляются в любом случае: отказ был про замену, а не про них.
+            target.Parameters.AddRange(added);
+
+            target.Laboratory = MergeText(target.Laboratory, incoming.Laboratory, " · ");
+            target.Notes = MergeText(target.Notes, incoming.Notes, "\n");
+        }
+
+        /// <summary>Один и тот же результат. Сравнивается значение, а не оформление строки.</summary>
+        private static bool SameResult(BloodParameter left, BloodParameter right) =>
+            Nullable.Equals(left.Value, right.Value) &&
+            string.Equals(
+                left.TextValue?.Trim(),
+                right.TextValue?.Trim(),
+                StringComparison.CurrentCultureIgnoreCase);
+
+        /// <summary>Название второй лаборатории не затирает первую, а приписывается к ней.</summary>
+        private static string? MergeText(string? current, string? extra, string separator)
+        {
+            if (string.IsNullOrWhiteSpace(extra))
+            {
+                return current;
+            }
+
+            if (string.IsNullOrWhiteSpace(current))
+            {
+                return extra;
+            }
+
+            return current.Contains(extra, StringComparison.CurrentCultureIgnoreCase)
+                ? current
+                : current + separator + extra;
+        }
 
         [RelayCommand]
         private Task Delete() => RunAsync(async () =>

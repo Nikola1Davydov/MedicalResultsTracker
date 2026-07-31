@@ -34,39 +34,27 @@ namespace MedicalResultsTracker.Services.Export
 
         public async Task<string> ExportMatrixCsvAsync()
         {
-            IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
-
             // Слева направо — от старых к новым, чтобы динамика читалась естественно.
-            List<BloodTest> ordered = tests.OrderBy(t => t.Date).ToList();
-
-            List<BloodParameter> allParameters = ordered.SelectMany(t => t.Parameters).ToList();
-
-            List<IGrouping<string, BloodParameter>> rows = allParameters
-                .GroupBy(_analysis.GetKey)
-                .OrderBy(g => g.Last().Name)
-                .ToList();
+            // Столбец — дата, а не бланк: тот же вид, что и в таблице на экране.
+            ResultMatrix matrix = await _analysis.BuildMatrixAsync().ConfigureAwait(false);
 
             StringBuilder builder = new();
 
             builder.Append(Join(S.Csv_Parameter, S.Csv_Unit, S.Csv_Reference));
 
-            foreach (BloodTest test in ordered)
+            foreach (DateTime date in matrix.Dates)
             {
-                builder.Append(Separator).Append(Escape(test.Date.ToString("d", CultureInfo.CurrentCulture)));
+                builder.Append(Separator).Append(Escape(date.ToString("d", CultureInfo.CurrentCulture)));
             }
 
             builder.AppendLine();
 
-            foreach (IGrouping<string, BloodParameter> row in rows)
+            foreach (MatrixLine line in matrix.Lines)
             {
-                BloodParameter newest = row.Last();
+                builder.Append(Join(line.Newest.Name, line.Newest.Unit ?? string.Empty, line.Newest.Range.ToString()));
 
-                builder.Append(Join(newest.Name, newest.Unit ?? string.Empty, newest.Range.ToString()));
-
-                foreach (BloodTest test in ordered)
+                foreach (BloodParameter? measurement in line.Cells)
                 {
-                    BloodParameter? measurement = test.Parameters.FirstOrDefault(p => _analysis.GetKey(p) == row.Key);
-
                     builder.Append(Separator).Append(Escape(FormatValue(measurement)));
                 }
 
@@ -159,17 +147,16 @@ namespace MedicalResultsTracker.Services.Export
 
         public async Task<string> BuildTextSummaryAsync(int maxTests = 6)
         {
-            IReadOnlyList<BloodTest> all = await _repository.GetAllAsync().ConfigureAwait(false);
+            // Ограничение считается в датах, а не в бланках: для читателя таблицы столбец — это день.
+            ResultMatrix matrix = (await _analysis.BuildMatrixAsync().ConfigureAwait(false))
+                .TakeLastDates(maxTests);
 
-            // GetAllAsync отдаёт свежие сверху: берём последние N и разворачиваем в хронологию.
-            List<BloodTest> ordered = (maxTests > 0 ? all.Take(maxTests) : all)
-                .OrderBy(t => t.Date)
-                .ToList();
-
-            if (ordered.Count == 0)
+            if (matrix.Dates.Count == 0)
             {
                 return S.Txt_Empty;
             }
+
+            BloodTest? latest = await _repository.GetLatestAsync().ConfigureAwait(false);
 
             StringBuilder builder = new();
 
@@ -178,47 +165,42 @@ namespace MedicalResultsTracker.Services.Export
             builder.AppendLine(S.Txt_RefNote);
             builder.AppendLine();
 
-            BloodTest latest = ordered[^1];
+            builder.AppendLine(string.Format(
+                S.Txt_Latest,
+                latest?.Title ?? matrix.Dates[^1].ToString("d", CultureInfo.CurrentCulture)));
 
-            builder.AppendLine(string.Format(S.Txt_Latest, latest.Title));
             builder.AppendLine();
-
-            List<IGrouping<string, BloodParameter>> rows = ordered
-                .SelectMany(t => t.Parameters)
-                .GroupBy(_analysis.GetKey)
-                .OrderBy(g => g.Last().Name)
-                .ToList();
 
             builder.Append($"| {S.Csv_Parameter} | {S.Csv_Unit} | {S.Csv_Reference} |");
 
-            foreach (BloodTest test in ordered)
+            foreach (DateTime date in matrix.Dates)
             {
-                builder.Append($" {test.Date.ToString("d", CultureInfo.CurrentCulture)} |");
+                builder.Append($" {date.ToString("d", CultureInfo.CurrentCulture)} |");
             }
 
             builder.AppendLine();
             builder.Append("|---|---|---|");
-            builder.Append(string.Concat(Enumerable.Repeat("---|", ordered.Count)));
+            builder.Append(string.Concat(Enumerable.Repeat("---|", matrix.Dates.Count)));
             builder.AppendLine();
 
-            foreach (IGrouping<string, BloodParameter> row in rows)
+            foreach (MatrixLine line in matrix.Lines)
             {
-                BloodParameter newest = row.Last();
-                string range = newest.Range.IsDefined ? newest.Range.ToString() : S.Common_None;
+                string range = line.Newest.Range.IsDefined ? line.Newest.Range.ToString() : S.Common_None;
 
-                builder.Append($"| {Cell(newest.Name)} | {Cell(newest.Unit) ?? S.Common_None} | {range} |");
+                builder.Append($"| {Cell(line.Newest.Name)} | {Cell(line.Newest.Unit) ?? S.Common_None} | {range} |");
 
-                foreach (BloodTest test in ordered)
+                foreach (BloodParameter? measurement in line.Cells)
                 {
-                    BloodParameter? measurement = test.Parameters.FirstOrDefault(p => _analysis.GetKey(p) == row.Key);
-
                     builder.Append($" {(measurement is null ? S.Common_None : FormatValue(measurement))} |");
                 }
 
                 builder.AppendLine();
             }
 
-            List<BloodParameter> outOfRange = latest.Parameters
+            // Итог по последнему столбцу, а не по последнему бланку: за один день их могло быть два.
+            List<BloodParameter> outOfRange = matrix.Lines
+                .Select(line => line.Cells[^1])
+                .OfType<BloodParameter>()
                 .Where(p => p.Status is ParameterStatus.Low or ParameterStatus.High)
                 .ToList();
 

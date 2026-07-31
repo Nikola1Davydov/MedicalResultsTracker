@@ -30,7 +30,7 @@
         <RefreshView
             Grid.Row="1"
             Command="{Binding RefreshCommand}"
-            IsRefreshing="{Binding IsBusy}">
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}">
             <CollectionView
                 IsGrouped="True"
                 ItemsSource="{Binding Groups}"

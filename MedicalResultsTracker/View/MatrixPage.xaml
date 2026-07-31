@@ -10,16 +10,35 @@
 
     <Grid Padding="12,8" RowDefinitions="Auto,*" RowSpacing="8">
 
-        <Label
-            Grid.Row="0"
-            IsVisible="{Binding IsEmpty}"
-            Style="{StaticResource Caption}"
-            Text="{x:Static loc:S.Matrix_Empty}" />
+        <VerticalStackLayout Grid.Row="0" Spacing="6">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <Picker
+                    Grid.Column="0"
+                    ItemDisplayBinding="{Binding Name, x:DataType=vm:MatrixViewOption}"
+                    ItemsSource="{Binding Views}"
+                    SelectedItem="{Binding SelectedView}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding EditViewCommand}"
+                    IsVisible="{Binding HasSelectedView}"
+                    Text="✎"
+                    WidthRequest="52" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding NewViewCommand}"
+                    Text="＋"
+                    WidthRequest="52" />
+            </Grid>
+            <Label
+                IsVisible="{Binding IsEmpty}"
+                Style="{StaticResource Caption}"
+                Text="{x:Static loc:S.Matrix_Empty}" />
+        </VerticalStackLayout>
 
         <RefreshView
             Grid.Row="1"
             Command="{Binding RefreshCommand}"
-            IsRefreshing="{Binding IsBusy}">
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}">
             <ScrollView Orientation="Vertical">
                 <!--  Названия показателей стоят на месте, значения уезжают вправо:
                       без этого при десятке сдач непонятно, чья это строка.  -->

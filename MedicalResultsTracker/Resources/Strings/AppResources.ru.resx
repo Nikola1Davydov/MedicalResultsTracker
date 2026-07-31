@@ -867,4 +867,71 @@
   <data name="Matrix_Empty" xml:space="preserve">
     <value>Таблица заполнится, когда появится первый анализ. Строки — показатели, столбцы — даты сдач, и дальше вправо.</value>
   </data>
+  <data name="Matrix_AllValues" xml:space="preserve">
+    <value>Все показатели</value>
+  </data>
+  <data name="ViewEdit_TitleNew" xml:space="preserve">
+    <value>Новый набор</value>
+  </data>
+  <data name="ViewEdit_Name" xml:space="preserve">
+    <value>Название набора</value>
+  </data>
+  <data name="ViewEdit_NamePlaceholder" xml:space="preserve">
+    <value>Например, Железо и кровь</value>
+  </data>
+  <data name="ViewEdit_NothingPicked" xml:space="preserve">
+    <value>Пока ничего не выбрано. Отметьте показатели, которые войдут в набор.</value>
+  </data>
+  <data name="ViewEdit_OnePicked" xml:space="preserve">
+    <value>Выбран 1 показатель</value>
+  </data>
+  <data name="ViewEdit_ManyPicked" xml:space="preserve">
+    <value>Выбрано показателей: {0} · порядок как при выборе</value>
+  </data>
+  <data name="ViewEdit_NoNameTitle" xml:space="preserve">
+    <value>Не хватает названия</value>
+  </data>
+  <data name="ViewEdit_NoNameBody" xml:space="preserve">
+    <value>Дайте набору название.</value>
+  </data>
+  <data name="ViewEdit_EmptyTitle" xml:space="preserve">
+    <value>Ничего не выбрано</value>
+  </data>
+  <data name="ViewEdit_EmptyBody" xml:space="preserve">
+    <value>Отметьте хотя бы один показатель.</value>
+  </data>
+  <data name="ViewEdit_DeleteTitle" xml:space="preserve">
+    <value>Удалить набор?</value>
+  </data>
+  <data name="ViewEdit_DeleteBody" xml:space="preserve">
+    <value>Удалится только набор. Сами измерения останутся нетронутыми.</value>
+  </data>
+  <data name="Err_View" xml:space="preserve">
+    <value>Не удалось открыть набор</value>
+  </data>
+  <data name="Err_ViewSave" xml:space="preserve">
+    <value>Не удалось сохранить набор</value>
+  </data>
+  <data name="Err_ViewDelete" xml:space="preserve">
+    <value>Не удалось удалить набор</value>
+  </data>
+  <data name="Edit_MergeTitle" xml:space="preserve">
+    <value>За это число уже есть значения</value>
+  </data>
+  <data name="Edit_MergeBody" xml:space="preserve">
+    <value>За {0} эти показатели уже записаны, и значения другие:
+
+{1}
+
+Заменить прежние значения новыми?</value>
+  </data>
+  <data name="Edit_MergeReplace" xml:space="preserve">
+    <value>Заменить</value>
+  </data>
+  <data name="Edit_MergeKeep" xml:space="preserve">
+    <value>Оставить прежние</value>
+  </data>
+  <data name="Edit_MergeMore" xml:space="preserve">
+    <value>…и ещё {0}</value>
+  </data>
 </root>

@@ -15,6 +15,13 @@ namespace MedicalResultsTracker.Services.Database
         /// <summary>Анализ, предшествующий указанной дате — для сравнения "стало лучше/хуже".</summary>
         Task<BloodTest?> GetPreviousAsync(DateTime beforeDate);
 
+        /// <summary>
+        /// Уже сохранённый анализ за то же число, кроме <paramref name="exceptId"/>.
+        /// Нужен, чтобы второй бланк от того же дня дописался в существующую запись,
+        /// а не завёл рядом столбец с той же датой в шапке.
+        /// </summary>
+        Task<BloodTest?> GetByDateAsync(DateTime date, Guid exceptId);
+
         /// <summary>Вставляет или обновляет анализ вместе со строками показателей (в транзакции).</summary>
         Task SaveAsync(BloodTest test);
 

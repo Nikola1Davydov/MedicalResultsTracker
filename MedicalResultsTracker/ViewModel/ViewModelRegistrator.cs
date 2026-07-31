@@ -16,6 +16,7 @@ namespace MedicalResultsTracker.ViewModel
             .AddTransient<TrendDetailViewModel>()
             .AddTransient<CatalogViewModel>()
             .AddTransient<CatalogEditViewModel>()
+            .AddTransient<ViewEditViewModel>()
             ;
 
         public static IServiceCollection RegisterPages(this IServiceCollection services) => services
@@ -28,6 +29,7 @@ namespace MedicalResultsTracker.ViewModel
             .AddTransient<TrendDetailPage>()
             .AddTransient<CatalogPage>()
             .AddTransient<CatalogEditPage>()
+            .AddTransient<ViewEditPage>()
             ;
     }
 }
