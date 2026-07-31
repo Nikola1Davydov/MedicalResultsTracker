@@ -62,20 +62,29 @@
                                 Command="{Binding AddRowCommand}"
                                 Text="Пустая строка" />
                         </Grid>
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                            <Button
-                                Grid.Column="0"
-                                Command="{Binding CopyFromPreviousCommand}"
-                                Text="Как в прошлый раз" />
-                            <Button
-                                Grid.Column="1"
-                                Command="{Binding ScanDocumentCommand}"
-                                Text="📷 Распознать" />
-                        </Grid>
+                        <Button Command="{Binding CopyFromPreviousCommand}" Text="Как в прошлый раз" />
                         <Label
                             IsVisible="{Binding HasAssistantHint}"
                             Style="{StaticResource Caption}"
                             Text="{Binding AssistantHint}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="Заполнить из фотографии" />
+                        <Label Text="Распознаёт бланк ваш чат-бот, а не приложение. Скопируйте запрос, отправьте его в чат вместе с фотографией, ответ скопируйте — и вставьте сюда." />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                Command="{Binding CopyImportPromptCommand}"
+                                Text="1. Скопировать запрос" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding PasteRowsCommand}"
+                                Text="2. Вставить из буфера" />
+                        </Grid>
+                        <Label Style="{StaticResource Caption}" Text="Приложение при этом никуда ничего не отправляет: обмен с чатом идёт через буфер обмена, вручную." />
                     </VerticalStackLayout>
                 </Border>
 

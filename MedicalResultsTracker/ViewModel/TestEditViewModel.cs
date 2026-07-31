@@ -1,7 +1,8 @@
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Ai;
-using MedicalResultsTracker.Services.UI;
 using MedicalResultsTracker.Services.Database;
+using MedicalResultsTracker.Services.Import;
+using MedicalResultsTracker.Services.UI;
 
 namespace MedicalResultsTracker.ViewModel
 {
@@ -12,6 +13,7 @@ namespace MedicalResultsTracker.ViewModel
         private readonly IAnalyteCatalog _catalog;
         private readonly IAiConsentService _consent;
         private readonly IAiAssistant _assistant;
+        private readonly ITextImportService _import;
 
         [ObservableProperty]
         private DateTime _date = DateTime.Today;
@@ -42,12 +44,14 @@ namespace MedicalResultsTracker.ViewModel
             IBloodTestRepository repository,
             IAnalyteCatalog catalog,
             IAiConsentService consent,
-            IAiAssistant assistant)
+            IAiAssistant assistant,
+            ITextImportService import)
         {
             _repository = repository;
             _catalog = catalog;
             _consent = consent;
             _assistant = assistant;
+            _import = import;
 
             Title = "Новый анализ";
         }
@@ -237,6 +241,48 @@ namespace MedicalResultsTracker.ViewModel
         private Task Cancel() => Shell.Current.GoToAsync("..");
 
         /// <summary>
+        /// Кладёт в буфер запрос для чат-бота. Дальше пользователь сам фотографирует бланк
+        /// в своём чате, получает текст в нужном формате и возвращается сюда с кнопкой «Вставить».
+        /// Распознаванием занимается чат пользователя — приложению не нужны ни ключи, ни сеть.
+        /// </summary>
+        [RelayCommand]
+        private Task CopyImportPrompt() => RunAsync(async () =>
+        {
+            await Clipboard.Default.SetTextAsync(_import.PromptForChat);
+
+            await Dialog.AlertAsync(
+                "Запрос скопирован",
+                "Вставьте его в любой чат-бот вместе с фотографией бланка. Полученный ответ " +
+                "скопируйте и вернитесь сюда — кнопка «Вставить из буфера» разложит его по строкам.");
+        }, "Не удалось скопировать запрос");
+
+        /// <summary>Разбирает текст из буфера в строки показателей.</summary>
+        [RelayCommand]
+        private Task PasteRows() => RunAsync(async () =>
+        {
+            string? text = await Clipboard.Default.GetTextAsync();
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                await Dialog.AlertAsync("Буфер пуст", "Сначала скопируйте таблицу с результатами.");
+                return;
+            }
+
+            AiDraft draft = _import.Parse(text);
+
+            if (draft.Rows.Count == 0)
+            {
+                await Dialog.AlertAsync(
+                    "Не разобрано",
+                    "В тексте не нашлось строк показателей. Каждая строка должна выглядеть так:\n\n" +
+                    "Ферритин | 18 | мкг/л | 30 | 300");
+                return;
+            }
+
+            ApplyDraft(draft);
+        }, "Не удалось разобрать текст");
+
+        /// <summary>
         /// Кнопка "распознать бланк". Пока провайдер не подключён, честно говорим об этом,
         /// вместо того чтобы делать вид, что функция есть.
         /// </summary>
@@ -299,9 +345,11 @@ namespace MedicalResultsTracker.ViewModel
 
             _origin = DataOrigin.AssistedReview;
 
+            string added = $"Добавлено строк: {draft.Rows.Count}. Проверьте значения перед сохранением.";
+
             AssistantHint = draft.Warnings.Count > 0
-                ? $"Проверьте распознанное. Замечания: {string.Join("; ", draft.Warnings)}"
-                : "Проверьте распознанные значения перед сохранением.";
+                ? $"{added} Не разобрано: {string.Join("; ", draft.Warnings)}"
+                : added;
         }
 
         private async Task LoadAsync()
