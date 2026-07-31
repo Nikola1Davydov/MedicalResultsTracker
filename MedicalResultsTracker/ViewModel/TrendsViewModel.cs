@@ -1,3 +1,4 @@
+using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Analysis;
@@ -18,9 +19,15 @@ namespace MedicalResultsTracker.ViewModel
         private bool _isEmpty = true;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HistoryFilterText))]
+        [NotifyPropertyChangedFor(nameof(HistoryFilterBackground))]
+        [NotifyPropertyChangedFor(nameof(HistoryFilterForeground))]
         private bool _onlyWithHistory = true;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(FavoritesFilterText))]
+        [NotifyPropertyChangedFor(nameof(FavoritesFilterBackground))]
+        [NotifyPropertyChangedFor(nameof(FavoritesFilterForeground))]
         private bool _onlyFavorites;
 
         public TrendsViewModel(IAnalysisService analysis, IAnalyteCatalog catalog)
@@ -32,6 +39,25 @@ namespace MedicalResultsTracker.ViewModel
         }
 
         public ObservableCollection<SeriesGroupViewModel> Groups { get; } = new();
+
+        // Кнопка-переключатель обязана показывать своё состояние: галочка в тексте плюс заливка.
+        // Один только цвет прочитается не всеми, один только текст теряется среди других кнопок.
+
+        public string FavoritesFilterText => OnlyFavorites
+            ? $"✓ {S.Trend_OnlyFavorites}"
+            : S.Trend_OnlyFavorites;
+
+        public string HistoryFilterText => OnlyWithHistory
+            ? $"✓ {S.Trend_OnlyWithHistory}"
+            : S.Trend_OnlyWithHistory;
+
+        public Color FavoritesFilterBackground => FilterBackground(OnlyFavorites);
+
+        public Color HistoryFilterBackground => FilterBackground(OnlyWithHistory);
+
+        public Color FavoritesFilterForeground => FilterForeground(OnlyFavorites);
+
+        public Color HistoryFilterForeground => FilterForeground(OnlyWithHistory);
 
         public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Charts);
 
@@ -59,6 +85,13 @@ namespace MedicalResultsTracker.ViewModel
 
             return RunAsync(LoadAsync, S.Err_Charts);
         }
+
+        /// <summary>Включённый фильтр залит основным цветом, выключенный — приглушённым.</summary>
+        private static Color FilterBackground(bool active) =>
+            active ? StatusPalette.FilterOn : StatusPalette.FilterOff;
+
+        private static Color FilterForeground(bool active) =>
+            active ? Colors.White : StatusPalette.FilterOffText;
 
         private async Task LoadAsync()
         {

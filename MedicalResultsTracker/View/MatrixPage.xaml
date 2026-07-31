@@ -5,30 +5,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Shell.NavBarIsVisible="False"
     Title="{Binding Title}"
     x:DataType="vm:MatrixViewModel">
 
+    <!--  Заголовка нет намеренно: вкладка внизу и так называется «Таблица»,
+          а на этом экране каждая строка по вертикали на счету.  -->
     <Grid Padding="12,8" RowDefinitions="Auto,*" RowSpacing="8">
 
         <VerticalStackLayout Grid.Row="0" Spacing="6">
-            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                <Picker
-                    Grid.Column="0"
-                    ItemDisplayBinding="{Binding Name, x:DataType=vm:MatrixViewOption}"
-                    ItemsSource="{Binding Views}"
-                    SelectedItem="{Binding SelectedView}" />
-                <Button
-                    Grid.Column="1"
-                    Command="{Binding EditViewCommand}"
-                    IsVisible="{Binding HasSelectedView}"
-                    Text="✎"
-                    WidthRequest="52" />
-                <Button
-                    Grid.Column="2"
-                    Command="{Binding NewViewCommand}"
-                    Text="＋"
-                    WidthRequest="52" />
-            </Grid>
+            <!--  Единственный орган управления: выбор набора и он же вход в его правку.
+                  Кнопки рядом с ним съедали ширину и место, ради которого таблица и делалась.  -->
+            <Picker
+                ItemDisplayBinding="{Binding Name, x:DataType=vm:MatrixViewOption}"
+                ItemsSource="{Binding Views}"
+                SelectedItem="{Binding SelectedView}" />
             <Label
                 IsVisible="{Binding IsEmpty}"
                 Style="{StaticResource Caption}"

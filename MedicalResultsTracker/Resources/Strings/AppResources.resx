@@ -946,4 +946,19 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Set_Version" xml:space="preserve">
     <value>Version {0} (Build {1})</value>
   </data>
+  <data name="Trend_OnlyWithHistory" xml:space="preserve">
+    <value>Nur mit Verlauf</value>
+  </data>
+  <data name="Matrix_NewView" xml:space="preserve">
+    <value>＋ Neue Ansicht …</value>
+  </data>
+  <data name="Matrix_EditView" xml:space="preserve">
+    <value>✎ Ausgewählte Ansicht ändern …</value>
+  </data>
+  <data name="Set_HistoryBody" xml:space="preserve">
+    <value>Alle erfassten Befunde, einzeln zum Öffnen und Ändern.</value>
+  </data>
+  <data name="Set_HistoryOpen" xml:space="preserve">
+    <value>Befunde öffnen</value>
+  </data>
 </root>

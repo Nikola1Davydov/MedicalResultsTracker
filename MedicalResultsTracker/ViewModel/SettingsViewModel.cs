@@ -142,6 +142,9 @@ namespace MedicalResultsTracker.ViewModel
         private Task OpenCatalog() => Shell.Current.GoToAsync(AppRoutes.Catalog);
 
         [RelayCommand]
+        private Task OpenHistory() => Shell.Current.GoToAsync(AppRoutes.History);
+
+        [RelayCommand]
         private Task ShareForAi() => RunAsync(async () =>
         {
             string text = await _export.BuildTextSummaryAsync();

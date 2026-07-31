@@ -20,9 +20,6 @@ namespace MedicalResultsTracker.ViewModel
         private bool _isEmpty = true;
 
         [ObservableProperty]
-        private bool _hasSelectedView;
-
-        [ObservableProperty]
         private MatrixViewOption? _selectedView;
 
         public MatrixViewModel(IAnalysisService analysis, IMatrixViewRepository views)
@@ -47,6 +44,9 @@ namespace MedicalResultsTracker.ViewModel
         /// </summary>
         public Guid? PendingViewId { get; set; }
 
+        /// <summary>Выбранный набор до того, как в списке нажали пункт-действие.</summary>
+        private Guid? _lastSelectedId;
+
         /// <summary>Сообщает странице, что таблицу нужно построить заново.</summary>
         public event EventHandler? Rebuilt;
 
@@ -55,15 +55,29 @@ namespace MedicalResultsTracker.ViewModel
         [RelayCommand]
         private Task Refresh() => RunAsync(LoadAsync, S.Err_Refresh);
 
-        partial void OnSelectedViewChanged(MatrixViewOption? value) => _ = RunAsync(LoadAsync, S.Err_Load);
+        /// <summary>
+        /// Выбор в списке. Два последних пункта — не наборы, а действия: завести новый набор
+        /// и поправить выбранный. Кнопки рядом со списком отняли бы ширину у таблицы,
+        /// а список и так открыт ровно тогда, когда человек думает про наборы.
+        /// </summary>
+        partial void OnSelectedViewChanged(MatrixViewOption? value)
+        {
+            if (value is null || value.Kind == MatrixViewKind.View)
+            {
+                _ = RunAsync(LoadAsync, S.Err_Load);
+                return;
+            }
 
-        [RelayCommand]
-        private Task NewView() => Shell.Current.GoToAsync(AppRoutes.ViewEdit);
+            // Пункт-действие в списке не остаётся: возвращаем прежний выбор и уходим в редактор.
+            MatrixViewOption? previous = Views.FirstOrDefault(v => v.Id == _lastSelectedId)
+                ?? Views.FirstOrDefault(v => v.Kind == MatrixViewKind.View);
 
-        [RelayCommand]
-        private Task EditView() => SelectedView?.Id is Guid id
-            ? Shell.Current.GoToAsync($"{AppRoutes.ViewEdit}?{AppRoutes.ViewIdParameter}={id}")
-            : Shell.Current.GoToAsync(AppRoutes.ViewEdit);
+            SetProperty(ref _selectedView, previous, nameof(SelectedView));
+
+            _ = value.Kind == MatrixViewKind.New
+                ? Shell.Current.GoToAsync(AppRoutes.ViewEdit)
+                : Shell.Current.GoToAsync($"{AppRoutes.ViewEdit}?{AppRoutes.ViewIdParameter}={_lastSelectedId}");
+        }
 
         [RelayCommand]
         private Task OpenRow(MatrixRowViewModel? row) => row is null
@@ -87,7 +101,16 @@ namespace MedicalResultsTracker.ViewModel
             }
 
             // Пересобранный список — новые объекты: возвращаем выбор по идентификатору.
-            MatrixViewOption? restored = Views.FirstOrDefault(v => v.Id == current);
+            MatrixViewOption? restored = Views.FirstOrDefault(v => v.Id == current && v.Kind == MatrixViewKind.View);
+
+            _lastSelectedId = restored?.Id;
+
+            Views.Add(new MatrixViewOption { Name = S.Matrix_NewView, Kind = MatrixViewKind.New });
+
+            if (restored?.Id is not null)
+            {
+                Views.Add(new MatrixViewOption { Name = S.Matrix_EditView, Kind = MatrixViewKind.Edit });
+            }
 
             if (!ReferenceEquals(restored, SelectedView))
             {
@@ -145,18 +168,27 @@ namespace MedicalResultsTracker.ViewModel
             }
 
             IsEmpty = Rows.Count == 0;
-            HasSelectedView = SelectedView?.Id is not null;
 
             Rebuilt?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    /// <summary>Пункт списка наборов. Id пустой у пункта «все показатели».</summary>
+    /// <summary>Что означает пункт списка: выбор набора или действие над наборами.</summary>
+    public enum MatrixViewKind
+    {
+        View,
+        New,
+        Edit,
+    }
+
+    /// <summary>Пункт списка наборов. Id пустой у пункта «все показатели» и у пунктов-действий.</summary>
     public sealed class MatrixViewOption
     {
         public Guid? Id { get; init; }
 
         public required string Name { get; init; }
+
+        public MatrixViewKind Kind { get; init; } = MatrixViewKind.View;
 
         /// <summary>null — показывать всё; иначе состав набора в его порядке.</summary>
         public List<string>? Codes { get; init; }

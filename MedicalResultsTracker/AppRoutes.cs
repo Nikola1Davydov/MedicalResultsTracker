@@ -5,10 +5,10 @@ namespace MedicalResultsTracker
     {
         public const string Dashboard = "//dashboard";
         public const string Matrix = "//matrix";
-        public const string History = "//history";
         public const string Trends = "//trends";
         public const string Settings = "//settings";
 
+        public const string History = "history";
         public const string TestEdit = "testedit";
         public const string TrendDetail = "trenddetail";
         public const string Catalog = "catalog";

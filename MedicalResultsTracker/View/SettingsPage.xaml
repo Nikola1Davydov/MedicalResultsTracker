@@ -33,6 +33,14 @@
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Tab_History}" />
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_HistoryBody}" />
+                    <Button Command="{Binding OpenHistoryCommand}" Text="{x:Static loc:S.Set_HistoryOpen}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
                     <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Set_CatalogTitle}" />
                     <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_CatalogBody}" />
                     <Button Command="{Binding OpenCatalogCommand}" Text="{x:Static loc:S.Set_CatalogOpen}" />

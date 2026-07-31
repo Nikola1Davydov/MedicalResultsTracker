@@ -15,6 +15,14 @@ namespace MedicalResultsTracker.Controls
         public static readonly Color Worsened = Color.FromArgb("#C62828");
         public static readonly Color Stable = Color.FromArgb("#757575");
 
+        /// <summary>Включённый фильтр. Основной цвет приложения — тот же, что у активных кнопок.</summary>
+        public static readonly Color FilterOn = Color.FromArgb("#512BD4");
+
+        /// <summary>Выключенный фильтр: видно, что кнопка есть, но она не работает.</summary>
+        public static readonly Color FilterOff = Color.FromArgb("#3A3A3A");
+
+        public static readonly Color FilterOffText = Color.FromArgb("#C8C8C8");
+
         public static readonly Color RangeBand = Color.FromArgb("#332E7D32");
         public static readonly Color Line = Color.FromArgb("#455A64");
         public static readonly Color Axis = Color.FromArgb("#BDBDBD");

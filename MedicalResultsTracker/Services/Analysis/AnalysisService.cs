@@ -21,28 +21,48 @@ namespace MedicalResultsTracker.Services.Analysis
 
             // Столбец — календарная дата. Внутри дня более поздняя запись перекрывает раннюю:
             // если человек дописал бланк вторым заходом, показать надо то, что он дописал.
-            List<(DateTime Date, List<BloodParameter> Parameters)> columns = tests
+            //
+            // Ключ показателя считается по одному разу на измерение и раскладывается в словарь
+            // столбца. Иначе поиск ячейки перебирал бы столбец для каждой строки, пересчитывая
+            // ключ заново, — на трёх десятках показателей это тысячи лишних сравнений строк
+            // при каждом открытии вкладки.
+            List<(DateTime Date, Dictionary<string, BloodParameter> ByKey)> columns = tests
                 .GroupBy(test => test.Date.Date)
                 .OrderBy(group => group.Key)
-                .Select(group => (
-                    Date: group.Key,
-                    Parameters: group
-                        .OrderBy(test => test.ModifiedUtc)
-                        .SelectMany(test => test.Parameters)
-                        .ToList()))
+                .Select(group =>
+                {
+                    Dictionary<string, BloodParameter> byKey = new(StringComparer.Ordinal);
+
+                    foreach (BloodTest test in group.OrderBy(t => t.ModifiedUtc))
+                    {
+                        foreach (BloodParameter parameter in test.Parameters)
+                        {
+                            byKey[GetKey(parameter)] = parameter;
+                        }
+                    }
+
+                    return (Date: group.Key, ByKey: byKey);
+                })
                 .ToList();
 
-            List<MatrixLine> lines = columns
-                .SelectMany(column => column.Parameters)
-                .GroupBy(GetKey)
-                .Select(group => new MatrixLine
-                {
-                    Key = group.Key,
+            // Столбцы идут от старых к новым, значит последнее найденное измерение — самое свежее.
+            Dictionary<string, BloodParameter> newest = new(StringComparer.Ordinal);
 
-                    // Столбцы идут от старых к новым, значит последнее измерение — самое свежее.
-                    Newest = group.Last(),
+            foreach ((_, Dictionary<string, BloodParameter> byKey) in columns)
+            {
+                foreach ((string key, BloodParameter parameter) in byKey)
+                {
+                    newest[key] = parameter;
+                }
+            }
+
+            List<MatrixLine> lines = newest
+                .Select(pair => new MatrixLine
+                {
+                    Key = pair.Key,
+                    Newest = pair.Value,
                     Cells = columns
-                        .Select(column => column.Parameters.LastOrDefault(p => GetKey(p) == group.Key))
+                        .Select(column => column.ByKey.GetValueOrDefault(pair.Key))
                         .ToList(),
                 })
                 .OrderBy(line => line.Newest.Name, StringComparer.CurrentCulture)
