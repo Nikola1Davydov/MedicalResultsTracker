@@ -7,11 +7,11 @@ namespace MedicalResultsTracker.ViewModel
         public static IServiceCollection RegisterViewModels(this IServiceCollection services) => services
             .AddSingleton<MainViewModel>()
             .AddSingleton<MatrixViewModel>()
-            .AddSingleton<HistoryViewModel>()
             .AddSingleton<TrendsViewModel>()
             .AddSingleton<SettingsViewModel>()
 
             // Экраны с параметром маршрута создаются заново на каждый переход.
+            .AddTransient<HistoryViewModel>()
             .AddTransient<TestEditViewModel>()
             .AddTransient<TrendDetailViewModel>()
             .AddTransient<CatalogViewModel>()
@@ -22,9 +22,9 @@ namespace MedicalResultsTracker.ViewModel
         public static IServiceCollection RegisterPages(this IServiceCollection services) => services
             .AddSingleton<MainPage>()
             .AddSingleton<MatrixPage>()
-            .AddSingleton<HistoryPage>()
             .AddSingleton<TrendsPage>()
             .AddSingleton<SettingsPage>()
+            .AddTransient<HistoryPage>()
             .AddTransient<TestEditPage>()
             .AddTransient<TrendDetailPage>()
             .AddTransient<CatalogPage>()

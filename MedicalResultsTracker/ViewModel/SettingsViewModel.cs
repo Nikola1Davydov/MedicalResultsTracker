@@ -26,6 +26,9 @@ namespace MedicalResultsTracker.ViewModel
         private string _assistantSummary = string.Empty;
 
         [ObservableProperty]
+        private string _versionSummary = string.Empty;
+
+        [ObservableProperty]
         private LanguageOption? _selectedLanguage;
 
         /// <summary>Защита от рекурсии: при загрузке язык проставляется программно.</summary>
@@ -139,6 +142,9 @@ namespace MedicalResultsTracker.ViewModel
         private Task OpenCatalog() => Shell.Current.GoToAsync(AppRoutes.Catalog);
 
         [RelayCommand]
+        private Task OpenHistory() => Shell.Current.GoToAsync(AppRoutes.History);
+
+        [RelayCommand]
         private Task ShareForAi() => RunAsync(async () =>
         {
             string text = await _export.BuildTextSummaryAsync();
@@ -174,6 +180,13 @@ namespace MedicalResultsTracker.ViewModel
             };
 
             UpdateAssistantSummary();
+
+            // Версия ставится тегом релиза и больше нигде: увидев её здесь, можно сверить,
+            // что на телефоне стоит именно тот выпуск, который лежит в Releases.
+            VersionSummary = string.Format(
+                S.Set_Version,
+                AppInfo.Current.VersionString,
+                AppInfo.Current.BuildString);
         }
 
         private void UpdateAssistantSummary()

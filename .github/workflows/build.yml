@@ -3,11 +3,24 @@ name: Build
 # Проверка сборки на каждый пуш: без неё ошибка компиляции всплывает только на машине
 # разработчика. Debug-APK подписан отладочным ключом и ставится на телефон,
 # так что артефакт годится для быстрой проверки, не дожидаясь релиза.
+#
+# Триггера намеренно два, а не три. Раньше был ещё pull_request, и он собирал ровно тот же
+# коммит, что уже собрался по push, — две одинаковые сборки одновременно на каждый PR.
 on:
   push:
     branches: ['**']
-  pull_request:
+
+    # Правки документации собирать нечего: код от них не меняется.
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
   workflow_dispatch:
+
+# Новый пуш в ту же ветку отменяет предыдущую сборку: проверять устаревший коммит незачем,
+# а очередь из параллельных запусков только мешает понять, какой из них актуальный.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   android:
@@ -31,7 +44,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
-          key: nuget-${{ runner.os }}-${{ hashFiles('**/Directory.build.props', '**/*.csproj') }}
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/Directory.Build.props', '**/*.csproj') }}
           restore-keys: nuget-${{ runner.os }}-
 
       - name: Install MAUI Android workload

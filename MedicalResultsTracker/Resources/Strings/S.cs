@@ -905,5 +905,29 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Andere Einheit als bisher: {0}. Werte in verschiedenen Einheiten sind </summary>
         public static string Edit_OtherUnits => Get("Edit_OtherUnits");
+
+        /// <summary>Über die App</summary>
+        public static string Set_AboutTitle => Get("Set_AboutTitle");
+
+        /// <summary>Die Version entspricht dem Release auf GitHub. Alle Daten bleiben auf </summary>
+        public static string Set_AboutBody => Get("Set_AboutBody");
+
+        /// <summary>Version {0} (Build {1})</summary>
+        public static string Set_Version => Get("Set_Version");
+
+        /// <summary>Nur mit Verlauf</summary>
+        public static string Trend_OnlyWithHistory => Get("Trend_OnlyWithHistory");
+
+        /// <summary>＋ Neue Ansicht …</summary>
+        public static string Matrix_NewView => Get("Matrix_NewView");
+
+        /// <summary>✎ Ausgewählte Ansicht ändern …</summary>
+        public static string Matrix_EditView => Get("Matrix_EditView");
+
+        /// <summary>Alle erfassten Befunde, einzeln zum Öffnen und Ändern.</summary>
+        public static string Set_HistoryBody => Get("Set_HistoryBody");
+
+        /// <summary>Befunde öffnen</summary>
+        public static string Set_HistoryOpen => Get("Set_HistoryOpen");
     }
 }

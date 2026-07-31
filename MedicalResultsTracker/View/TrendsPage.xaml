@@ -18,12 +18,16 @@
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Button
                     Grid.Column="0"
+                    BackgroundColor="{Binding FavoritesFilterBackground}"
                     Command="{Binding ToggleFavoritesFilterCommand}"
-                    Text="{x:Static loc:S.Trend_OnlyFavorites}" />
+                    Text="{Binding FavoritesFilterText}"
+                    TextColor="{Binding FavoritesFilterForeground}" />
                 <Button
                     Grid.Column="1"
+                    BackgroundColor="{Binding HistoryFilterBackground}"
                     Command="{Binding ToggleHistoryFilterCommand}"
-                    Text="{x:Static loc:S.Trend_AllOrHistory}" />
+                    Text="{Binding HistoryFilterText}"
+                    TextColor="{Binding HistoryFilterForeground}" />
             </Grid>
         </VerticalStackLayout>
 

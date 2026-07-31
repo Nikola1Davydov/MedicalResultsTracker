@@ -937,4 +937,28 @@
   <data name="Edit_OtherUnits" xml:space="preserve">
     <value>Единицы отличаются от прежних: {0}. Значения в разных единицах несравнимы — проверьте.</value>
   </data>
+  <data name="Set_AboutTitle" xml:space="preserve">
+    <value>О приложении</value>
+  </data>
+  <data name="Set_AboutBody" xml:space="preserve">
+    <value>Версия совпадает с выпуском на GitHub. Все данные остаются на этом устройстве.</value>
+  </data>
+  <data name="Set_Version" xml:space="preserve">
+    <value>Версия {0} (сборка {1})</value>
+  </data>
+  <data name="Trend_OnlyWithHistory" xml:space="preserve">
+    <value>Только с историей</value>
+  </data>
+  <data name="Matrix_NewView" xml:space="preserve">
+    <value>＋ Новый набор …</value>
+  </data>
+  <data name="Matrix_EditView" xml:space="preserve">
+    <value>✎ Изменить выбранный набор …</value>
+  </data>
+  <data name="Set_HistoryBody" xml:space="preserve">
+    <value>Все внесённые анализы — открыть и поправить любой.</value>
+  </data>
+  <data name="Set_HistoryOpen" xml:space="preserve">
+    <value>Открыть анализы</value>
+  </data>
 </root>

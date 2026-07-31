@@ -9,6 +9,7 @@ namespace MedicalResultsTracker
             InitializeComponent();
 
             // Экраны, на которые переходят с параметром, вкладками не являются.
+            Routing.RegisterRoute(AppRoutes.History, typeof(HistoryPage));
             Routing.RegisterRoute(AppRoutes.TestEdit, typeof(TestEditPage));
             Routing.RegisterRoute(AppRoutes.TrendDetail, typeof(TrendDetailPage));
             Routing.RegisterRoute(AppRoutes.Catalog, typeof(CatalogPage));
