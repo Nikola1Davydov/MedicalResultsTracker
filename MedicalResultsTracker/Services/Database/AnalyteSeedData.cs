@@ -22,17 +22,17 @@ namespace MedicalResultsTracker.Services.Database
         /// </summary>
         internal const int Version = 2;
 
-        private const string Cbc = "Blutbild";
-        private const string Liver = "Leberwerte";
-        private const string Kidney = "Nierenwerte";
-        private const string Lipids = "Blutfette";
-        private const string Metabolism = "Stoffwechsel";
-        private const string Iron = "Eisenstoffwechsel";
-        private const string Vitamins = "Vitamine";
-        private const string Electrolytes = "Elektrolyte";
-        private const string Thyroid = "Schilddrüse";
-        private const string Hormones = "Hormone";
-        private const string Inflammation = "Entzündung";
+        private const string Cbc = AnalyteCategories.Cbc;
+        private const string Liver = AnalyteCategories.Liver;
+        private const string Kidney = AnalyteCategories.Kidney;
+        private const string Lipids = AnalyteCategories.Lipids;
+        private const string Metabolism = AnalyteCategories.Metabolism;
+        private const string Iron = AnalyteCategories.Iron;
+        private const string Vitamins = AnalyteCategories.Vitamins;
+        private const string Electrolytes = AnalyteCategories.Electrolytes;
+        private const string Thyroid = AnalyteCategories.Thyroid;
+        private const string Hormones = AnalyteCategories.Hormones;
+        private const string Inflammation = AnalyteCategories.Inflammation;
 
         internal static IReadOnlyList<Analyte> BuiltIn { get; } = new List<Analyte>
         {

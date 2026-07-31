@@ -79,7 +79,7 @@ namespace MedicalResultsTracker.ViewModel
                 : S.Trend_RefUnknown;
             Subtitle = series.Points.Count == 1
                 ? S.Trend_SinglePoint
-                : string.Format(S.Trend_Since, series.Points.Count, series.Points[0].Date.ToString("dd.MM.yyyy"));
+                : string.Format(S.Trend_Since, series.Points.Count, series.Points[0].Date.ToString("d", CultureInfo.CurrentCulture));
 
             // Свежие значения сверху — так удобнее сверяться с последним бланком.
             for (int i = series.Points.Count - 1; i >= 0; i--)
@@ -97,7 +97,7 @@ namespace MedicalResultsTracker.ViewModel
     {
         public SeriesRowViewModel(SeriesPoint point, double? previous, string? unit)
         {
-            DateText = point.Date.ToString("dd.MM.yyyy");
+            DateText = point.Date.ToString("d", CultureInfo.CurrentCulture);
             ValueText = $"{point.Value.ToString("0.####", CultureInfo.CurrentCulture)} {unit}".Trim();
             StatusText = StatusPalette.Describe(point.Status);
             StatusColor = StatusPalette.For(point.Status);

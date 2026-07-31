@@ -24,7 +24,7 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Языки, между которыми можно переключаться. Пустой код — «как в системе».</summary>
         public static IReadOnlyList<LanguageOption> Available { get; } = new[]
         {
-            new LanguageOption(string.Empty, "System"),
+            new LanguageOption(string.Empty, "Lang_System"),
             new LanguageOption("de", "Deutsch"),
             new LanguageOption("ru", "Русский"),
         };
@@ -64,6 +64,10 @@ namespace MedicalResultsTracker.Resources.Strings
 
     /// <summary>Пункт списка языков.</summary>
     /// <param name="Code">Код культуры; пустой — язык системы.</param>
-    /// <param name="Name">Название на самом этом языке, а не в переводе.</param>
-    public sealed record LanguageOption(string Code, string Name);
+    /// <param name="NameOrKey">Название на самом этом языке. Для «как в системе» —
+    /// ключ ресурса: у этого пункта своего языка нет, он должен переводиться.</param>
+    public sealed record LanguageOption(string Code, string NameOrKey)
+    {
+        public string Name => S.Find(NameOrKey) ?? NameOrKey;
+    }
 }

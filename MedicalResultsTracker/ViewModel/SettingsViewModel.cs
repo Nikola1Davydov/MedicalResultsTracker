@@ -1,3 +1,4 @@
+using System.Globalization;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.UI;
@@ -173,7 +174,7 @@ namespace MedicalResultsTracker.ViewModel
             }
 
             string when = _consent.Current.GrantedUtc is DateTime granted
-                ? $" {granted.ToLocalTime():dd.MM.yyyy}."
+                ? $" {granted.ToLocalTime().ToString("d", CultureInfo.CurrentCulture)}."
                 : ".";
 
             AssistantSummary = string.Format(S.Set_AiGranted, _assistant.ProviderName, when);

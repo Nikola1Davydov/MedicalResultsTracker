@@ -14,8 +14,8 @@ namespace MedicalResultsTracker.Services.Export
     /// </summary>
     public sealed class ExportService : IExportService
     {
-        // Точка с запятой + числа в текущей культуре: так файл открывается в Excel без "мастера импорта".
-        private const char Separator = ';';
+        /// <summary>Разделитель берётся из культуры: Excel ждёт тот же, что и система.</summary>
+        private static char Separator => CultureInfo.CurrentCulture.TextInfo.ListSeparator.FirstOrDefault(';');
 
         private static readonly JsonSerializerOptions BackupJsonOptions = new()
         {
@@ -52,7 +52,7 @@ namespace MedicalResultsTracker.Services.Export
 
             foreach (BloodTest test in ordered)
             {
-                builder.Append(Separator).Append(Escape(test.Date.ToString("dd.MM.yyyy")));
+                builder.Append(Separator).Append(Escape(test.Date.ToString("d", CultureInfo.CurrentCulture)));
             }
 
             builder.AppendLine();
@@ -91,7 +91,7 @@ namespace MedicalResultsTracker.Services.Export
                 foreach (BloodParameter parameter in test.Parameters)
                 {
                     builder.AppendLine(Join(
-                        test.Date.ToString("dd.MM.yyyy"),
+                        test.Date.ToString("d", CultureInfo.CurrentCulture),
                         test.Laboratory ?? string.Empty,
                         parameter.Code ?? string.Empty,
                         parameter.Name,
@@ -193,7 +193,7 @@ namespace MedicalResultsTracker.Services.Export
 
             foreach (BloodTest test in ordered)
             {
-                builder.Append($" {test.Date:dd.MM.yyyy} |");
+                builder.Append($" {test.Date.ToString("d", CultureInfo.CurrentCulture)} |");
             }
 
             builder.AppendLine();

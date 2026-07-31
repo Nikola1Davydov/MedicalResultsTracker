@@ -61,7 +61,7 @@ namespace MedicalResultsTracker.ViewModel
         public bool HasComparison => _trend.Previous is not null;
 
         public string ComparisonHint => _trend.PreviousDate is DateTime date
-            ? string.Format(S.Item_Previous, _trend.Previous?.DisplayValue, date.ToString("dd.MM.yyyy"))
+            ? string.Format(S.Item_Previous, _trend.Previous?.DisplayValue, date.ToString("d", CultureInfo.CurrentCulture))
             : S.Item_First;
     }
 }

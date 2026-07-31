@@ -117,7 +117,7 @@ namespace MedicalResultsTracker.ViewModel
                 Code = code,
                 Name = name,
                 Unit = string.IsNullOrWhiteSpace(Unit) ? null : Unit.Trim(),
-                Category = string.IsNullOrWhiteSpace(Category) ? S.Edit_MyValues : Category.Trim(),
+                Category = string.IsNullOrWhiteSpace(Category) ? AnalyteCategories.Own : Category.Trim(),
                 RefMin = ParameterRowViewModel.ParseNumber(RefMinText),
                 RefMax = ParameterRowViewModel.ParseNumber(RefMaxText),
                 Notes = string.IsNullOrWhiteSpace(Notes) ? null : Notes.Trim(),

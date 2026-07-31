@@ -371,7 +371,7 @@ namespace MedicalResultsTracker.ViewModel
                     Code = parameter.Code,
                     Name = parameter.Name,
                     Unit = parameter.Unit,
-                    Category = S.Edit_MyValues,
+                    Category = AnalyteCategories.Own,
                     RefMin = parameter.RefMin,
                     RefMax = parameter.RefMax,
                     IsBuiltIn = false,

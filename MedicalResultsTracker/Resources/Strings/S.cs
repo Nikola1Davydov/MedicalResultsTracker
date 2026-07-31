@@ -17,6 +17,10 @@ namespace MedicalResultsTracker.Resources.Strings
         public static string Get(string key) =>
             Manager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 
+        /// <summary>Строка по ключу или null, если ключа нет. Для необязательных переводов.</summary>
+        public static string? Find(string? key) =>
+            string.IsNullOrEmpty(key) ? null : Manager.GetString(key, CultureInfo.CurrentUICulture);
+
         /// <summary>Laborwerte</summary>
         public static string App_Title => Get("App_Title");
 
@@ -790,5 +794,44 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>«System» übernimmt die Sprache des Geräts. Die Umstellung wirkt sofort</summary>
         public static string Set_LanguageNote => Get("Set_LanguageNote");
+
+        /// <summary>Blutbild</summary>
+        public static string Cat_Group_Cbc => Get("Cat_Group_Cbc");
+
+        /// <summary>Leberwerte</summary>
+        public static string Cat_Group_Liver => Get("Cat_Group_Liver");
+
+        /// <summary>Nierenwerte</summary>
+        public static string Cat_Group_Kidney => Get("Cat_Group_Kidney");
+
+        /// <summary>Blutfette</summary>
+        public static string Cat_Group_Lipids => Get("Cat_Group_Lipids");
+
+        /// <summary>Stoffwechsel</summary>
+        public static string Cat_Group_Metabolism => Get("Cat_Group_Metabolism");
+
+        /// <summary>Eisenstoffwechsel</summary>
+        public static string Cat_Group_Iron => Get("Cat_Group_Iron");
+
+        /// <summary>Vitamine</summary>
+        public static string Cat_Group_Vitamins => Get("Cat_Group_Vitamins");
+
+        /// <summary>Elektrolyte</summary>
+        public static string Cat_Group_Electrolytes => Get("Cat_Group_Electrolytes");
+
+        /// <summary>Schilddrüse</summary>
+        public static string Cat_Group_Thyroid => Get("Cat_Group_Thyroid");
+
+        /// <summary>Hormone</summary>
+        public static string Cat_Group_Hormones => Get("Cat_Group_Hormones");
+
+        /// <summary>Entzündung</summary>
+        public static string Cat_Group_Inflammation => Get("Cat_Group_Inflammation");
+
+        /// <summary>Meine Werte</summary>
+        public static string Cat_Group_Own => Get("Cat_Group_Own");
+
+        /// <summary>Systemsprache</summary>
+        public static string Lang_System => Get("Lang_System");
     }
 }

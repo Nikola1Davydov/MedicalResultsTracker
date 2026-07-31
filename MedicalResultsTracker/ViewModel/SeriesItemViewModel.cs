@@ -17,7 +17,7 @@ namespace MedicalResultsTracker.ViewModel
             Chart = new TrendChartDrawable { Series = series, Compact = true };
 
             IsFavorite = analyte?.IsFavorite ?? false;
-            Category = string.IsNullOrWhiteSpace(analyte?.Category) ? S.Trend_NoGroup : analyte!.Category!.Trim();
+            Category = AnalyteDisplay.Category(analyte?.Category);
 
             SeriesPoint? latest = series.Latest;
 
@@ -43,7 +43,7 @@ namespace MedicalResultsTracker.ViewModel
                 DeltaText = S.Trend_OneMeasurement;
             }
 
-            LastDateText = latest is null ? string.Empty : latest.Date.ToString("dd.MM.yyyy");
+            LastDateText = latest is null ? string.Empty : latest.Date.ToString("d", CultureInfo.CurrentCulture);
         }
 
         public string Key { get; }
