@@ -8,7 +8,7 @@
     Title="{Binding Title}"
     x:DataType="vm:MainViewModel">
 
-    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
         <ScrollView>
             <VerticalStackLayout Padding="16" Spacing="14">
 
