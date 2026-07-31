@@ -3,7 +3,6 @@ using MedicalResultsTracker.Services.Analysis;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Export;
 using MedicalResultsTracker.Services.Import;
-using MedicalResultsTracker.Services.UI;
 
 namespace MedicalResultsTracker.Services
 {
@@ -18,9 +17,6 @@ namespace MedicalResultsTracker.Services
             .AddSingleton<IExportService, ExportService>()
             .AddSingleton<ITextImportService, TextImportService>()
             .AddSingleton<IAiConsentService, AiConsentService>()
-
-            // Связь между XAML-экранами и таблицей, которая живёт в веб-слое.
-            .AddSingleton<MatrixState>()
 
             // Заглушка: пока внешний провайдер не подключён, приложение работает полностью локально.
             .AddSingleton<IAiAssistant, DisabledAiAssistant>()

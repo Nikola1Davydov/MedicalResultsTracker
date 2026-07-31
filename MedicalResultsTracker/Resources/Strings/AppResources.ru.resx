@@ -961,4 +961,25 @@
   <data name="Set_HistoryOpen" xml:space="preserve">
     <value>Открыть анализы</value>
   </data>
+  <data name="Imp_AmbiguousNumber" xml:space="preserve">
+    <value>{0}: «{1}» прочитано как разделитель тысяч. Сверьте с бланком.</value>
+  </data>
+  <data name="Trend_MixedUnits" xml:space="preserve">
+    <value>Внимание: значения в разных единицах и несравнимы между собой. Приложение ничего не пересчитывает.</value>
+  </data>
+  <data name="Set_BackupNever" xml:space="preserve">
+    <value>Резервная копия ещё не делалась.</value>
+  </data>
+  <data name="Set_BackupToday" xml:space="preserve">
+    <value>Последняя резервная копия: сегодня.</value>
+  </data>
+  <data name="Set_BackupYesterday" xml:space="preserve">
+    <value>Последняя резервная копия: вчера.</value>
+  </data>
+  <data name="Set_BackupDaysAgo" xml:space="preserve">
+    <value>Последняя резервная копия: {0} дн. назад.</value>
+  </data>
+  <data name="Set_BackupOverdue" xml:space="preserve">
+    <value>Данные лежат только на этом устройстве. Потеряется телефон — история пропадёт.</value>
+  </data>
 </root>

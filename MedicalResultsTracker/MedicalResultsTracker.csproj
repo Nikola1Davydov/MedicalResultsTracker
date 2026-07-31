@@ -1,6 +1,4 @@
-﻿<!-- Sdk.Razor, а не Sdk: часть экранов собрана на Blazor Hybrid и лежит в Components,
-     статика для них — в wwwroot. Остальные экраны по-прежнему на XAML, оба слоя живут вместе. -->
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
@@ -35,8 +33,10 @@
 		<!-- Display name -->
 		<ApplicationTitle>Laborwerte</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.companyname.medicalresultstracker</ApplicationId>
+		<!-- App Identifier.
+		     После первой публикации в Play он не меняется никогда: сменить его — значит
+		     выпустить другое приложение и потерять установки. Поменять можно только сейчас. -->
+		<ApplicationId>io.github.nikola1davydov.laborwerte</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

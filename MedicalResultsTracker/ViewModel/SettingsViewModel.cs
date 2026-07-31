@@ -10,6 +10,11 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Хранение данных, выгрузка и разрешения для ИИ-помощника.</summary>
     public partial class SettingsViewModel : BaseViewModel
     {
+        private const string LastBackupKey = "backup.last.utc";
+
+        /// <summary>Через сколько дней без выгрузки напоминать заметнее.</summary>
+        private const int OverdueDays = 90;
+
         private readonly IMedicalDatabase _database;
         private readonly IBloodTestRepository _repository;
         private readonly IExportService _export;
@@ -28,11 +33,21 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private string _versionSummary = string.Empty;
 
+        /// <summary>Когда последний раз делали резервную копию.</summary>
+        [ObservableProperty]
+        private string _backupSummary = string.Empty;
+
+        /// <summary>Копии давно не было или не было вовсе — стоит показать это заметнее.</summary>
+        [ObservableProperty]
+        private bool _backupOverdue;
+
         [ObservableProperty]
         private LanguageOption? _selectedLanguage;
 
         /// <summary>Защита от рекурсии: при загрузке язык проставляется программно.</summary>
         private bool _suppressLanguageChange;
+
+        private bool _hasAnyData;
 
         public SettingsViewModel(
             IMedicalDatabase database,
@@ -96,6 +111,13 @@ namespace MedicalResultsTracker.ViewModel
         private Task ExportBackup() => RunAsync(async () =>
         {
             string path = await _export.ExportBackupAsync();
+
+            // Отметку ставим до диалога «Поделиться»: куда именно уйдёт файл, приложение
+            // не знает и знать не должно, а сам факт выгрузки — уже повод не напоминать снова.
+            Preferences.Default.Set(LastBackupKey, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+
+            UpdateBackupSummary();
+
             await _export.ShareAsync(path, S.Share_Backup);
         }, S.Err_Backup);
 
@@ -172,6 +194,8 @@ namespace MedicalResultsTracker.ViewModel
 
             int count = await _repository.CountAsync();
 
+            _hasAnyData = count > 0;
+
             StorageSummary = count switch
             {
                 0 => S.Set_StorageEmpty,
@@ -180,6 +204,7 @@ namespace MedicalResultsTracker.ViewModel
             };
 
             UpdateAssistantSummary();
+            UpdateBackupSummary();
 
             // Версия ставится тегом релиза и больше нигде: увидев её здесь, можно сверить,
             // что на телефоне стоит именно тот выпуск, который лежит в Releases.
@@ -187,6 +212,34 @@ namespace MedicalResultsTracker.ViewModel
                 S.Set_Version,
                 AppInfo.Current.VersionString,
                 AppInfo.Current.BuildString);
+        }
+
+        /// <summary>
+        /// Данные лежат только на этом устройстве — так задумано, и облака здесь не будет.
+        /// Но тогда единственная защита от потери телефона — выгрузка, и о ней надо напоминать:
+        /// архив анализов за годы восстановить неоткуда.
+        /// </summary>
+        private void UpdateBackupSummary()
+        {
+            string stored = Preferences.Default.Get(LastBackupKey, string.Empty);
+
+            if (!DateTime.TryParse(stored, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime last))
+            {
+                BackupSummary = S.Set_BackupNever;
+                BackupOverdue = _hasAnyData;
+                return;
+            }
+
+            int days = (int)Math.Floor((DateTime.UtcNow - last).TotalDays);
+
+            BackupSummary = days switch
+            {
+                <= 0 => S.Set_BackupToday,
+                1 => S.Set_BackupYesterday,
+                _ => string.Format(S.Set_BackupDaysAgo, days)
+            };
+
+            BackupOverdue = days >= OverdueDays;
         }
 
         private void UpdateAssistantSummary()

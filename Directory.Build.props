@@ -10,10 +10,6 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.50" />
-
-        <!-- Blazor Hybrid: сводная таблица собрана на нём. HTML-таблица даёт замороженные
-             колонку имён и строку дат одной строчкой CSS, чего в XAML пришлось бы городить руками. -->
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.50" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
         <PackageReference Include="Serilog" Version="4.3.1" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />

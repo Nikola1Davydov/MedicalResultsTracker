@@ -17,11 +17,24 @@ namespace MedicalResultsTracker.Model
 
         public ParameterStatus Status => Current.Status;
 
-        public double? Delta => Current.Value is double now && Previous?.Value is double before
+        /// <summary>
+        /// Прошлое измерение сделано в той же шкале, что и нынешнее.
+        ///
+        /// Лаборатории меряют одно и то же по-разному, и 12 µg/l против 30 nmol/l — это не рост
+        /// втрое, а другая единица. Пересчитать за пользователя приложение не имеет права:
+        /// коэффициент зависит от показателя, и ошибка в нём дороже, чем отсутствие сравнения.
+        /// Поэтому разные единицы означают «сравнить нельзя», а не «посчитаем как есть».
+        /// </summary>
+        public bool IsComparable => Previous is null || string.Equals(
+            Current.Unit?.Trim(),
+            Previous.Unit?.Trim(),
+            StringComparison.CurrentCultureIgnoreCase);
+
+        public double? Delta => IsComparable && Current.Value is double now && Previous?.Value is double before
             ? now - before
             : null;
 
-        public double? DeltaPercent => Current.Value is double now && Previous?.Value is double before && before != 0
+        public double? DeltaPercent => IsComparable && Current.Value is double now && Previous?.Value is double before && before != 0
             ? (now - before) / Math.Abs(before) * 100d
             : null;
 
@@ -41,7 +54,9 @@ namespace MedicalResultsTracker.Model
         {
             get
             {
-                if (Current.DistanceFromRange is not double now || Previous?.DistanceFromRange is not double before)
+                if (!IsComparable ||
+                    Current.DistanceFromRange is not double now ||
+                    Previous?.DistanceFromRange is not double before)
                 {
                     return TrendAssessment.Unknown;
                 }

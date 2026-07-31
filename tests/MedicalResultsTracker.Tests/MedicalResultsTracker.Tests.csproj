@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+        Тесты не ссылаются на проект приложения: тот собирается под net10.0-android и тянет
+        за собой всю MAUI. Проверяемый код от MAUI не зависит, поэтому нужные файлы
+        подключаются напрямую и собираются под обычный net10.0 — тесты идут за секунды
+        и не требуют ни рабочей нагрузки android, ни эмулятора.
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <RootNamespace>MedicalResultsTracker.Tests</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <NeutralLanguage>de</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+        <PackageReference Include="xunit" Version="2.9.2" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+
+        <!-- Модели помечены атрибутами sqlite-net, хотя базы в тестах нет. -->
+        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\MedicalResultsTracker\Model\*.cs" LinkBase="Linked\Model" />
+        <Compile Include="..\..\MedicalResultsTracker\Services\Ai\AiDraft.cs" LinkBase="Linked\Services" />
+        <Compile Include="..\..\MedicalResultsTracker\Services\Import\*.cs" LinkBase="Linked\Services" />
+        <Compile Include="..\..\MedicalResultsTracker\Resources\Strings\S.cs" LinkBase="Linked\Resources" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!--
+            Строки предупреждений парсер берёт из ресурсов, и без них ResourceManager падает.
+            Имя должно совпадать с тем, что ищет S: MedicalResultsTracker.Resources.Strings.AppResources.
+        -->
+        <EmbeddedResource Include="..\..\MedicalResultsTracker\Resources\Strings\AppResources.resx">
+            <ManifestResourceName>MedicalResultsTracker.Resources.Strings.AppResources</ManifestResourceName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+</Project>
