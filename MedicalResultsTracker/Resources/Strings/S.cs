@@ -902,5 +902,8 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>… und {0} weitere</summary>
         public static string Edit_MergeMore => Get("Edit_MergeMore");
+
+        /// <summary>Andere Einheit als bisher: {0}. Werte in verschiedenen Einheiten sind </summary>
+        public static string Edit_OtherUnits => Get("Edit_OtherUnits");
     }
 }

@@ -934,4 +934,7 @@
   <data name="Edit_MergeMore" xml:space="preserve">
     <value>…и ещё {0}</value>
   </data>
+  <data name="Edit_OtherUnits" xml:space="preserve">
+    <value>Единицы отличаются от прежних: {0}. Значения в разных единицах несравнимы — проверьте.</value>
+  </data>
 </root>

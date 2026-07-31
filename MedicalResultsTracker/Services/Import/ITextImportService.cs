@@ -1,3 +1,4 @@
+using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Ai;
 
 namespace MedicalResultsTracker.Services.Import
@@ -9,8 +10,15 @@ namespace MedicalResultsTracker.Services.Import
     /// </summary>
     public interface ITextImportService
     {
-        /// <summary>Запрос для чат-бота: описывает формат, в котором приложение ждёт данные.</summary>
-        string PromptForChat { get; }
+        /// <summary>
+        /// Запрос для чат-бота: описывает формат, в котором приложение ждёт данные.
+        ///
+        /// К запросу прикладывается список уже известных названий с единицами. Лаборатории
+        /// пишут один и тот же показатель по-разному — «Hb», «Hemoglobin», «Hämoglobin», —
+        /// и без списка каждая такая запись завела бы в таблице соседнюю строку с тем же смыслом.
+        /// Значения в список не идут: чат-боту нужны только названия и единицы.
+        /// </summary>
+        string BuildPrompt(IReadOnlyList<Analyte> known);
 
         /// <summary>
         /// Разбирает вставленный текст в черновик. Никогда не бросает исключение на кривом вводе:

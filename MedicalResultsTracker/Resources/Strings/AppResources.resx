@@ -934,4 +934,7 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Edit_MergeMore" xml:space="preserve">
     <value>… und {0} weitere</value>
   </data>
+  <data name="Edit_OtherUnits" xml:space="preserve">
+    <value>Andere Einheit als bisher: {0}. Werte in verschiedenen Einheiten sind nicht vergleichbar – bitte prüfen.</value>
+  </data>
 </root>
