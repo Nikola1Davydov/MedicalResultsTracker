@@ -833,5 +833,11 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Systemsprache</summary>
         public static string Lang_System => Get("Lang_System");
+
+        /// <summary>Tabelle</summary>
+        public static string Tab_Matrix => Get("Tab_Matrix");
+
+        /// <summary>Die Tabelle füllt sich, sobald der erste Befund erfasst ist. Zeilen si</summary>
+        public static string Matrix_Empty => Get("Matrix_Empty");
     }
 }

@@ -6,6 +6,7 @@ namespace MedicalResultsTracker.ViewModel
     {
         public static IServiceCollection RegisterViewModels(this IServiceCollection services) => services
             .AddSingleton<MainViewModel>()
+            .AddSingleton<MatrixViewModel>()
             .AddSingleton<HistoryViewModel>()
             .AddSingleton<TrendsViewModel>()
             .AddSingleton<SettingsViewModel>()
@@ -19,6 +20,7 @@ namespace MedicalResultsTracker.ViewModel
 
         public static IServiceCollection RegisterPages(this IServiceCollection services) => services
             .AddSingleton<MainPage>()
+            .AddSingleton<MatrixPage>()
             .AddSingleton<HistoryPage>()
             .AddSingleton<TrendsPage>()
             .AddSingleton<SettingsPage>()

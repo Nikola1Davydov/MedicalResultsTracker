@@ -4,6 +4,7 @@ namespace MedicalResultsTracker
     public static class AppRoutes
     {
         public const string Dashboard = "//dashboard";
+        public const string Matrix = "//matrix";
         public const string History = "//history";
         public const string Trends = "//trends";
         public const string Settings = "//settings";
