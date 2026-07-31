@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.CatalogEditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:model="clr-namespace:MedicalResultsTracker.Model"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
@@ -13,34 +14,34 @@
 
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource Caption}" Text="Название" />
-                    <Entry Placeholder="Например, Гомоцистеин" Text="{Binding Name}" />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_Name}" />
+                    <Entry Placeholder="{loc:Tr CatEdit_NamePlaceholder}" Text="{Binding Name}" />
 
-                    <Label Style="{StaticResource Caption}" Text="Единицы" />
-                    <Entry Placeholder="мкмоль/л" Text="{Binding Unit}" />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr Csv_Unit}" />
+                    <Entry Placeholder="{loc:Tr CatEdit_UnitPlaceholder}" Text="{Binding Unit}" />
 
-                    <Label Style="{StaticResource Caption}" Text="Группа" />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_Group}" />
                     <Picker
                         ItemsSource="{Binding Categories}"
                         SelectedItem="{Binding SelectedCategory}"
-                        Title="Выбрать существующую" />
-                    <Entry Placeholder="…или впишите новую" Text="{Binding Category}" />
+                        Title="{loc:Tr CatEdit_GroupPick}" />
+                    <Entry Placeholder="{loc:Tr CatEdit_GroupNew}" Text="{Binding Category}" />
 
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                         <VerticalStackLayout Grid.Column="0" Spacing="4">
-                            <Label Style="{StaticResource Caption}" Text="Норма от" />
+                            <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_RowRefMin}" />
                             <Entry Keyboard="Numeric" Text="{Binding RefMinText}" />
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="4">
-                            <Label Style="{StaticResource Caption}" Text="Норма до" />
+                            <Label Style="{StaticResource Caption}" Text="{loc:Tr Edit_RowRefMax}" />
                             <Entry Keyboard="Numeric" Text="{Binding RefMaxText}" />
                         </VerticalStackLayout>
                     </Grid>
 
-                    <Label Style="{StaticResource Caption}" Text="Пояснение к норме" />
-                    <Entry Placeholder="Например: диапазон для мужчин" Text="{Binding Notes}" />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_Notes}" />
+                    <Entry Placeholder="{loc:Tr CatEdit_NotesPlaceholder}" Text="{Binding Notes}" />
 
-                    <Label Style="{StaticResource Caption}" Text="Эти значения только подставляются при вводе анализа. В сохранённых измерениях остаются те границы, что были на бланке." />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_Note}" />
                 </VerticalStackLayout>
             </Border>
 
@@ -50,15 +51,15 @@
                     <Label Style="{StaticResource Caption}" Text="{Binding UsageText}" />
                     <Grid ColumnDefinitions="*,Auto">
                         <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="★ В избранном" />
-                            <Label Style="{StaticResource Caption}" Text="Показатель попадёт наверх главного экрана и в отдельную группу в динамике." />
+                            <Label Text="{loc:Tr CatEdit_Favorite}" />
+                            <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_FavoriteNote}" />
                         </VerticalStackLayout>
                         <Switch Grid.Column="1" IsToggled="{Binding IsFavorite}" />
                     </Grid>
                     <Grid ColumnDefinitions="*,Auto">
                         <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="Скрыть из подсказок" />
-                            <Label Style="{StaticResource Caption}" Text="Запись останется, но перестанет предлагаться при вводе." />
+                            <Label Text="{loc:Tr CatEdit_Hide}" />
+                            <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_HideNote}" />
                         </VerticalStackLayout>
                         <Switch Grid.Column="1" IsToggled="{Binding IsHidden}" />
                     </Grid>
@@ -67,14 +68,14 @@
 
             <Border IsVisible="{Binding IsExisting}" Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="Объединить с другим" />
-                    <Label Style="{StaticResource Caption}" Text="Если один и тот же показатель попал в справочник дважды — перенесите его измерения к основной записи, и на графике снова будет одна линия." />
+                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr CatEdit_MergeTitle}" />
+                    <Label Style="{StaticResource Caption}" Text="{loc:Tr CatEdit_MergeBody}" />
                     <Picker
                         ItemDisplayBinding="{Binding Name, x:DataType=model:Analyte}"
                         ItemsSource="{Binding MergeTargets}"
                         SelectedItem="{Binding MergeTarget}"
-                        Title="Куда перенести" />
-                    <Button Command="{Binding MergeCommand}" Text="Объединить" />
+                        Title="{loc:Tr CatEdit_MergeTarget}" />
+                    <Button Command="{Binding MergeCommand}" Text="{loc:Tr CatEdit_Merge}" />
                 </VerticalStackLayout>
             </Border>
 
@@ -82,11 +83,11 @@
                 <Button
                     Grid.Column="0"
                     Command="{Binding SaveCommand}"
-                    Text="Сохранить" />
+                    Text="{loc:Tr Common_Save}" />
                 <Button
                     Grid.Column="1"
                     Command="{Binding CancelCommand}"
-                    Text="Отмена" />
+                    Text="{loc:Tr Common_Cancel}" />
                 <Button
                     Grid.Column="2"
                     Command="{Binding DeleteCommand}"

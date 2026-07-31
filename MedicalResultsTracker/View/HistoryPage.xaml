@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.HistoryPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
     x:DataType="vm:HistoryViewModel">
@@ -13,7 +14,7 @@
             Grid.Row="0"
             IsVisible="{Binding IsEmpty}"
             Style="{StaticResource Caption}"
-            Text="Здесь появятся все сохранённые анализы — по одному на каждую сдачу." />
+            Text="{loc:Tr Hist_Empty}" />
 
         <RefreshView
             Grid.Row="1"
@@ -53,11 +54,11 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding AddCommand}"
-                Text="➕ Внести анализ" />
+                Text="{loc:Tr Hist_Add}" />
             <Button
                 Grid.Column="1"
                 Command="{Binding ExportCommand}"
-                Text="⬇ Выгрузить таблицу" />
+                Text="{loc:Tr Hist_Export}" />
         </Grid>
 
     </Grid>

@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Services.Ai;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.UI;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Export;
@@ -45,38 +46,38 @@ namespace MedicalResultsTracker.ViewModel
             _consent = consent;
             _assistant = assistant;
 
-            Title = "Настройки";
+            Title = S.Tab_Settings;
         }
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось открыть настройки");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Settings);
 
         [RelayCommand]
         private Task ExportMatrix() => RunAsync(async () =>
         {
             string path = await _export.ExportMatrixCsvAsync();
-            await _export.ShareAsync(path, "Результаты анализов (таблица)");
-        }, "Не удалось выгрузить таблицу");
+            await _export.ShareAsync(path, S.Share_ResultsTable);
+        }, S.Err_Export);
 
         [RelayCommand]
         private Task ExportFlat() => RunAsync(async () =>
         {
             string path = await _export.ExportFlatCsvAsync();
-            await _export.ShareAsync(path, "Результаты анализов (список)");
-        }, "Не удалось выгрузить список");
+            await _export.ShareAsync(path, S.Share_ResultsList);
+        }, S.Err_ExportList);
 
         [RelayCommand]
         private Task ExportBackup() => RunAsync(async () =>
         {
             string path = await _export.ExportBackupAsync();
-            await _export.ShareAsync(path, "Резервная копия истории");
-        }, "Не удалось создать резервную копию");
+            await _export.ShareAsync(path, S.Share_Backup);
+        }, S.Err_Backup);
 
         [RelayCommand]
         private Task ImportBackup() => RunAsync(async () =>
         {
             FileResult? file = await FilePicker.Default.PickAsync(new PickOptions
             {
-                PickerTitle = "Выберите файл резервной копии",
+                PickerTitle = S.Set_ImportPick,
             });
 
             if (file is null)
@@ -86,20 +87,20 @@ namespace MedicalResultsTracker.ViewModel
 
             int imported = await _export.ImportBackupAsync(file.FullPath);
 
-            await Dialog.AlertAsync("Импорт завершён", imported == 0
-                ? "Новых анализов в файле не найдено."
-                : $"Добавлено анализов: {imported}.");
+            await Dialog.AlertAsync(S.Set_ImportDoneTitle, imported == 0
+                ? S.Set_ImportNothing
+                : string.Format(S.Set_ImportCount, imported));
 
             await LoadAsync();
-        }, "Не удалось импортировать резервную копию");
+        }, S.Err_Import);
 
         [RelayCommand]
         private Task DeleteAllData() => RunAsync(async () =>
         {
             bool confirmed = await Dialog.ConfirmAsync(
-                "Удалить всю историю?",
-                "Все анализы будут удалены с устройства. Действие необратимо — сначала сделайте резервную копию.",
-                "Удалить");
+                S.Set_DeleteAllTitle,
+                S.Set_DeleteAllBody,
+                S.Common_Delete);
 
             if (!confirmed)
             {
@@ -108,7 +109,7 @@ namespace MedicalResultsTracker.ViewModel
 
             await _repository.DeleteAllAsync();
             await LoadAsync();
-        }, "Не удалось очистить историю");
+        }, S.Err_DeleteAll);
 
         [RelayCommand]
         private Task OpenCatalog() => Shell.Current.GoToAsync(AppRoutes.Catalog);
@@ -117,8 +118,8 @@ namespace MedicalResultsTracker.ViewModel
         private Task ShareForAi() => RunAsync(async () =>
         {
             string text = await _export.BuildTextSummaryAsync();
-            await _export.ShareTextAsync(text, "Мои анализы");
-        }, "Не удалось подготовить текст");
+            await _export.ShareTextAsync(text, S.Dash_Title);
+        }, S.Err_Text);
 
         [RelayCommand]
         private Task CopyForAi() => RunAsync(async () =>
@@ -126,8 +127,8 @@ namespace MedicalResultsTracker.ViewModel
             string text = await _export.BuildTextSummaryAsync();
 
             await _export.CopyToClipboardAsync(text);
-            await Dialog.AlertAsync("Скопировано", "Таблица в буфере обмена — вставьте её в любой чат.");
-        }, "Не удалось скопировать текст");
+            await Dialog.AlertAsync(S.Set_CopiedTitle, S.Set_CopiedBody);
+        }, S.Err_Copy);
 
         partial void OnAllowDocumentRecognitionChanged(bool value) =>
             UpdateConsent(AiConsentScope.DocumentRecognition, value);
@@ -162,9 +163,9 @@ namespace MedicalResultsTracker.ViewModel
 
             StorageSummary = count switch
             {
-                0 => "История пуста. Данные хранятся только на этом устройстве.",
-                1 => "1 анализ. Данные хранятся только на этом устройстве.",
-                _ => $"{count} анализов. Данные хранятся только на этом устройстве."
+                0 => S.Set_StorageEmpty,
+                1 => S.Set_StorageOne,
+                _ => string.Format(S.Set_StorageMany, count)
             };
 
             _suppressConsentUpdates = true;
@@ -179,15 +180,15 @@ namespace MedicalResultsTracker.ViewModel
         {
             if (_consent.Current.Scope == AiConsentScope.None)
             {
-                AssistantSummary = "Всё выключено: приложение не отправляет наружу ни одного байта.";
+                AssistantSummary = S.Set_AiOff;
                 return;
             }
 
-            AssistantSummary = $"Разрешения выданы для «{_assistant.ProviderName}»" +
-                (_consent.Current.GrantedUtc is DateTime granted
-                    ? $" {granted.ToLocalTime():dd.MM.yyyy}."
-                    : ".") +
-                " Провайдер в этой сборке ещё не подключён, поэтому фактической отправки не происходит.";
+            string when = _consent.Current.GrantedUtc is DateTime granted
+                ? $" {granted.ToLocalTime():dd.MM.yyyy}."
+                : ".";
+
+            AssistantSummary = string.Format(S.Set_AiGranted, _assistant.ProviderName, when);
         }
 
 

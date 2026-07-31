@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Database;
 
 namespace MedicalResultsTracker.ViewModel
@@ -6,7 +7,7 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Справочник показателей: что подставляется при вводе анализа и как всё это сгруппировано.</summary>
     public partial class CatalogViewModel : BaseViewModel
     {
-        private const string NoCategory = "Без группы";
+        private const string NoCategory = S.Trend_NoGroup;
 
         private readonly IAnalyteCatalog _catalog;
         private readonly IBloodTestRepository _repository;
@@ -31,12 +32,12 @@ namespace MedicalResultsTracker.ViewModel
             _catalog = catalog;
             _repository = repository;
 
-            Title = "Справочник";
+            Title = S.Cat_Title;
         }
 
         public ObservableCollection<CatalogGroupViewModel> Groups { get; } = new();
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось открыть справочник");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Catalog);
 
         partial void OnQueryChanged(string value) => ApplyFilter();
 
@@ -61,7 +62,7 @@ namespace MedicalResultsTracker.ViewModel
             {
                 await _catalog.SetFavoriteAsync(item.Code, !item.IsFavorite);
                 await LoadAsync();
-            }, "Не удалось изменить избранное");
+            }, S.Err_Favorite);
 
         private async Task LoadAsync()
         {
@@ -103,8 +104,9 @@ namespace MedicalResultsTracker.ViewModel
             int hidden = _all.Count(a => a.IsHidden);
             int favorites = _all.Count(a => a.IsFavorite);
 
-            Summary = $"{_all.Count} показателей · в избранном {favorites}" +
-                      (hidden == 0 ? string.Empty : $" · скрыто {hidden}");
+            Summary = hidden == 0
+                ? string.Format(S.Cat_Summary, _all.Count, favorites)
+                : string.Format(S.Cat_SummaryHidden, _all.Count, favorites, hidden);
         }
     }
 
@@ -119,15 +121,15 @@ namespace MedicalResultsTracker.ViewModel
             IsFavorite = analyte.IsFavorite;
             FavoriteGlyph = analyte.IsFavorite ? "★" : "☆";
 
-            string range = analyte.DefaultRange.IsDefined ? analyte.DefaultRange.ToString() : "норма не задана";
+            string range = analyte.DefaultRange.IsDefined ? analyte.DefaultRange.ToString() : S.Cat_NoRef;
             string used = measurements switch
             {
-                0 => "не использовался",
-                1 => "1 измерение",
-                _ => $"{measurements} измерений"
+                0 => S.Cat_Unused,
+                1 => S.Cat_OneMeasurement,
+                _ => string.Format(S.Cat_ManyMeasurements, measurements)
             };
 
-            string origin = analyte.IsBuiltIn ? "встроенный" : "свой";
+            string origin = analyte.IsBuiltIn ? S.Cat_BuiltIn : S.Cat_Own;
 
             Subtitle = string.Join(" · ", new[] { analyte.Unit, range, used, origin }
                 .Where(part => !string.IsNullOrWhiteSpace(part)));
@@ -157,6 +159,6 @@ namespace MedicalResultsTracker.ViewModel
 
         public string Name { get; }
 
-        public string Subtitle => Count == 1 ? "1 показатель" : $"{Count} показателей";
+        public string Subtitle => Count == 1 ? S.Cat_OneParam : string.Format(S.Cat_ManyParams, Count);
     }
 }

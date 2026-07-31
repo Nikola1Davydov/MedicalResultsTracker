@@ -27,8 +27,11 @@
 		       <MauiXaml Update="MyPage.xaml" Inflator="Runtime" /> (force runtime inflation) -->
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 
+		<!-- Немецкий — язык по умолчанию: он же язык ресурсов без суффикса культуры. -->
+		<NeutralLanguage>de</NeutralLanguage>
+
 		<!-- Display name -->
-		<ApplicationTitle>MedicalResultsTracker</ApplicationTitle>
+		<ApplicationTitle>Laborwerte</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.medicalresultstracker</ApplicationId>

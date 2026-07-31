@@ -6,6 +6,8 @@ namespace MedicalResultsTracker.Services.Database
     /// <inheritdoc cref="IAnalyteCatalog"/>
     public sealed class AnalyteCatalog : IAnalyteCatalog
     {
+        private const string VersionKey = "catalog.seed.version";
+
         private readonly IMedicalDatabase _database;
         private readonly SemaphoreSlim _seedLock = new(1, 1);
 
@@ -41,18 +43,54 @@ namespace MedicalResultsTracker.Services.Database
                 SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
 
                 List<Analyte> existing = await connection.Table<Analyte>().ToListAsync().ConfigureAwait(false);
-                HashSet<string> existingCodes = existing.Select(a => a.Code).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                // Добавляем только новые встроенные показатели, чтобы не затирать правки пользователя.
-                List<Analyte> missing = AnalyteSeedData.BuiltIn
-                    .Where(a => !existingCodes.Contains(a.Code))
-                    .ToList();
+                Dictionary<string, Analyte> byCode = existing
+                    .GroupBy(a => a.Code, StringComparer.OrdinalIgnoreCase)
+                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
-                if (missing.Count > 0)
+                int storedVersion = Preferences.Default.Get(VersionKey, 0);
+                bool refresh = storedVersion < AnalyteSeedData.Version;
+
+                List<Analyte> toWrite = new();
+
+                foreach (Analyte seed in AnalyteSeedData.BuiltIn)
                 {
-                    await connection.InsertAllAsync(missing).ConfigureAwait(false);
+                    if (!byCode.TryGetValue(seed.Code, out Analyte? current))
+                    {
+                        toWrite.Add(seed);
+                        continue;
+                    }
+
+                    if (!refresh)
+                    {
+                        continue;
+                    }
+
+                    // Обновление набора: названия, единицы и типовые нормы берём новые,
+                    // а выбор пользователя — избранное и скрытые — сохраняем.
+                    current.Name = seed.Name;
+                    current.Unit = seed.Unit;
+                    current.Category = seed.Category;
+                    current.RefMin = seed.RefMin;
+                    current.RefMax = seed.RefMax;
+                    current.Notes = seed.Notes;
+                    current.SortOrder = seed.SortOrder;
+                    current.IsBuiltIn = true;
+
+                    toWrite.Add(current);
+                }
+
+                foreach (Analyte analyte in toWrite)
+                {
+                    await connection.InsertOrReplaceAsync(analyte).ConfigureAwait(false);
+                }
+
+                if (toWrite.Count > 0)
+                {
                     _cache = null;
                 }
+
+                Preferences.Default.Set(VersionKey, AnalyteSeedData.Version);
 
                 _seeded = true;
             }

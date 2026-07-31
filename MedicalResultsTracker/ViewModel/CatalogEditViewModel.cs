@@ -1,4 +1,5 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.UI;
@@ -62,7 +63,7 @@ namespace MedicalResultsTracker.ViewModel
             _catalog = catalog;
             _repository = repository;
 
-            Title = "Показатель";
+            Title = S.Csv_Parameter;
         }
 
         /// <summary>Куда можно объединить эту запись — все остальные записи справочника.</summary>
@@ -88,7 +89,7 @@ namespace MedicalResultsTracker.ViewModel
             }
         }
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось открыть показатель");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_CatalogItem);
 
         [RelayCommand]
         private Task Save() => RunAsync(async () =>
@@ -97,7 +98,7 @@ namespace MedicalResultsTracker.ViewModel
 
             if (name.Length == 0)
             {
-                await Dialog.AlertAsync("Не хватает названия", "Укажите название показателя.");
+                await Dialog.AlertAsync(S.CatEdit_NoNameTitle, S.CatEdit_NoNameBody);
                 return;
             }
 
@@ -106,8 +107,8 @@ namespace MedicalResultsTracker.ViewModel
             if (!IsExisting && await _catalog.FindAsync(code) is not null)
             {
                 await Dialog.AlertAsync(
-                    "Такой показатель уже есть",
-                    "Показатель с таким названием уже в справочнике. Откройте его и отредактируйте.");
+                    S.CatEdit_ExistsTitle,
+                    S.CatEdit_ExistsBody);
                 return;
             }
 
@@ -116,7 +117,7 @@ namespace MedicalResultsTracker.ViewModel
                 Code = code,
                 Name = name,
                 Unit = string.IsNullOrWhiteSpace(Unit) ? null : Unit.Trim(),
-                Category = string.IsNullOrWhiteSpace(Category) ? "Мои показатели" : Category.Trim(),
+                Category = string.IsNullOrWhiteSpace(Category) ? S.Edit_MyValues : Category.Trim(),
                 RefMin = ParameterRowViewModel.ParseNumber(RefMinText),
                 RefMax = ParameterRowViewModel.ParseNumber(RefMaxText),
                 Notes = string.IsNullOrWhiteSpace(Notes) ? null : Notes.Trim(),
@@ -126,7 +127,7 @@ namespace MedicalResultsTracker.ViewModel
             });
 
             await Shell.Current.GoToAsync("..");
-        }, "Не удалось сохранить показатель");
+        }, S.Err_CatalogSave);
 
         [RelayCommand]
         private Task Delete() => RunAsync(async () =>
@@ -139,26 +140,22 @@ namespace MedicalResultsTracker.ViewModel
 
             if (IsBuiltIn)
             {
-                await Dialog.AlertAsync(
-                    "Встроенный показатель",
-                    "Встроенные показатели не удаляются — при следующем запуске они вернутся. " +
-                    "Уберите его из подсказок переключателем «Скрыть».");
+                await Dialog.AlertAsync(S.CatEdit_BuiltInTitle, S.CatEdit_BuiltInBody);
                 return;
             }
 
             string message = _usageCount == 0
-                ? "Запись справочника будет удалена."
-                : $"Запись справочника будет удалена. Сохранённые измерения ({_usageCount}) останутся на месте " +
-                  "и продолжат собираться в один график — справочник лишь подставляет значения при вводе.";
+                ? S.CatEdit_DeleteBody
+                : string.Format(S.CatEdit_DeleteBodyUsed, _usageCount);
 
-            if (!await Dialog.ConfirmAsync("Удалить из справочника?", message, "Удалить"))
+            if (!await Dialog.ConfirmAsync(S.CatEdit_DeleteTitle, message, S.Common_Delete))
             {
                 return;
             }
 
             await _catalog.DeleteAsync(_code);
             await Shell.Current.GoToAsync("..");
-        }, "Не удалось удалить показатель");
+        }, S.Err_CatalogDelete);
 
         /// <summary>
         /// Объединяет дубль: все измерения этой записи переезжают на выбранный показатель,
@@ -169,15 +166,14 @@ namespace MedicalResultsTracker.ViewModel
         {
             if (_code is null || MergeTarget is null)
             {
-                await Dialog.AlertAsync("Выберите показатель", "Укажите, с каким показателем объединить этот.");
+                await Dialog.AlertAsync(S.CatEdit_MergePickTitle, S.CatEdit_MergePickBody);
                 return;
             }
 
             bool confirmed = await Dialog.ConfirmAsync(
-                "Объединить показатели?",
-                $"Измерения «{Name}» ({_usageCount}) перейдут к «{MergeTarget.Name}» и дальше будут одной линией на графике. " +
-                "Отменить это можно только повторным объединением в обратную сторону.",
-                "Объединить");
+                S.CatEdit_MergeConfirmTitle,
+                string.Format(S.CatEdit_MergeConfirmBody, Name, _usageCount, MergeTarget.Name),
+                S.CatEdit_Merge);
 
             if (!confirmed)
             {
@@ -207,9 +203,9 @@ namespace MedicalResultsTracker.ViewModel
                 await _catalog.DeleteAsync(_code);
             }
 
-            await Dialog.AlertAsync("Готово", $"Перенесено измерений: {moved}.");
+            await Dialog.AlertAsync(S.CatEdit_MergeDoneTitle, string.Format(S.CatEdit_MergeDoneBody, moved));
             await Shell.Current.GoToAsync("..");
-        }, "Не удалось объединить показатели");
+        }, S.Err_Merge);
 
         [RelayCommand]
         private Task Cancel() => Shell.Current.GoToAsync("..");
@@ -234,8 +230,8 @@ namespace MedicalResultsTracker.ViewModel
 
             if (!IsExisting || _code is null)
             {
-                Title = "Новый показатель";
-                CodeText = "Код будет создан из названия";
+                Title = S.CatEdit_TitleNew;
+                CodeText = S.CatEdit_CodeNew;
                 UsageText = string.Empty;
                 return;
             }
@@ -257,7 +253,7 @@ namespace MedicalResultsTracker.ViewModel
             IsHidden = current.IsHidden;
             IsFavorite = current.IsFavorite;
             IsBuiltIn = current.IsBuiltIn;
-            CodeText = $"Код: {current.Code}";
+            CodeText = string.Format(S.CatEdit_Code, current.Code);
             Title = current.Name;
 
             IReadOnlyDictionary<string, int> usage = await _repository.GetUsageByCodeAsync();
@@ -266,9 +262,9 @@ namespace MedicalResultsTracker.ViewModel
 
             UsageText = _usageCount switch
             {
-                0 => "Измерений с этим показателем пока нет.",
-                1 => "1 сохранённое измерение.",
-                _ => $"{_usageCount} сохранённых измерений."
+                0 => S.CatEdit_NoUsage,
+                1 => S.CatEdit_OneUsage,
+                _ => string.Format(S.CatEdit_ManyUsage, _usageCount)
             };
         }
 

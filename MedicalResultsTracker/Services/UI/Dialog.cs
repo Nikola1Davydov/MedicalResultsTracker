@@ -1,3 +1,4 @@
+using MedicalResultsTracker.Resources.Strings;
 namespace MedicalResultsTracker.Services.UI
 {
     /// <summary>
@@ -8,9 +9,9 @@ namespace MedicalResultsTracker.Services.UI
     internal static class Dialog
     {
         public static Task AlertAsync(string title, string message) =>
-            CurrentPage is Page page ? page.DisplayAlert(title, message, "OK") : Task.CompletedTask;
+            CurrentPage is Page page ? page.DisplayAlert(title, message, S.Common_Ok) : Task.CompletedTask;
 
-        public static Task<bool> ConfirmAsync(string title, string message, string accept, string cancel = "Отмена") =>
+        public static Task<bool> ConfirmAsync(string title, string message, string accept, string cancel = S.Common_Cancel) =>
             CurrentPage is Page page
                 ? page.DisplayAlert(title, message, accept, cancel)
                 : Task.FromResult(false);

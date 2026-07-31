@@ -1,4 +1,5 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Model;
 
 namespace MedicalResultsTracker.Controls
@@ -21,7 +22,7 @@ namespace MedicalResultsTracker.Controls
 
             if (points is null || points.Count == 0)
             {
-                DrawPlaceholder(canvas, dirtyRect, "Нет данных");
+                DrawPlaceholder(canvas, dirtyRect, S.Trend_ChartNoData);
                 return;
             }
 

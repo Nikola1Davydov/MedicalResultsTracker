@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
     x:DataType="vm:MainViewModel">
@@ -22,33 +23,33 @@
                     <Button
                         Grid.Column="0"
                         Command="{Binding AddTestCommand}"
-                        Text="➕ Внести анализ" />
+                        Text="{loc:Tr Hist_Add}" />
                     <Button
                         Grid.Column="1"
                         Command="{Binding ExportCommand}"
                         IsEnabled="{Binding HasData}"
-                        Text="⬇ Выгрузить" />
+                        Text="{loc:Tr Dash_Export}" />
                 </Grid>
 
                 <!--  Пустое состояние: объясняем, что делать дальше.  -->
                 <Border IsVisible="{Binding IsEmpty}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="С чего начать" />
-                        <Label Text="Возьмите бланк анализа и внесите значения — название, число, единицы и норму из колонки «референсные значения»." />
-                        <Label Style="{StaticResource Caption}" Text="Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется." />
+                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_StartTitle}" />
+                        <Label Text="{loc:Tr Dash_StartBody}" />
+                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Dash_StartNote}" />
                     </VerticalStackLayout>
                 </Border>
 
                 <Border IsVisible="{Binding ShowFavoritesHint}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="Следить за показателем" />
-                        <Label Text="Отметьте звёздочкой в справочнике то, за чем следите постоянно, — эти показатели будут наверху главного экрана." />
-                        <Button Command="{Binding OpenCatalogCommand}" Text="Открыть справочник" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_FavHintTitle}" />
+                        <Label Text="{loc:Tr Dash_FavHintBody}" />
+                        <Button Command="{Binding OpenCatalogCommand}" Text="{loc:Tr Set_CatalogOpen}" />
                     </VerticalStackLayout>
                 </Border>
 
                 <VerticalStackLayout IsVisible="{Binding HasFavorites}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="★ Избранное" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Trend_FavoritesGroup}" />
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Favorites}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:SeriesItemViewModel">
@@ -75,7 +76,7 @@
                 </VerticalStackLayout>
 
                 <VerticalStackLayout IsVisible="{Binding HasAttention}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="Вне нормы" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_OutOfRange}" />
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Attention}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:TrendItemViewModel">
@@ -117,7 +118,7 @@
                 </VerticalStackLayout>
 
                 <VerticalStackLayout IsVisible="{Binding HasChanges}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="Заметные изменения" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_Changes}" />
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Changes}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:TrendItemViewModel">
@@ -160,18 +161,18 @@
                     <Button
                         Grid.Column="0"
                         Command="{Binding OpenHistoryCommand}"
-                        Text="История" />
+                        Text="{loc:Tr Tab_History}" />
                     <Button
                         Grid.Column="1"
                         Command="{Binding OpenTrendsCommand}"
-                        Text="Динамика" />
+                        Text="{loc:Tr Tab_Trends}" />
                 </Grid>
 
                 <Border IsVisible="{Binding HasData}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="Спросить у ИИ" />
-                        <Label Text="Приложение соберёт таблицу текстом и откроет системный список приложений. Куда отправить — выбираете вы; само оно никуда ничего не шлёт." />
-                        <Button Command="{Binding AskAiCommand}" Text="🤖 Отправить таблицу в ИИ-чат" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_AiTitle}" />
+                        <Label Text="{loc:Tr Dash_AiBody}" />
+                        <Button Command="{Binding AskAiCommand}" Text="{loc:Tr Dash_AiButton}" />
                     </VerticalStackLayout>
                 </Border>
 

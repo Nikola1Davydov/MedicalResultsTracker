@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Analysis;
 using MedicalResultsTracker.Services.Database;
 
@@ -8,7 +9,7 @@ namespace MedicalResultsTracker.ViewModel
     public partial class TrendsViewModel : BaseViewModel
     {
         /// <summary>Группа избранного всегда первая — за этими показателями следят намеренно.</summary>
-        private const string FavoritesGroup = "★ Избранное";
+        private const string FavoritesGroup = S.Trend_FavoritesGroup;
 
         private readonly IAnalysisService _analysis;
         private readonly IAnalyteCatalog _catalog;
@@ -27,15 +28,15 @@ namespace MedicalResultsTracker.ViewModel
             _analysis = analysis;
             _catalog = catalog;
 
-            Title = "Динамика";
+            Title = S.Tab_Trends;
         }
 
         public ObservableCollection<SeriesGroupViewModel> Groups { get; } = new();
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось построить графики");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Charts);
 
         [RelayCommand]
-        private Task Refresh() => RunAsync(LoadAsync, "Не удалось обновить графики");
+        private Task Refresh() => RunAsync(LoadAsync, S.Err_Charts);
 
         [RelayCommand]
         private Task Open(SeriesItemViewModel? item) => item is null
@@ -48,7 +49,7 @@ namespace MedicalResultsTracker.ViewModel
         {
             OnlyWithHistory = !OnlyWithHistory;
 
-            return RunAsync(LoadAsync, "Не удалось обновить графики");
+            return RunAsync(LoadAsync, S.Err_Charts);
         }
 
         [RelayCommand]
@@ -56,7 +57,7 @@ namespace MedicalResultsTracker.ViewModel
         {
             OnlyFavorites = !OnlyFavorites;
 
-            return RunAsync(LoadAsync, "Не удалось обновить графики");
+            return RunAsync(LoadAsync, S.Err_Charts);
         }
 
         private async Task LoadAsync()

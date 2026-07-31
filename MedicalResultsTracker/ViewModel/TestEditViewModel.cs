@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Import;
@@ -11,8 +12,6 @@ namespace MedicalResultsTracker.ViewModel
     {
         private readonly IBloodTestRepository _repository;
         private readonly IAnalyteCatalog _catalog;
-        private readonly IAiConsentService _consent;
-        private readonly IAiAssistant _assistant;
         private readonly ITextImportService _import;
 
         [ObservableProperty]
@@ -43,17 +42,13 @@ namespace MedicalResultsTracker.ViewModel
         public TestEditViewModel(
             IBloodTestRepository repository,
             IAnalyteCatalog catalog,
-            IAiConsentService consent,
-            IAiAssistant assistant,
             ITextImportService import)
         {
             _repository = repository;
             _catalog = catalog;
-            _consent = consent;
-            _assistant = assistant;
             _import = import;
 
-            Title = "Новый анализ";
+            Title = S.Edit_TitleNew;
         }
 
         public ObservableCollection<ParameterRowViewModel> Rows { get; } = new();
@@ -72,7 +67,7 @@ namespace MedicalResultsTracker.ViewModel
             {
                 _testId = id;
                 IsExisting = true;
-                Title = "Анализ";
+                Title = S.Edit_TitleExisting;
             }
             else
             {
@@ -80,7 +75,7 @@ namespace MedicalResultsTracker.ViewModel
             }
         }
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось открыть анализ");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_OpenTest);
 
         [RelayCommand]
         private void AddRow() => Rows.Add(new ParameterRowViewModel());
@@ -151,7 +146,7 @@ namespace MedicalResultsTracker.ViewModel
 
             if (previous is null)
             {
-                await Dialog.AlertAsync("Нет данных", "Более раннего анализа в истории нет.");
+                await Dialog.AlertAsync(S.Trend_ChartNoData, S.Edit_NoPrevBody);
                 return;
             }
 
@@ -165,7 +160,7 @@ namespace MedicalResultsTracker.ViewModel
 
                 Rows.Add(row);
             }
-        }, "Не удалось скопировать показатели");
+        }, S.Err_CopyRows);
 
         [RelayCommand]
         private Task Save() => RunAsync(async () =>
@@ -174,13 +169,13 @@ namespace MedicalResultsTracker.ViewModel
 
             if (filled.Count == 0)
             {
-                await Dialog.AlertAsync("Пусто", "Добавьте хотя бы один показатель.");
+                await Dialog.AlertAsync(S.Edit_EmptyTitle, S.Edit_EmptyBody);
                 return;
             }
 
             if (filled.Any(r => string.IsNullOrWhiteSpace(r.Name)))
             {
-                await Dialog.AlertAsync("Не хватает названия", "У каждой заполненной строки должно быть название показателя.");
+                await Dialog.AlertAsync(S.CatEdit_NoNameTitle, S.Edit_NoNameBody);
                 return;
             }
 
@@ -212,7 +207,7 @@ namespace MedicalResultsTracker.ViewModel
             await RememberNewAnalytesAsync(test);
 
             await Shell.Current.GoToAsync("..");
-        }, "Не удалось сохранить анализ");
+        }, S.Err_SaveTest);
 
         [RelayCommand]
         private Task Delete() => RunAsync(async () =>
@@ -224,9 +219,9 @@ namespace MedicalResultsTracker.ViewModel
             }
 
             bool confirmed = await Dialog.ConfirmAsync(
-                "Удалить анализ?",
-                "Запись будет удалена с устройства безвозвратно.",
-                "Удалить");
+                S.Edit_DeleteTitle,
+                S.Edit_DeleteBody,
+                S.Common_Delete);
 
             if (!confirmed)
             {
@@ -235,7 +230,7 @@ namespace MedicalResultsTracker.ViewModel
 
             await _repository.DeleteAsync(_testId);
             await Shell.Current.GoToAsync("..");
-        }, "Не удалось удалить анализ");
+        }, S.Err_DeleteTest);
 
         [RelayCommand]
         private Task Cancel() => Shell.Current.GoToAsync("..");
@@ -251,10 +246,9 @@ namespace MedicalResultsTracker.ViewModel
             await Clipboard.Default.SetTextAsync(_import.PromptForChat);
 
             await Dialog.AlertAsync(
-                "Запрос скопирован",
-                "Вставьте его в любой чат-бот вместе с фотографией бланка. Полученный ответ " +
-                "скопируйте и вернитесь сюда — кнопка «Вставить из буфера» разложит его по строкам.");
-        }, "Не удалось скопировать запрос");
+                S.Edit_PromptCopiedTitle,
+                S.Edit_PromptCopiedBody);
+        }, S.Err_Prompt);
 
         /// <summary>Разбирает текст из буфера в строки показателей.</summary>
         [RelayCommand]
@@ -264,7 +258,7 @@ namespace MedicalResultsTracker.ViewModel
 
             if (string.IsNullOrWhiteSpace(text))
             {
-                await Dialog.AlertAsync("Буфер пуст", "Сначала скопируйте таблицу с результатами.");
+                await Dialog.AlertAsync(S.Edit_ClipEmptyTitle, S.Edit_ClipEmptyBody);
                 return;
             }
 
@@ -273,49 +267,13 @@ namespace MedicalResultsTracker.ViewModel
             if (draft.Rows.Count == 0)
             {
                 await Dialog.AlertAsync(
-                    "Не разобрано",
-                    "В тексте не нашлось строк показателей. Каждая строка должна выглядеть так:\n\n" +
-                    "Ферритин | 18 | мкг/л | 30 | 300");
+                    S.Edit_NoRowsTitle,
+                    S.Edit_NoRowsBody);
                 return;
             }
 
             ApplyDraft(draft);
-        }, "Не удалось разобрать текст");
-
-        /// <summary>
-        /// Кнопка "распознать бланк". Пока провайдер не подключён, честно говорим об этом,
-        /// вместо того чтобы делать вид, что функция есть.
-        /// </summary>
-        [RelayCommand]
-        private Task ScanDocument() => RunAsync(async () =>
-        {
-            if (!_assistant.IsAvailable(AiConsentScope.DocumentRecognition))
-            {
-                await Dialog.AlertAsync(
-                    "Распознавание недоступно",
-                    _consent.IsAllowed(AiConsentScope.DocumentRecognition)
-                        ? "Согласие дано, но ИИ-провайдер не подключён к сборке."
-                        : "Функция требует явного согласия на отправку изображения. Включить её можно в настройках.");
-                return;
-            }
-
-            FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
-
-            if (photo is null)
-            {
-                return;
-            }
-
-            AiDraft? draft = await _assistant.ExtractAsync(photo.FullPath);
-
-            if (draft is null)
-            {
-                await Dialog.AlertAsync("Не получилось", "Ассистент не смог разобрать бланк. Введите значения вручную.");
-                return;
-            }
-
-            ApplyDraft(draft);
-        }, "Не удалось распознать документ");
+        }, S.Err_Parse);
 
         /// <summary>Черновик от ассистента только заполняет поля — сохранение всегда за пользователем.</summary>
         private void ApplyDraft(AiDraft draft)
@@ -345,10 +303,10 @@ namespace MedicalResultsTracker.ViewModel
 
             _origin = DataOrigin.AssistedReview;
 
-            string added = $"Добавлено строк: {draft.Rows.Count}. Проверьте значения перед сохранением.";
+            string added = string.Format(S.Edit_Added, draft.Rows.Count);
 
             AssistantHint = draft.Warnings.Count > 0
-                ? $"{added} Не разобрано: {string.Join("; ", draft.Warnings)}"
+                ? string.Format(S.Edit_AddedWarn, added, string.Join("; ", draft.Warnings))
                 : added;
         }
 
@@ -413,7 +371,7 @@ namespace MedicalResultsTracker.ViewModel
                     Code = parameter.Code,
                     Name = parameter.Name,
                     Unit = parameter.Unit,
-                    Category = "Мои показатели",
+                    Category = S.Edit_MyValues,
                     RefMin = parameter.RefMin,
                     RefMax = parameter.RefMax,
                     IsBuiltIn = false,
@@ -427,7 +385,7 @@ namespace MedicalResultsTracker.ViewModel
             _origin = DataOrigin.Manual;
             _sourceFilePath = null;
             IsExisting = false;
-            Title = "Новый анализ";
+            Title = S.Edit_TitleNew;
             Date = DateTime.Today;
             Laboratory = null;
             Notes = null;

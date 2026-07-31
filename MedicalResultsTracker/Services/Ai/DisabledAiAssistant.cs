@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Model;
+using MedicalResultsTracker.Resources.Strings;
 
 namespace MedicalResultsTracker.Services.Ai
 {
@@ -9,7 +10,7 @@ namespace MedicalResultsTracker.Services.Ai
     /// </summary>
     public sealed class DisabledAiAssistant : IAiAssistant
     {
-        public string ProviderName => "не подключён";
+        public string ProviderName => S.Ai_NotConnected;
 
         public bool IsAvailable(AiConsentScope scope) => false;
 

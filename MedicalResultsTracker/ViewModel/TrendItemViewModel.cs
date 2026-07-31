@@ -1,4 +1,5 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 
@@ -25,8 +26,8 @@ namespace MedicalResultsTracker.ViewModel
             : $"{_trend.Current.DisplayValue} {_trend.Current.Unit}";
 
         public string RangeText => _trend.Current.Range.IsDefined
-            ? $"норма {_trend.Current.Range}"
-            : "норма не указана";
+            ? string.Format(S.Item_RefKnown, _trend.Current.Range)
+            : S.Item_RefUnknown;
 
         public string StatusText => StatusPalette.Describe(_trend.Status);
 
@@ -60,7 +61,7 @@ namespace MedicalResultsTracker.ViewModel
         public bool HasComparison => _trend.Previous is not null;
 
         public string ComparisonHint => _trend.PreviousDate is DateTime date
-            ? $"было {_trend.Previous?.DisplayValue} · {date:dd.MM.yyyy}"
-            : "первое измерение";
+            ? string.Format(S.Item_Previous, _trend.Previous?.DisplayValue, date.ToString("dd.MM.yyyy"))
+            : S.Item_First;
     }
 }

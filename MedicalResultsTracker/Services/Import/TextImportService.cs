@@ -1,4 +1,6 @@
 using System.Globalization;
+using MedicalResultsTracker.Resources.Strings;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
 
 namespace MedicalResultsTracker.Services.Import
@@ -16,32 +18,32 @@ namespace MedicalResultsTracker.Services.Import
         // Слова, по которым видно, что строка — заголовок таблицы, а не данные.
         private static readonly string[] HeaderWords =
         {
+            "bezeichnung", "parameter", "wert", "ergebnis", "einheit", "referenz", "normbereich",
             "показатель", "название", "значение", "результат", "единиц", "норма", "референс"
         };
 
         public string PromptForChat =>
             """
-            Ниже фотография бланка лабораторных анализов. Перепиши данные из него обычным
-            текстом строго по этому формату и ничего не добавляй от себя.
+            Unten ist das Foto eines Laborbefunds. Übertrage die Daten daraus als reinen Text
+            genau in diesem Format und ergänze nichts von dir aus.
 
-            Первые две строки:
-            Дата: дд.мм.гггг
-            Лаборатория: название или прочерк
+            Die ersten beiden Zeilen:
+            Datum: TT.MM.JJJJ
+            Labor: Name oder Strich
 
-            Дальше по одной строке на каждый показатель, поля разделены вертикальной чертой:
-            Название | Значение | Единицы | Норма от | Норма до
+            Danach eine Zeile je Wert, die Felder mit einem senkrechten Strich getrennt:
+            Bezeichnung | Ergebnis | Einheit | Referenz von | Referenz bis
 
-            Правила:
-            - Названия показателей оставляй ровно как в бланке: не переводи, не сокращай,
-              не переименовывай.
-            - Значение — только число. Если результат нечисловой, напиши его словом
-              («отрицательно», «следы»).
-            - Границы нормы — два отдельных числа. Если норма односторонняя («до 5,2»),
-              заполни только нужное поле, второе оставь пустым.
-            - Ничего не додумывай и не пересчитывай: если поле в бланке не читается,
-              оставь его пустым.
-            - Не добавляй заголовок таблицы, нумерацию, пояснения, выводы и рекомендации.
-              Нужны только строки данных.
+            Regeln:
+            - Übernimm die Bezeichnungen genau wie im Befund: nicht übersetzen, nicht abkürzen,
+              nicht umbenennen.
+            - Das Ergebnis ist nur eine Zahl. Ist es nicht numerisch, schreibe es als Wort
+              («negativ», «Spuren»).
+            - Der Referenzbereich sind zwei getrennte Zahlen. Ist er einseitig («bis 5,2»),
+              fülle nur das passende Feld, das andere bleibt leer.
+            - Rate nichts und rechne nichts um: Ist ein Feld im Befund nicht lesbar, lass es leer.
+            - Keine Tabellenüberschrift, keine Nummerierung, keine Erläuterungen, keine
+              Schlussfolgerungen und keine Empfehlungen. Nur die Datenzeilen.
             """;
 
         public AiDraft Parse(string text)
@@ -50,7 +52,7 @@ namespace MedicalResultsTracker.Services.Import
 
             if (string.IsNullOrWhiteSpace(text))
             {
-                draft.Warnings.Add("Пустой текст.");
+                draft.Warnings.Add(S.Imp_EmptyText);
                 return draft;
             }
 
@@ -65,19 +67,19 @@ namespace MedicalResultsTracker.Services.Import
                     continue;
                 }
 
-                if (TryReadHeaderField(line, "дата", out string dateValue))
+                if (TryReadHeaderField(line, out string dateValue, "datum", "дата"))
                 {
                     draft.Date = ParseDate(dateValue);
 
                     if (draft.Date is null)
                     {
-                        draft.Warnings.Add($"Не разобрана дата: «{dateValue}».");
+                        draft.Warnings.Add(string.Format(S.Imp_BadDate, dateValue));
                     }
 
                     continue;
                 }
 
-                if (TryReadHeaderField(line, "лаборатория", out string lab))
+                if (TryReadHeaderField(line, out string lab, "labor", "лаборатория"))
                 {
                     draft.Laboratory = lab is "-" or "—" or "" ? null : lab;
                     continue;
@@ -87,7 +89,7 @@ namespace MedicalResultsTracker.Services.Import
 
                 if (parts.Length < 2)
                 {
-                    draft.Warnings.Add($"Пропущена строка: «{Shorten(line)}».");
+                    draft.Warnings.Add(string.Format(S.Imp_SkippedLine, Shorten(line)));
                     continue;
                 }
 
@@ -102,7 +104,7 @@ namespace MedicalResultsTracker.Services.Import
 
                 if (row is null)
                 {
-                    draft.Warnings.Add($"Пропущена строка: «{Shorten(line)}».");
+                    draft.Warnings.Add(string.Format(S.Imp_SkippedLine, Shorten(line)));
                     continue;
                 }
 
@@ -111,7 +113,7 @@ namespace MedicalResultsTracker.Services.Import
 
             if (draft.Rows.Count == 0)
             {
-                draft.Warnings.Add("Не найдено ни одной строки показателей.");
+                draft.Warnings.Add(S.Imp_NoRows);
             }
 
             return draft;
@@ -162,15 +164,15 @@ namespace MedicalResultsTracker.Services.Import
             }
 
             if (value.StartsWith('<') || value.StartsWith('≤') ||
-                value.StartsWith("до", StringComparison.CurrentCultureIgnoreCase))
+                StartsWithWord(value, "bis", "до"))
             {
-                return (null, ParseNumber(value.TrimStart('<', '≤', '=', ' ').TrimStart("до".ToCharArray())));
+                return (null, ParseNumber(StripPrefix(value, '<', '≤')));
             }
 
             if (value.StartsWith('>') || value.StartsWith('≥') ||
-                value.StartsWith("от", StringComparison.CurrentCultureIgnoreCase))
+                StartsWithWord(value, "ab", "von", "от"))
             {
-                return (ParseNumber(value.TrimStart('>', '≥', '=', ' ').TrimStart("от".ToCharArray())), null);
+                return (ParseNumber(StripPrefix(value, '>', '≥')), null);
             }
 
             string[] bounds = value.Split('–', '—', '-', '…');
@@ -183,7 +185,8 @@ namespace MedicalResultsTracker.Services.Import
             return (null, null);
         }
 
-        private static bool TryReadHeaderField(string line, string field, out string value)
+        /// <summary>Шапка вида «Datum: …» или «Дата: …»: язык ответа зависит от языка бланка.</summary>
+        private static bool TryReadHeaderField(string line, out string value, params string[] fields)
         {
             value = string.Empty;
 
@@ -196,7 +199,7 @@ namespace MedicalResultsTracker.Services.Import
 
             string key = line[..colon].Trim();
 
-            if (!key.StartsWith(field, StringComparison.CurrentCultureIgnoreCase))
+            if (!fields.Any(f => key.StartsWith(f, StringComparison.CurrentCultureIgnoreCase)))
             {
                 return false;
             }
@@ -224,6 +227,18 @@ namespace MedicalResultsTracker.Services.Import
         }
 
         /// <summary>Строка вида "|---|---|" из markdown-таблицы.</summary>
+        private static bool StartsWithWord(string value, params string[] words) =>
+            words.Any(w => value.StartsWith(w, StringComparison.CurrentCultureIgnoreCase));
+
+        /// <summary>Убирает знак сравнения и словесный префикс, оставляя число.</summary>
+        private static string StripPrefix(string value, params char[] signs)
+        {
+            string trimmed = value.TrimStart(signs).TrimStart('=', ' ');
+            int digit = trimmed.IndexOfAny("0123456789".ToCharArray());
+
+            return digit < 0 ? trimmed : trimmed[digit..];
+        }
+
         private static bool IsMarkdownRule(string line) =>
             line.Trim('|', '-', ':', ' ', '=').Length == 0;
 

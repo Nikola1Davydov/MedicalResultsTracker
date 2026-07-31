@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Services.UI;
+using MedicalResultsTracker.Resources.Strings;
 
 namespace MedicalResultsTracker.ViewModel
 {
@@ -29,9 +30,9 @@ namespace MedicalResultsTracker.ViewModel
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"[MedicalResultsTracker] {errorTitle ?? "Ошибка"}: {exception}");
+                Debug.WriteLine($"[MedicalResultsTracker] {errorTitle ?? S.Common_Error}: {exception}");
 
-                await Dialog.AlertAsync(errorTitle ?? "Ошибка", exception.Message);
+                await Dialog.AlertAsync(errorTitle ?? S.Common_Error, exception.Message);
             }
             finally
             {

@@ -1,4 +1,5 @@
 using MedicalResultsTracker.Controls;
+using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Export;
@@ -19,15 +20,15 @@ namespace MedicalResultsTracker.ViewModel
             _repository = repository;
             _export = export;
 
-            Title = "История";
+            Title = S.Tab_History;
         }
 
         public ObservableCollection<TestListItemViewModel> Tests { get; } = new();
 
-        public override Task InitializeAsync() => RunAsync(LoadAsync, "Не удалось загрузить историю");
+        public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_History);
 
         [RelayCommand]
-        private Task Refresh() => RunAsync(LoadAsync, "Не удалось обновить историю");
+        private Task Refresh() => RunAsync(LoadAsync, S.Err_History);
 
         [RelayCommand]
         private Task Add() => Shell.Current.GoToAsync(AppRoutes.TestEdit);
@@ -41,8 +42,8 @@ namespace MedicalResultsTracker.ViewModel
         private Task Export() => RunAsync(async () =>
         {
             string path = await _export.ExportMatrixCsvAsync();
-            await _export.ShareAsync(path, "Результаты анализов");
-        }, "Не удалось выгрузить таблицу");
+            await _export.ShareAsync(path, S.Share_Results);
+        }, S.Err_Export);
 
         private async Task LoadAsync()
         {
@@ -79,8 +80,8 @@ namespace MedicalResultsTracker.ViewModel
         public int OutOfRangeCount { get; }
 
         public string Subtitle => OutOfRangeCount == 0
-            ? $"{ParameterCount} показателей · всё в пределах норм"
-            : $"{ParameterCount} показателей · {OutOfRangeCount} вне нормы";
+            ? string.Format(S.Hist_SubtitleOk, ParameterCount)
+            : string.Format(S.Hist_SubtitleOut, ParameterCount, OutOfRangeCount);
 
         public Color StatusColor => OutOfRangeCount == 0 ? StatusPalette.Normal : StatusPalette.High;
     }
