@@ -1,15 +1,14 @@
-using System.ComponentModel;
 using System.Globalization;
 
 namespace MedicalResultsTracker.Resources.Strings
 {
     /// <summary>
-    /// Источник строк для XAML и переключатель языка.
-    /// Индексатор нужен, чтобы разметка подписывалась на изменение: при смене языка
-    /// достаточно сообщить об обновлении индексатора, и все надписи перечитываются
-    /// без перезапуска приложения.
+    /// Выбор языка. Разметка читает строки через <c>{x:Static loc:S.Ключ}</c>: опечатка
+    /// в ключе становится ошибкой компиляции, а не пустой надписью на экране.
+    /// Цена — строка берётся один раз при построении экрана, поэтому после смены языка
+    /// оболочка пересоздаётся целиком (см. SettingsViewModel).
     /// </summary>
-    public sealed class Localization : INotifyPropertyChanged
+    public sealed class Localization
     {
         private const string LanguageKey = "app.language";
         private const string DefaultCode = "de";
@@ -20,8 +19,6 @@ namespace MedicalResultsTracker.Resources.Strings
         {
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         /// <summary>Языки, между которыми можно переключаться. Пустой код — «как в системе».</summary>
         public static IReadOnlyList<LanguageOption> Available { get; } = new[]
         {
@@ -29,8 +26,6 @@ namespace MedicalResultsTracker.Resources.Strings
             new LanguageOption("de", "Deutsch"),
             new LanguageOption("ru", "Русский"),
         };
-
-        public string this[string key] => S.Get(key);
 
         /// <summary>
         /// Код выбранного языка. По умолчанию немецкий, а не системный: приложение делается
@@ -50,12 +45,6 @@ namespace MedicalResultsTracker.Resources.Strings
             Preferences.Default.Set(LanguageKey, code ?? string.Empty);
 
             Apply(code);
-
-            // Пустое имя — «изменилось всё»; "Item[]" — соглашение для индексатора.
-            // Шлём оба: какое из них поймёт привязка, зависит от версии MAUI.
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCode)));
         }
 
         private static void Apply(string code)

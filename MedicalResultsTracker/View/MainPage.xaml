@@ -23,33 +23,33 @@
                     <Button
                         Grid.Column="0"
                         Command="{Binding AddTestCommand}"
-                        Text="{loc:Tr Hist_Add}" />
+                        Text="{x:Static loc:S.Hist_Add}" />
                     <Button
                         Grid.Column="1"
                         Command="{Binding ExportCommand}"
                         IsEnabled="{Binding HasData}"
-                        Text="{loc:Tr Dash_Export}" />
+                        Text="{x:Static loc:S.Dash_Export}" />
                 </Grid>
 
                 <!--  Пустое состояние: объясняем, что делать дальше.  -->
                 <Border IsVisible="{Binding IsEmpty}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_StartTitle}" />
-                        <Label Text="{loc:Tr Dash_StartBody}" />
-                        <Label Style="{StaticResource Caption}" Text="{loc:Tr Dash_StartNote}" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_StartTitle}" />
+                        <Label Text="{x:Static loc:S.Dash_StartBody}" />
+                        <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Dash_StartNote}" />
                     </VerticalStackLayout>
                 </Border>
 
                 <Border IsVisible="{Binding ShowFavoritesHint}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_FavHintTitle}" />
-                        <Label Text="{loc:Tr Dash_FavHintBody}" />
-                        <Button Command="{Binding OpenCatalogCommand}" Text="{loc:Tr Set_CatalogOpen}" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_FavHintTitle}" />
+                        <Label Text="{x:Static loc:S.Dash_FavHintBody}" />
+                        <Button Command="{Binding OpenCatalogCommand}" Text="{x:Static loc:S.Set_CatalogOpen}" />
                     </VerticalStackLayout>
                 </Border>
 
                 <VerticalStackLayout IsVisible="{Binding HasFavorites}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Trend_FavoritesGroup}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Trend_FavoritesGroup}" />
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Favorites}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:SeriesItemViewModel">
@@ -76,7 +76,7 @@
                 </VerticalStackLayout>
 
                 <VerticalStackLayout IsVisible="{Binding HasAttention}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_OutOfRange}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_OutOfRange}" />
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Attention}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:TrendItemViewModel">
@@ -118,7 +118,7 @@
                 </VerticalStackLayout>
 
                 <VerticalStackLayout IsVisible="{Binding HasChanges}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_Changes}" />
+                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_Changes}" />
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Changes}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="vm:TrendItemViewModel">
@@ -161,18 +161,18 @@
                     <Button
                         Grid.Column="0"
                         Command="{Binding OpenHistoryCommand}"
-                        Text="{loc:Tr Tab_History}" />
+                        Text="{x:Static loc:S.Tab_History}" />
                     <Button
                         Grid.Column="1"
                         Command="{Binding OpenTrendsCommand}"
-                        Text="{loc:Tr Tab_Trends}" />
+                        Text="{x:Static loc:S.Tab_Trends}" />
                 </Grid>
 
                 <Border IsVisible="{Binding HasData}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="{loc:Tr Dash_AiTitle}" />
-                        <Label Text="{loc:Tr Dash_AiBody}" />
-                        <Button Command="{Binding AskAiCommand}" Text="{loc:Tr Dash_AiButton}" />
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_AiTitle}" />
+                        <Label Text="{x:Static loc:S.Dash_AiBody}" />
+                        <Button Command="{Binding AskAiCommand}" Text="{x:Static loc:S.Dash_AiButton}" />
                     </VerticalStackLayout>
                 </Border>
 

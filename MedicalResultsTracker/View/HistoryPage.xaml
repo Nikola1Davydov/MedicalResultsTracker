@@ -14,7 +14,7 @@
             Grid.Row="0"
             IsVisible="{Binding IsEmpty}"
             Style="{StaticResource Caption}"
-            Text="{loc:Tr Hist_Empty}" />
+            Text="{x:Static loc:S.Hist_Empty}" />
 
         <RefreshView
             Grid.Row="1"
@@ -54,11 +54,11 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding AddCommand}"
-                Text="{loc:Tr Hist_Add}" />
+                Text="{x:Static loc:S.Hist_Add}" />
             <Button
                 Grid.Column="1"
                 Command="{Binding ExportCommand}"
-                Text="{loc:Tr Hist_Export}" />
+                Text="{x:Static loc:S.Hist_Export}" />
         </Grid>
 
     </Grid>

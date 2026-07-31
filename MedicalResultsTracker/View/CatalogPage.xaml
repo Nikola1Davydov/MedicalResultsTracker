@@ -11,20 +11,20 @@
     <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="10">
 
         <VerticalStackLayout Grid.Row="0" Spacing="6">
-            <SearchBar Placeholder="{loc:Tr Cat_Search}" Text="{Binding Query}" />
+            <SearchBar Placeholder="{x:Static loc:S.Cat_Search}" Text="{Binding Query}" />
             <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <HorizontalStackLayout Grid.Column="0" Spacing="6">
                     <Label
                         Style="{StaticResource Caption}"
-                        Text="{loc:Tr Cat_OnlyFavorites}"
+                        Text="{x:Static loc:S.Cat_OnlyFavorites}"
                         VerticalOptions="Center" />
                     <Switch IsToggled="{Binding OnlyFavorites}" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Grid.Column="1" Spacing="6">
                     <Label
                         Style="{StaticResource Caption}"
-                        Text="{loc:Tr Cat_ShowHidden}"
+                        Text="{x:Static loc:S.Cat_ShowHidden}"
                         VerticalOptions="Center" />
                     <Switch IsToggled="{Binding ShowHidden}" />
                 </HorizontalStackLayout>
@@ -68,7 +68,7 @@
                                 <Label
                                     IsVisible="{Binding IsHidden}"
                                     Style="{StaticResource Caption}"
-                                    Text="{loc:Tr Cat_Hidden}" />
+                                    Text="{x:Static loc:S.Cat_Hidden}" />
                             </VerticalStackLayout>
                         </Grid>
                     </Border>
@@ -79,7 +79,7 @@
         <Button
             Grid.Row="2"
             Command="{Binding AddCommand}"
-            Text="{loc:Tr Cat_AddOwn}" />
+            Text="{x:Static loc:S.Cat_AddOwn}" />
 
     </Grid>
 
