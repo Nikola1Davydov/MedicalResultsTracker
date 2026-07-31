@@ -2,17 +2,18 @@ name: Release APK
 
 # Собирает установочный APK и кладёт его в GitHub Releases.
 #
-# Пуш тега вида v1.0.0 — полный релиз: APK попадает в Releases.
-# Кнопка "Run workflow" — репетиция: APK собирается и подписывается, но в Releases
-# ничего не публикуется, файл остаётся артефактом запуска. Так пайплайн можно
-# проверить, не оставляя мусора в списке релизов.
+# Кнопка "Run workflow" — основной путь: вводится тег, и релиз создаётся сам,
+# тег ставить руками не нужно. Пустое поле — репетиция: APK собирается и
+# подписывается, но Releases не трогается, файл остаётся артефактом запуска.
+#
+# Пуш тега вида v1.0.0 работает как раньше — на случай релиза из командной строки.
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Версия для показа в приложении, например 1.0.1'
+      tag:
+        description: 'Тег релиза, например v1.0.0. Пусто — только собрать, без публикации'
         required: false
         default: ''
 
@@ -47,21 +48,36 @@ jobs:
       - name: Install MAUI Android workload
         run: dotnet workload install maui-android
 
-      # Версия: из тега (v1.0.0 -> 1.0.0), из поля запуска или запасной вариант по номеру сборки.
+      # Тег определяет и версию в приложении, и то, будет ли релиз вообще.
+      # Пустой тег (ручной запуск с пустым полем) — сборка без публикации.
       - name: Resolve version
         id: version
+        env:
+          TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
+
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
-            display="${GITHUB_REF_NAME#v}"
             tag="${GITHUB_REF_NAME}"
-          elif [ -n "${{ inputs.version }}" ]; then
-            display="${{ inputs.version }}"
-            tag="v${display}"
+          else
+            tag="${TAG_INPUT:-}"
+          fi
+
+          # Пробелы по краям — обычная опечатка при вводе в поле формы.
+          tag="$(printf '%s' "$tag" | tr -d '[:space:]')"
+
+          if [ -n "$tag" ]; then
+            case "$tag" in v*) ;; *) tag="v$tag" ;; esac
+            display="${tag#v}"
+
+            if ! printf '%s' "$display" | grep -Eq '^[0-9]+(\.[0-9]+){0,3}([-+][0-9A-Za-z.-]+)?$'; then
+              echo "::error::Тег должен выглядеть как v1.0.0 — получено «$tag»."
+              exit 1
+            fi
           else
             display="0.0.${GITHUB_RUN_NUMBER}"
-            tag=""
           fi
+
           echo "display=$display" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
@@ -159,20 +175,27 @@ jobs:
           } > "$notes"
           echo "path=$notes" >> "$GITHUB_OUTPUT"
 
-      # Только для тега: ручной запуск — репетиция, и Releases он не трогает.
+      # Тег пустой — значит это репетиция, и публиковать нечего.
+      # При ручном запуске тег создаётся самим gh на текущем коммите (--target).
       - name: Publish GitHub release
-        if: github.ref_type == 'tag'
+        if: steps.version.outputs.tag != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          TITLE: MedicalResultsTracker ${{ steps.version.outputs.display }}
+          APK: ${{ steps.apk.outputs.path }}
+          NOTES: ${{ steps.notes.outputs.path }}
         run: |
           set -euo pipefail
-          tag="${{ steps.version.outputs.tag }}"
-          if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" "${{ steps.apk.outputs.path }}" --clobber
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$APK" --clobber
+            echo "Релиз $TAG уже был — файл обновлён."
           else
-            gh release create "$tag" "${{ steps.apk.outputs.path }}" \
-              --title "MedicalResultsTracker ${{ steps.version.outputs.display }}" \
-              --notes-file "${{ steps.notes.outputs.path }}"
+            gh release create "$TAG" "$APK" \
+              --title "$TITLE" \
+              --notes-file "$NOTES" \
+              --target "$GITHUB_SHA"
+            echo "Создан релиз $TAG."
           fi
 
       - name: Summary
@@ -186,8 +209,11 @@ jobs:
             else
               echo "Подпись: одноразовый ключ. Настройте секреты, см. docs/CI.md."
             fi
-            if [ "${GITHUB_REF_TYPE}" != "tag" ]; then
+            if [ -z "${{ steps.version.outputs.tag }}" ]; then
               echo
-              echo "Ручной запуск: релиз не создавался, файл лежит в артефактах этого запуска."
+              echo "Тег не задан — релиз не создавался, файл лежит в артефактах этого запуска."
+            else
+              echo
+              echo "Релиз: \`${{ steps.version.outputs.tag }}\`"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
