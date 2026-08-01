@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.PressureEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:PressureEditViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="14">
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_When}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <DatePicker
+                            Grid.Column="0"
+                            Date="{Binding Date}"
+                            Format="dd.MM.yyyy" />
+                        <TimePicker
+                            Grid.Column="1"
+                            Format="HH:mm"
+                            Time="{Binding Time}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <!--  Верхнее и нижнее рядом: давление читают и записывают парой.  -->
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="8">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_Systolic}" />
+                            <Entry
+                                FontSize="26"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="3"
+                                Placeholder="120"
+                                Text="{Binding Systolic}" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="1"
+                            FontSize="26"
+                            Text="/"
+                            VerticalOptions="End" />
+                        <VerticalStackLayout Grid.Column="2" Spacing="2">
+                            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_Diastolic}" />
+                            <Entry
+                                FontSize="26"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="3"
+                                Placeholder="80"
+                                Text="{Binding Diastolic}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_Pulse}" />
+                    <Entry
+                        Keyboard="Numeric"
+                        MaxLength="3"
+                        Placeholder="{x:Static loc:S.Bp_PulsePlaceholder}"
+                        Text="{Binding Pulse}" />
+
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_Note}" />
+                    <Entry Placeholder="{x:Static loc:S.Bp_NotePlaceholder}" Text="{Binding Note}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="10">
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding SaveCommand}"
+                    Text="{x:Static loc:S.Common_Save}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding CancelCommand}"
+                    Text="{x:Static loc:S.Common_Cancel}" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding DeleteCommand}"
+                    IsVisible="{Binding IsExisting}"
+                    Text="🗑" />
+            </Grid>
+
+            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_Disclaimer}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

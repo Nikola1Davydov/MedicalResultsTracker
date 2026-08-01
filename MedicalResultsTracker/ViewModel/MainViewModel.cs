@@ -1,9 +1,12 @@
+using System.Globalization;
+using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Analysis;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Export;
+using MedicalResultsTracker.Services.UI;
 
 namespace MedicalResultsTracker.ViewModel
 {
@@ -11,6 +14,7 @@ namespace MedicalResultsTracker.ViewModel
     public partial class MainViewModel : BaseViewModel
     {
         private readonly IBloodTestRepository _repository;
+        private readonly IBloodPressureRepository _pressure;
         private readonly IAnalysisService _analysis;
         private readonly IExportService _export;
         private readonly IAiConsentService _consent;
@@ -37,16 +41,25 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private string _assistantStatus = string.Empty;
 
+        /// <summary>Последнее измерение давления — «130/85 · сегодня, 08:20» либо приглашение начать.</summary>
+        [ObservableProperty]
+        private string _pressureSummary = string.Empty;
+
+        [ObservableProperty]
+        private Color _pressureColor = StatusPalette.Unknown;
+
         private Guid? _latestTestId;
 
         public MainViewModel(
             IBloodTestRepository repository,
+            IBloodPressureRepository pressure,
             IAnalysisService analysis,
             IExportService export,
             IAiConsentService consent,
             IAiAssistant assistant)
         {
             _repository = repository;
+            _pressure = pressure;
             _analysis = analysis;
             _export = export;
             _consent = consent;
@@ -68,6 +81,13 @@ namespace MedicalResultsTracker.ViewModel
 
         [RelayCommand]
         private Task AddTest() => Shell.Current.GoToAsync(AppRoutes.TestEdit);
+
+        /// <summary>Давление записывают ежедневно, поэтому кнопка ведёт сразу в форму, а не в список.</summary>
+        [RelayCommand]
+        private Task AddPressure() => Shell.Current.GoToAsync(AppRoutes.PressureEdit);
+
+        [RelayCommand]
+        private Task OpenPressure() => Shell.Current.GoToAsync(AppRoutes.Pressure);
 
         [RelayCommand]
         private Task OpenLastTest() => _latestTestId is Guid id
@@ -136,9 +156,30 @@ namespace MedicalResultsTracker.ViewModel
                 ? S.Dash_EmptyHint
                 : BuildSummary(latest, count, Attention.Count);
 
+            await LoadPressureAsync();
+
             AssistantStatus = _consent.Current.Scope == AiConsentScope.None
                 ? S.Dash_AiOff
                 : string.Format(S.Dash_AiOn, _assistant.ProviderName);
+        }
+
+        private async Task LoadPressureAsync()
+        {
+            if (await _pressure.GetLatestAsync() is not BloodPressureReading latest)
+            {
+                PressureSummary = S.Bp_NoneYet;
+                PressureColor = StatusPalette.Unknown;
+                return;
+            }
+
+            PressureSummary = string.Format(
+                S.Bp_LastReading,
+                latest.Display,
+                latest.MeasuredAt.ToString("g", CultureInfo.CurrentCulture));
+
+            PressureColor = latest.IsAbove(BloodPressureTarget.Systolic, BloodPressureTarget.Diastolic)
+                ? StatusPalette.High
+                : StatusPalette.Normal;
         }
 
         private static string BuildSummary(BloodTest latest, int totalTests, int attentionCount)

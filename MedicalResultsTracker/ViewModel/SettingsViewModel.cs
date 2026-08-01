@@ -41,6 +41,16 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private bool _backupOverdue;
 
+        /// <summary>
+        /// Порог, выше которого измерение давления подсвечивается. Не диагноз и не степень:
+        /// число вписывает сам человек со слов врача, приложение только сравнивает.
+        /// </summary>
+        [ObservableProperty]
+        private string _pressureTargetSystolic = string.Empty;
+
+        [ObservableProperty]
+        private string _pressureTargetDiastolic = string.Empty;
+
         [ObservableProperty]
         private LanguageOption? _selectedLanguage;
 
@@ -167,6 +177,26 @@ namespace MedicalResultsTracker.ViewModel
         private Task OpenHistory() => Shell.Current.GoToAsync(AppRoutes.History);
 
         [RelayCommand]
+        private Task OpenPressure() => Shell.Current.GoToAsync(AppRoutes.Pressure);
+
+        [RelayCommand]
+        private Task SavePressureTarget() => RunAsync(async () =>
+        {
+            if (!int.TryParse(PressureTargetSystolic.Trim(), out int systolic) ||
+                !int.TryParse(PressureTargetDiastolic.Trim(), out int diastolic) ||
+                systolic is < 80 or > 220 || diastolic is < 40 or > 140 || diastolic >= systolic)
+            {
+                await Dialog.AlertAsync(S.Bp_BadTargetTitle, S.Bp_BadTargetBody);
+                return;
+            }
+
+            BloodPressureTarget.Systolic = systolic;
+            BloodPressureTarget.Diastolic = diastolic;
+
+            await Dialog.AlertAsync(S.Bp_TargetSavedTitle, string.Format(S.Bp_TargetSavedBody, systolic, diastolic));
+        }, S.Err_Settings);
+
+        [RelayCommand]
         private Task ShareForAi() => RunAsync(async () =>
         {
             string text = await _export.BuildTextSummaryAsync();
@@ -205,6 +235,9 @@ namespace MedicalResultsTracker.ViewModel
 
             UpdateAssistantSummary();
             UpdateBackupSummary();
+
+            PressureTargetSystolic = BloodPressureTarget.Systolic.ToString(CultureInfo.CurrentCulture);
+            PressureTargetDiastolic = BloodPressureTarget.Diastolic.ToString(CultureInfo.CurrentCulture);
 
             // Версия ставится тегом релиза и больше нигде: увидев её здесь, можно сверить,
             // что на телефоне стоит именно тот выпуск, который лежит в Releases.

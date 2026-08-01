@@ -982,4 +982,103 @@
   <data name="Set_BackupOverdue" xml:space="preserve">
     <value>Данные лежат только на этом устройстве. Потеряется телефон — история пропадёт.</value>
   </data>
+  <data name="Bp_Title" xml:space="preserve">
+    <value>Давление</value>
+  </data>
+  <data name="Bp_TitleNew" xml:space="preserve">
+    <value>Записать давление</value>
+  </data>
+  <data name="Bp_TitleExisting" xml:space="preserve">
+    <value>Изменить измерение</value>
+  </data>
+  <data name="Bp_Add" xml:space="preserve">
+    <value>➕ Записать давление</value>
+  </data>
+  <data name="Bp_When" xml:space="preserve">
+    <value>Дата и время</value>
+  </data>
+  <data name="Bp_Systolic" xml:space="preserve">
+    <value>Верхнее</value>
+  </data>
+  <data name="Bp_Diastolic" xml:space="preserve">
+    <value>Нижнее</value>
+  </data>
+  <data name="Bp_Pulse" xml:space="preserve">
+    <value>Пульс</value>
+  </data>
+  <data name="Bp_PulsePlaceholder" xml:space="preserve">
+    <value>необязательно</value>
+  </data>
+  <data name="Bp_PulseValue" xml:space="preserve">
+    <value>{0} уд/мин</value>
+  </data>
+  <data name="Bp_Note" xml:space="preserve">
+    <value>Заметка</value>
+  </data>
+  <data name="Bp_NotePlaceholder" xml:space="preserve">
+    <value>Например: после сна, левая рука</value>
+  </data>
+  <data name="Bp_Empty" xml:space="preserve">
+    <value>Пока ни одного измерения. Внесите первое — время сохраняется вместе с датой, чтобы утро и вечер не путались.</value>
+  </data>
+  <data name="Bp_NoneYet" xml:space="preserve">
+    <value>Ещё не записано</value>
+  </data>
+  <data name="Bp_LastReading" xml:space="preserve">
+    <value>{0} · {1}</value>
+  </data>
+  <data name="Bp_BadValuesTitle" xml:space="preserve">
+    <value>Не хватает значений</value>
+  </data>
+  <data name="Bp_BadValuesBody" xml:space="preserve">
+    <value>Впишите верхнее и нижнее значения целыми числами.</value>
+  </data>
+  <data name="Bp_ImplausibleTitle" xml:space="preserve">
+    <value>Проверьте значения</value>
+  </data>
+  <data name="Bp_ImplausibleBody" xml:space="preserve">
+    <value>Такие числа не складываются в осмысленное давление: нижнее должно быть меньше верхнего. Похоже на опечатку.</value>
+  </data>
+  <data name="Bp_DeleteTitle" xml:space="preserve">
+    <value>Удалить измерение?</value>
+  </data>
+  <data name="Bp_DeleteBody" xml:space="preserve">
+    <value>Удалится это одно измерение. Остальные останутся.</value>
+  </data>
+  <data name="Bp_TargetSummary" xml:space="preserve">
+    <value>Подсвечивается всё выше {0}/{1}.</value>
+  </data>
+  <data name="Bp_TargetBody" xml:space="preserve">
+    <value>С какого значения измерение подсвечивать. Впишите то, что назвал ваш врач: приложение не ставит диагноз и не определяет степень.</value>
+  </data>
+  <data name="Bp_TargetSave" xml:space="preserve">
+    <value>Сохранить порог</value>
+  </data>
+  <data name="Bp_TargetSavedTitle" xml:space="preserve">
+    <value>Сохранено</value>
+  </data>
+  <data name="Bp_TargetSavedBody" xml:space="preserve">
+    <value>Подсветка начинается с {0}/{1}.</value>
+  </data>
+  <data name="Bp_BadTargetTitle" xml:space="preserve">
+    <value>Проверьте порог</value>
+  </data>
+  <data name="Bp_BadTargetBody" xml:space="preserve">
+    <value>Верхнее значение должно быть больше нижнего, и оба — в осмысленных пределах.</value>
+  </data>
+  <data name="Bp_OpenDiary" xml:space="preserve">
+    <value>Открыть все измерения</value>
+  </data>
+  <data name="Bp_Disclaimer" xml:space="preserve">
+    <value>Приложение сохраняет только то, что вы внесли. Оно не оценивает давление и не заменяет заключение врача.</value>
+  </data>
+  <data name="Err_Bp" xml:space="preserve">
+    <value>Не удалось загрузить давление</value>
+  </data>
+  <data name="Err_BpSave" xml:space="preserve">
+    <value>Не удалось сохранить измерение</value>
+  </data>
+  <data name="Err_BpDelete" xml:space="preserve">
+    <value>Не удалось удалить измерение</value>
+  </data>
 </root>

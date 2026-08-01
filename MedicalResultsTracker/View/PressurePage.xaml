@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MedicalResultsTracker.View.PressurePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
+    xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
+    Title="{Binding Title}"
+    x:DataType="vm:PressureViewModel">
+
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="12">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="4">
+            <Label Style="{StaticResource Caption}" Text="{Binding TargetSummary}" />
+            <Label
+                IsVisible="{Binding IsEmpty}"
+                Style="{StaticResource Caption}"
+                Text="{x:Static loc:S.Bp_Empty}" />
+        </VerticalStackLayout>
+
+        <RefreshView
+            Grid.Row="1"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+            <CollectionView ItemsSource="{Binding Readings}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PressureItemViewModel">
+                        <Border Style="{StaticResource Card}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PressureViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="4,*,Auto" ColumnSpacing="10">
+                                <BoxView Grid.Column="0" Color="{Binding Color}" />
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        Text="{Binding Value}"
+                                        TextColor="{Binding Color}" />
+                                    <Label Style="{StaticResource Caption}" Text="{Binding When}" />
+                                    <Label
+                                        IsVisible="{Binding HasNote}"
+                                        Style="{StaticResource Caption}"
+                                        Text="{Binding Note}" />
+                                </VerticalStackLayout>
+                                <Label
+                                    Grid.Column="2"
+                                    IsVisible="{Binding HasPulse}"
+                                    Style="{StaticResource Caption}"
+                                    Text="{Binding Pulse}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <Button
+            Grid.Row="2"
+            Command="{Binding AddCommand}"
+            Text="{x:Static loc:S.Bp_Add}" />
+
+    </Grid>
+
+</ContentPage>
