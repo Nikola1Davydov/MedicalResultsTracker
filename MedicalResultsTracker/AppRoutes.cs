@@ -9,6 +9,8 @@ namespace MedicalResultsTracker
         public const string Settings = "//settings";
 
         public const string History = "history";
+        public const string Pressure = "pressure";
+        public const string PressureEdit = "pressureedit";
         public const string TestEdit = "testedit";
         public const string TrendDetail = "trenddetail";
         public const string Catalog = "catalog";
@@ -19,5 +21,6 @@ namespace MedicalResultsTracker
         public const string SeriesKeyParameter = "seriesKey";
         public const string AnalyteCodeParameter = "analyteCode";
         public const string ViewIdParameter = "viewId";
+        public const string PressureIdParameter = "pressureId";
     }
 }

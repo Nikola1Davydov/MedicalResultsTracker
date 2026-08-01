@@ -17,6 +17,9 @@ namespace MedicalResultsTracker.Services.Export
         /// <summary>Разделитель берётся из культуры: Excel ждёт тот же, что и система.</summary>
         private static char Separator => CultureInfo.CurrentCulture.TextInfo.ListSeparator.FirstOrDefault(';');
 
+        /// <summary>Сколько последних измерений давления класть в текст для чата.</summary>
+        private const int MaxPressureRows = 30;
+
         private static readonly JsonSerializerOptions BackupJsonOptions = new()
         {
             WriteIndented = true,
@@ -24,11 +27,16 @@ namespace MedicalResultsTracker.Services.Export
         };
 
         private readonly IBloodTestRepository _repository;
+        private readonly IBloodPressureRepository _pressure;
         private readonly IAnalysisService _analysis;
 
-        public ExportService(IBloodTestRepository repository, IAnalysisService analysis)
+        public ExportService(
+            IBloodTestRepository repository,
+            IBloodPressureRepository pressure,
+            IAnalysisService analysis)
         {
             _repository = repository;
+            _pressure = pressure;
             _analysis = analysis;
         }
 
@@ -96,11 +104,43 @@ namespace MedicalResultsTracker.Services.Export
                 .ConfigureAwait(false);
         }
 
+        public async Task<string> ExportPressureCsvAsync()
+        {
+            IReadOnlyList<BloodPressureReading> readings = await _pressure.GetAllAsync().ConfigureAwait(false);
+
+            StringBuilder builder = new();
+
+            builder.AppendLine(Join(
+                S.Csv_Date, S.Csv_Time, S.Bp_Systolic, S.Bp_Diastolic, S.Bp_Pulse, S.Csv_Comment));
+
+            // Старые сверху: дневник читают как хронологию.
+            foreach (BloodPressureReading reading in readings.OrderBy(r => r.MeasuredAt))
+            {
+                builder.AppendLine(Join(
+                    reading.MeasuredAt.ToString("d", CultureInfo.CurrentCulture),
+                    reading.MeasuredAt.ToString("t", CultureInfo.CurrentCulture),
+                    reading.Systolic.ToString(CultureInfo.CurrentCulture),
+                    reading.Diastolic.ToString(CultureInfo.CurrentCulture),
+                    reading.Pulse?.ToString(CultureInfo.CurrentCulture) ?? string.Empty,
+                    reading.Note ?? string.Empty));
+            }
+
+            return await WriteAsync($"blood-pressure-{DateTime.Now:yyyy-MM-dd}.csv", builder.ToString())
+                .ConfigureAwait(false);
+        }
+
         public async Task<string> ExportBackupAsync()
         {
             IReadOnlyList<BloodTest> tests = await _repository.GetAllAsync().ConfigureAwait(false);
+            IReadOnlyList<BloodPressureReading> pressure = await _pressure.GetAllAsync().ConfigureAwait(false);
 
-            string json = JsonSerializer.Serialize(new BackupFile { Tests = tests.ToList() }, BackupJsonOptions);
+            BackupFile backup = new()
+            {
+                Tests = tests.ToList(),
+                Pressure = pressure.ToList(),
+            };
+
+            string json = JsonSerializer.Serialize(backup, BackupJsonOptions);
 
             return await WriteAsync($"medical-results-backup-{DateTime.Now:yyyy-MM-dd}.json", json)
                 .ConfigureAwait(false);
@@ -112,7 +152,22 @@ namespace MedicalResultsTracker.Services.Export
 
             BackupFile? backup = JsonSerializer.Deserialize<BackupFile>(json, BackupJsonOptions);
 
-            if (backup?.Tests is not { Count: > 0 })
+            if (backup is null)
+            {
+                return 0;
+            }
+
+            int imported = 0;
+
+            imported += await ImportTestsAsync(backup.Tests, replaceExisting).ConfigureAwait(false);
+            imported += await ImportPressureAsync(backup.Pressure, replaceExisting).ConfigureAwait(false);
+
+            return imported;
+        }
+
+        private async Task<int> ImportTestsAsync(List<BloodTest> tests, bool replaceExisting)
+        {
+            if (tests.Count == 0)
             {
                 return 0;
             }
@@ -122,7 +177,7 @@ namespace MedicalResultsTracker.Services.Export
 
             int imported = 0;
 
-            foreach (BloodTest test in backup.Tests)
+            foreach (BloodTest test in tests)
             {
                 if (existingIds.Contains(test.Id) && !replaceExisting)
                 {
@@ -139,6 +194,36 @@ namespace MedicalResultsTracker.Services.Export
                 }
 
                 await _repository.SaveAsync(test).ConfigureAwait(false);
+                imported++;
+            }
+
+            return imported;
+        }
+
+        /// <summary>
+        /// Копии, снятые до появления дневника давления, этого раздела не содержат —
+        /// список приходит пустым, и восстановление такой копии проходит как раньше.
+        /// </summary>
+        private async Task<int> ImportPressureAsync(List<BloodPressureReading> readings, bool replaceExisting)
+        {
+            if (readings.Count == 0)
+            {
+                return 0;
+            }
+
+            IReadOnlyList<BloodPressureReading> existing = await _pressure.GetAllAsync().ConfigureAwait(false);
+            HashSet<Guid> existingIds = existing.Select(r => r.Id).ToHashSet();
+
+            int imported = 0;
+
+            foreach (BloodPressureReading reading in readings)
+            {
+                if (existingIds.Contains(reading.Id) && !replaceExisting)
+                {
+                    continue;
+                }
+
+                await _pressure.SaveAsync(reading).ConfigureAwait(false);
                 imported++;
             }
 
@@ -198,6 +283,8 @@ namespace MedicalResultsTracker.Services.Export
             }
 
             // Итог по последнему столбцу, а не по последнему бланку: за один день их могло быть два.
+            await AppendPressureAsync(builder).ConfigureAwait(false);
+
             List<BloodParameter> outOfRange = matrix.Lines
                 .Select(line => line.Cells[^1])
                 .OfType<BloodParameter>()
@@ -212,6 +299,38 @@ namespace MedicalResultsTracker.Services.Export
                     $"{p.Name} {FormatValue(p)} {p.Unit} ({p.Range})".Replace("  ", " ").Trim()))));
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Давление отдельным разделом, а не строками общей таблицы: там столбец на дату,
+        /// а измерений за день бывает несколько, и время в них значимо.
+        /// </summary>
+        private async Task AppendPressureAsync(StringBuilder builder)
+        {
+            IReadOnlyList<BloodPressureReading> readings = await _pressure.GetAllAsync().ConfigureAwait(false);
+
+            if (readings.Count == 0)
+            {
+                return;
+            }
+
+            builder.AppendLine();
+            builder.AppendLine(S.Txt_Pressure);
+            builder.AppendLine();
+            builder.AppendLine($"| {S.Csv_Date} | {S.Csv_Time} | {S.Bp_Systolic} | {S.Bp_Diastolic} | {S.Bp_Pulse} |");
+            builder.AppendLine("|---|---|---|---|---|");
+
+            // Последние измерения, от старых к новым: столько влезает в чат, не утомляя.
+            foreach (BloodPressureReading reading in readings
+                .Take(MaxPressureRows)
+                .OrderBy(r => r.MeasuredAt))
+            {
+                builder.AppendLine(
+                    $"| {reading.MeasuredAt.ToString("d", CultureInfo.CurrentCulture)} " +
+                    $"| {reading.MeasuredAt.ToString("t", CultureInfo.CurrentCulture)} " +
+                    $"| {reading.Systolic} | {reading.Diastolic} " +
+                    $"| {reading.Pulse?.ToString(CultureInfo.CurrentCulture) ?? S.Common_None} |");
+            }
         }
 
         public async Task ShareTextAsync(string text, string title)
@@ -289,6 +408,12 @@ namespace MedicalResultsTracker.Services.Export
             public DateTime ExportedUtc { get; set; } = DateTime.UtcNow;
 
             public List<BloodTest> Tests { get; set; } = new();
+
+            /// <summary>
+            /// Дневник давления. У копий, снятых до появления этого раздела, поля нет —
+            /// десериализатор оставит пустой список, и восстановление такой копии не сломается.
+            /// </summary>
+            public List<BloodPressureReading> Pressure { get; set; } = new();
         }
     }
 }

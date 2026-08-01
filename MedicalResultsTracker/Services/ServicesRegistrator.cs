@@ -11,6 +11,7 @@ namespace MedicalResultsTracker.Services
         public static IServiceCollection RegisterServices(this IServiceCollection services) => services
             .AddSingleton<IMedicalDatabase, MedicalDatabase>()
             .AddSingleton<IBloodTestRepository, BloodTestRepository>()
+            .AddSingleton<IBloodPressureRepository, BloodPressureRepository>()
             .AddSingleton<IAnalyteCatalog, AnalyteCatalog>()
             .AddSingleton<IMatrixViewRepository, MatrixViewRepository>()
             .AddSingleton<IAnalysisService, AnalysisService>()

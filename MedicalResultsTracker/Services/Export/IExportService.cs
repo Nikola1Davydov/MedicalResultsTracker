@@ -11,10 +11,17 @@ namespace MedicalResultsTracker.Services.Export
         /// <summary>Плоская выгрузка: одна строка на каждое измерение. Удобна для сводных таблиц и импорта.</summary>
         Task<string> ExportFlatCsvAsync();
 
+        /// <summary>
+        /// Дневник давления отдельным файлом: дата, время, верхнее, нижнее, пульс, заметка.
+        /// В сводную таблицу анализов он не помещается — там столбец на дату, а давление
+        /// меряют по нескольку раз в день, и время в нём значимо.
+        /// </summary>
+        Task<string> ExportPressureCsvAsync();
+
         /// <summary>Полный локальный бэкап в JSON — чтобы перенести историю на другое устройство.</summary>
         Task<string> ExportBackupAsync();
 
-        /// <summary>Восстановление из бэкапа. Возвращает количество добавленных анализов.</summary>
+        /// <summary>Восстановление из бэкапа. Возвращает количество добавленных записей — анализов и измерений давления.</summary>
         Task<int> ImportBackupAsync(string filePath, bool replaceExisting = false);
 
         /// <summary>

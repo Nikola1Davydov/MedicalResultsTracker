@@ -950,5 +950,119 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Die Daten liegen nur auf diesem Gerät. Geht es verloren, ist der Verla</summary>
         public static string Set_BackupOverdue => Get("Set_BackupOverdue");
+
+        /// <summary>Blutdruck</summary>
+        public static string Bp_Title => Get("Bp_Title");
+
+        /// <summary>Blutdruck erfassen</summary>
+        public static string Bp_TitleNew => Get("Bp_TitleNew");
+
+        /// <summary>Messung ändern</summary>
+        public static string Bp_TitleExisting => Get("Bp_TitleExisting");
+
+        /// <summary>➕ Blutdruck erfassen</summary>
+        public static string Bp_Add => Get("Bp_Add");
+
+        /// <summary>Datum und Uhrzeit</summary>
+        public static string Bp_When => Get("Bp_When");
+
+        /// <summary>Systolisch (oben)</summary>
+        public static string Bp_Systolic => Get("Bp_Systolic");
+
+        /// <summary>Diastolisch (unten)</summary>
+        public static string Bp_Diastolic => Get("Bp_Diastolic");
+
+        /// <summary>Puls</summary>
+        public static string Bp_Pulse => Get("Bp_Pulse");
+
+        /// <summary>optional</summary>
+        public static string Bp_PulsePlaceholder => Get("Bp_PulsePlaceholder");
+
+        /// <summary>{0} /min</summary>
+        public static string Bp_PulseValue => Get("Bp_PulseValue");
+
+        /// <summary>Notiz</summary>
+        public static string Bp_Note => Get("Bp_Note");
+
+        /// <summary>z. B. nach dem Aufstehen, linker Arm</summary>
+        public static string Bp_NotePlaceholder => Get("Bp_NotePlaceholder");
+
+        /// <summary>Noch keine Messung. Tragen Sie die erste ein – Uhrzeit wird mitgespeic</summary>
+        public static string Bp_Empty => Get("Bp_Empty");
+
+        /// <summary>Noch nicht erfasst</summary>
+        public static string Bp_NoneYet => Get("Bp_NoneYet");
+
+        /// <summary>{0} · {1}</summary>
+        public static string Bp_LastReading => Get("Bp_LastReading");
+
+        /// <summary>Werte fehlen</summary>
+        public static string Bp_BadValuesTitle => Get("Bp_BadValuesTitle");
+
+        /// <summary>Tragen Sie den oberen und den unteren Wert als ganze Zahlen ein.</summary>
+        public static string Bp_BadValuesBody => Get("Bp_BadValuesBody");
+
+        /// <summary>Bitte prüfen</summary>
+        public static string Bp_ImplausibleTitle => Get("Bp_ImplausibleTitle");
+
+        /// <summary>Diese Zahlen ergeben keinen sinnvollen Blutdruck. Der untere Wert muss</summary>
+        public static string Bp_ImplausibleBody => Get("Bp_ImplausibleBody");
+
+        /// <summary>Messung löschen?</summary>
+        public static string Bp_DeleteTitle => Get("Bp_DeleteTitle");
+
+        /// <summary>Diese eine Messung wird gelöscht. Die übrigen bleiben.</summary>
+        public static string Bp_DeleteBody => Get("Bp_DeleteBody");
+
+        /// <summary>Hervorgehoben wird alles über {0}/{1}.</summary>
+        public static string Bp_TargetSummary => Get("Bp_TargetSummary");
+
+        /// <summary>Ab welchem Wert eine Messung hervorgehoben wird. Tragen Sie hier ein, </summary>
+        public static string Bp_TargetBody => Get("Bp_TargetBody");
+
+        /// <summary>Zielwert speichern</summary>
+        public static string Bp_TargetSave => Get("Bp_TargetSave");
+
+        /// <summary>Gespeichert</summary>
+        public static string Bp_TargetSavedTitle => Get("Bp_TargetSavedTitle");
+
+        /// <summary>Hervorgehoben wird ab {0}/{1}.</summary>
+        public static string Bp_TargetSavedBody => Get("Bp_TargetSavedBody");
+
+        /// <summary>Zielwert prüfen</summary>
+        public static string Bp_BadTargetTitle => Get("Bp_BadTargetTitle");
+
+        /// <summary>Der obere Wert muss größer als der untere sein und beide im sinnvollen</summary>
+        public static string Bp_BadTargetBody => Get("Bp_BadTargetBody");
+
+        /// <summary>Alle Messungen öffnen</summary>
+        public static string Bp_OpenDiary => Get("Bp_OpenDiary");
+
+        /// <summary>Die App speichert nur, was Sie eintragen. Sie bewertet den Blutdruck n</summary>
+        public static string Bp_Disclaimer => Get("Bp_Disclaimer");
+
+        /// <summary>Blutdruck konnte nicht geladen werden</summary>
+        public static string Err_Bp => Get("Err_Bp");
+
+        /// <summary>Messung konnte nicht gespeichert werden</summary>
+        public static string Err_BpSave => Get("Err_BpSave");
+
+        /// <summary>Messung konnte nicht gelöscht werden</summary>
+        public static string Err_BpDelete => Get("Err_BpDelete");
+
+        /// <summary>Uhrzeit</summary>
+        public static string Csv_Time => Get("Csv_Time");
+
+        /// <summary>**Blutdruck** (Datum, Uhrzeit, oben, unten, Puls):</summary>
+        public static string Txt_Pressure => Get("Txt_Pressure");
+
+        /// <summary>Blutdruck als CSV</summary>
+        public static string Set_ExportPressure => Get("Set_ExportPressure");
+
+        /// <summary>Blutdruck-Tagebuch</summary>
+        public static string Share_Pressure => Get("Share_Pressure");
+
+        /// <summary>Blutdruck konnte nicht exportiert werden</summary>
+        public static string Err_ExportPressure => Get("Err_ExportPressure");
     }
 }

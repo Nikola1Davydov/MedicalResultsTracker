@@ -21,6 +21,23 @@
 
                 <Button Command="{Binding AddTestCommand}" Text="{x:Static loc:S.Hist_Add}" />
 
+                <!--  Давление записывают каждый день, поэтому оно на первом экране,
+                      а не спрятано за вкладкой. Тап по карточке открывает весь дневник.  -->
+                <Border Style="{StaticResource Card}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenPressureCommand}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Bp_Title}" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="{Binding PressureSummary}"
+                            TextColor="{Binding PressureColor}" />
+                        <Button Command="{Binding AddPressureCommand}" Text="{x:Static loc:S.Bp_Add}" />
+                    </VerticalStackLayout>
+                </Border>
+
                 <!--  Пустое состояние: объясняем, что делать дальше.  -->
                 <Border IsVisible="{Binding IsEmpty}" Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">

@@ -982,4 +982,118 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Set_BackupOverdue" xml:space="preserve">
     <value>Die Daten liegen nur auf diesem Gerät. Geht es verloren, ist der Verlauf weg.</value>
   </data>
+  <data name="Bp_Title" xml:space="preserve">
+    <value>Blutdruck</value>
+  </data>
+  <data name="Bp_TitleNew" xml:space="preserve">
+    <value>Blutdruck erfassen</value>
+  </data>
+  <data name="Bp_TitleExisting" xml:space="preserve">
+    <value>Messung ändern</value>
+  </data>
+  <data name="Bp_Add" xml:space="preserve">
+    <value>➕ Blutdruck erfassen</value>
+  </data>
+  <data name="Bp_When" xml:space="preserve">
+    <value>Datum und Uhrzeit</value>
+  </data>
+  <data name="Bp_Systolic" xml:space="preserve">
+    <value>Systolisch (oben)</value>
+  </data>
+  <data name="Bp_Diastolic" xml:space="preserve">
+    <value>Diastolisch (unten)</value>
+  </data>
+  <data name="Bp_Pulse" xml:space="preserve">
+    <value>Puls</value>
+  </data>
+  <data name="Bp_PulsePlaceholder" xml:space="preserve">
+    <value>optional</value>
+  </data>
+  <data name="Bp_PulseValue" xml:space="preserve">
+    <value>{0} /min</value>
+  </data>
+  <data name="Bp_Note" xml:space="preserve">
+    <value>Notiz</value>
+  </data>
+  <data name="Bp_NotePlaceholder" xml:space="preserve">
+    <value>z. B. nach dem Aufstehen, linker Arm</value>
+  </data>
+  <data name="Bp_Empty" xml:space="preserve">
+    <value>Noch keine Messung. Tragen Sie die erste ein – Uhrzeit wird mitgespeichert, damit sich morgens und abends unterscheiden lassen.</value>
+  </data>
+  <data name="Bp_NoneYet" xml:space="preserve">
+    <value>Noch nicht erfasst</value>
+  </data>
+  <data name="Bp_LastReading" xml:space="preserve">
+    <value>{0} · {1}</value>
+  </data>
+  <data name="Bp_BadValuesTitle" xml:space="preserve">
+    <value>Werte fehlen</value>
+  </data>
+  <data name="Bp_BadValuesBody" xml:space="preserve">
+    <value>Tragen Sie den oberen und den unteren Wert als ganze Zahlen ein.</value>
+  </data>
+  <data name="Bp_ImplausibleTitle" xml:space="preserve">
+    <value>Bitte prüfen</value>
+  </data>
+  <data name="Bp_ImplausibleBody" xml:space="preserve">
+    <value>Diese Zahlen ergeben keinen sinnvollen Blutdruck. Der untere Wert muss kleiner als der obere sein – vermutlich ein Zahlendreher.</value>
+  </data>
+  <data name="Bp_DeleteTitle" xml:space="preserve">
+    <value>Messung löschen?</value>
+  </data>
+  <data name="Bp_DeleteBody" xml:space="preserve">
+    <value>Diese eine Messung wird gelöscht. Die übrigen bleiben.</value>
+  </data>
+  <data name="Bp_TargetSummary" xml:space="preserve">
+    <value>Hervorgehoben wird alles über {0}/{1}.</value>
+  </data>
+  <data name="Bp_TargetBody" xml:space="preserve">
+    <value>Ab welchem Wert eine Messung hervorgehoben wird. Tragen Sie hier ein, was Ihre Ärztin oder Ihr Arzt Ihnen genannt hat – die App stellt keine Diagnose und stuft nichts ein.</value>
+  </data>
+  <data name="Bp_TargetSave" xml:space="preserve">
+    <value>Zielwert speichern</value>
+  </data>
+  <data name="Bp_TargetSavedTitle" xml:space="preserve">
+    <value>Gespeichert</value>
+  </data>
+  <data name="Bp_TargetSavedBody" xml:space="preserve">
+    <value>Hervorgehoben wird ab {0}/{1}.</value>
+  </data>
+  <data name="Bp_BadTargetTitle" xml:space="preserve">
+    <value>Zielwert prüfen</value>
+  </data>
+  <data name="Bp_BadTargetBody" xml:space="preserve">
+    <value>Der obere Wert muss größer als der untere sein und beide im sinnvollen Bereich liegen.</value>
+  </data>
+  <data name="Bp_OpenDiary" xml:space="preserve">
+    <value>Alle Messungen öffnen</value>
+  </data>
+  <data name="Bp_Disclaimer" xml:space="preserve">
+    <value>Die App speichert nur, was Sie eintragen. Sie bewertet den Blutdruck nicht und ersetzt keine ärztliche Beurteilung.</value>
+  </data>
+  <data name="Err_Bp" xml:space="preserve">
+    <value>Blutdruck konnte nicht geladen werden</value>
+  </data>
+  <data name="Err_BpSave" xml:space="preserve">
+    <value>Messung konnte nicht gespeichert werden</value>
+  </data>
+  <data name="Err_BpDelete" xml:space="preserve">
+    <value>Messung konnte nicht gelöscht werden</value>
+  </data>
+  <data name="Csv_Time" xml:space="preserve">
+    <value>Uhrzeit</value>
+  </data>
+  <data name="Txt_Pressure" xml:space="preserve">
+    <value>**Blutdruck** (Datum, Uhrzeit, oben, unten, Puls):</value>
+  </data>
+  <data name="Set_ExportPressure" xml:space="preserve">
+    <value>Blutdruck als CSV</value>
+  </data>
+  <data name="Share_Pressure" xml:space="preserve">
+    <value>Blutdruck-Tagebuch</value>
+  </data>
+  <data name="Err_ExportPressure" xml:space="preserve">
+    <value>Blutdruck konnte nicht exportiert werden</value>
+  </data>
 </root>

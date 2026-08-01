@@ -17,6 +17,7 @@ namespace MedicalResultsTracker.ViewModel
 
         private readonly IMedicalDatabase _database;
         private readonly IBloodTestRepository _repository;
+        private readonly IBloodPressureRepository _pressure;
         private readonly IExportService _export;
         private readonly IAiConsentService _consent;
         private readonly IAiAssistant _assistant;
@@ -41,6 +42,16 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private bool _backupOverdue;
 
+        /// <summary>
+        /// Порог, выше которого измерение давления подсвечивается. Не диагноз и не степень:
+        /// число вписывает сам человек со слов врача, приложение только сравнивает.
+        /// </summary>
+        [ObservableProperty]
+        private string _pressureTargetSystolic = string.Empty;
+
+        [ObservableProperty]
+        private string _pressureTargetDiastolic = string.Empty;
+
         [ObservableProperty]
         private LanguageOption? _selectedLanguage;
 
@@ -52,12 +63,14 @@ namespace MedicalResultsTracker.ViewModel
         public SettingsViewModel(
             IMedicalDatabase database,
             IBloodTestRepository repository,
+            IBloodPressureRepository pressure,
             IExportService export,
             IAiConsentService consent,
             IAiAssistant assistant)
         {
             _database = database;
             _repository = repository;
+            _pressure = pressure;
             _export = export;
             _consent = consent;
             _assistant = assistant;
@@ -108,6 +121,13 @@ namespace MedicalResultsTracker.ViewModel
         }, S.Err_ExportList);
 
         [RelayCommand]
+        private Task ExportPressure() => RunAsync(async () =>
+        {
+            string path = await _export.ExportPressureCsvAsync();
+            await _export.ShareAsync(path, S.Share_Pressure);
+        }, S.Err_ExportPressure);
+
+        [RelayCommand]
         private Task ExportBackup() => RunAsync(async () =>
         {
             string path = await _export.ExportBackupAsync();
@@ -156,7 +176,11 @@ namespace MedicalResultsTracker.ViewModel
                 return;
             }
 
+            // «Всё» значит всё: дневник давления лежит в отдельной таблице, и оставить его
+            // после подтверждённого удаления было бы обманом — особенно в медицинских данных.
             await _repository.DeleteAllAsync();
+            await _pressure.DeleteAllAsync();
+
             await LoadAsync();
         }, S.Err_DeleteAll);
 
@@ -165,6 +189,26 @@ namespace MedicalResultsTracker.ViewModel
 
         [RelayCommand]
         private Task OpenHistory() => Shell.Current.GoToAsync(AppRoutes.History);
+
+        [RelayCommand]
+        private Task OpenPressure() => Shell.Current.GoToAsync(AppRoutes.Pressure);
+
+        [RelayCommand]
+        private Task SavePressureTarget() => RunAsync(async () =>
+        {
+            if (!int.TryParse(PressureTargetSystolic.Trim(), out int systolic) ||
+                !int.TryParse(PressureTargetDiastolic.Trim(), out int diastolic) ||
+                systolic is < 80 or > 220 || diastolic is < 40 or > 140 || diastolic >= systolic)
+            {
+                await Dialog.AlertAsync(S.Bp_BadTargetTitle, S.Bp_BadTargetBody);
+                return;
+            }
+
+            BloodPressureTarget.Systolic = systolic;
+            BloodPressureTarget.Diastolic = diastolic;
+
+            await Dialog.AlertAsync(S.Bp_TargetSavedTitle, string.Format(S.Bp_TargetSavedBody, systolic, diastolic));
+        }, S.Err_Settings);
 
         [RelayCommand]
         private Task ShareForAi() => RunAsync(async () =>
@@ -205,6 +249,9 @@ namespace MedicalResultsTracker.ViewModel
 
             UpdateAssistantSummary();
             UpdateBackupSummary();
+
+            PressureTargetSystolic = BloodPressureTarget.Systolic.ToString(CultureInfo.CurrentCulture);
+            PressureTargetDiastolic = BloodPressureTarget.Diastolic.ToString(CultureInfo.CurrentCulture);
 
             // Версия ставится тегом релиза и больше нигде: увидев её здесь, можно сверить,
             // что на телефоне стоит именно тот выпуск, который лежит в Releases.
