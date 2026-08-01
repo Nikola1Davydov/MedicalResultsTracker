@@ -1049,5 +1049,20 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Messung konnte nicht gelöscht werden</summary>
         public static string Err_BpDelete => Get("Err_BpDelete");
+
+        /// <summary>Uhrzeit</summary>
+        public static string Csv_Time => Get("Csv_Time");
+
+        /// <summary>**Blutdruck** (Datum, Uhrzeit, oben, unten, Puls):</summary>
+        public static string Txt_Pressure => Get("Txt_Pressure");
+
+        /// <summary>Blutdruck als CSV</summary>
+        public static string Set_ExportPressure => Get("Set_ExportPressure");
+
+        /// <summary>Blutdruck-Tagebuch</summary>
+        public static string Share_Pressure => Get("Share_Pressure");
+
+        /// <summary>Blutdruck konnte nicht exportiert werden</summary>
+        public static string Err_ExportPressure => Get("Err_ExportPressure");
     }
 }

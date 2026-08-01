@@ -16,6 +16,9 @@ namespace MedicalResultsTracker.Services.Database
 
         Task DeleteAsync(Guid id);
 
+        /// <summary>Полная очистка дневника. Только по явному подтверждению в настройках.</summary>
+        Task DeleteAllAsync();
+
         Task<int> CountAsync();
     }
 }

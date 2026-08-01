@@ -1081,4 +1081,19 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Err_BpDelete" xml:space="preserve">
     <value>Messung konnte nicht gelöscht werden</value>
   </data>
+  <data name="Csv_Time" xml:space="preserve">
+    <value>Uhrzeit</value>
+  </data>
+  <data name="Txt_Pressure" xml:space="preserve">
+    <value>**Blutdruck** (Datum, Uhrzeit, oben, unten, Puls):</value>
+  </data>
+  <data name="Set_ExportPressure" xml:space="preserve">
+    <value>Blutdruck als CSV</value>
+  </data>
+  <data name="Share_Pressure" xml:space="preserve">
+    <value>Blutdruck-Tagebuch</value>
+  </data>
+  <data name="Err_ExportPressure" xml:space="preserve">
+    <value>Blutdruck konnte nicht exportiert werden</value>
+  </data>
 </root>

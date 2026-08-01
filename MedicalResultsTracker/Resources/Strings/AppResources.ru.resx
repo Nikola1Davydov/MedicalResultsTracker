@@ -1081,4 +1081,19 @@
   <data name="Err_BpDelete" xml:space="preserve">
     <value>Не удалось удалить измерение</value>
   </data>
+  <data name="Csv_Time" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="Txt_Pressure" xml:space="preserve">
+    <value>**Давление** (дата, время, верхнее, нижнее, пульс):</value>
+  </data>
+  <data name="Set_ExportPressure" xml:space="preserve">
+    <value>Давление в CSV</value>
+  </data>
+  <data name="Share_Pressure" xml:space="preserve">
+    <value>Дневник давления</value>
+  </data>
+  <data name="Err_ExportPressure" xml:space="preserve">
+    <value>Не удалось выгрузить давление</value>
+  </data>
 </root>

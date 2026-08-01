@@ -88,6 +88,7 @@
                         TextColor="{x:Static ctl:StatusPalette.High}" />
                     <Button Command="{Binding ExportMatrixCommand}" Text="{x:Static loc:S.Set_ExportMatrix}" />
                     <Button Command="{Binding ExportFlatCommand}" Text="{x:Static loc:S.Set_ExportFlat}" />
+                    <Button Command="{Binding ExportPressureCommand}" Text="{x:Static loc:S.Set_ExportPressure}" />
                     <Button Command="{Binding ExportBackupCommand}" Text="{x:Static loc:S.Set_ExportBackup}" />
                     <Button Command="{Binding ImportBackupCommand}" Text="{x:Static loc:S.Set_ImportBackup}" />
                     <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Set_ExportNote}" />

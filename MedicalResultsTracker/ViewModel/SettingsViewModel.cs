@@ -17,6 +17,7 @@ namespace MedicalResultsTracker.ViewModel
 
         private readonly IMedicalDatabase _database;
         private readonly IBloodTestRepository _repository;
+        private readonly IBloodPressureRepository _pressure;
         private readonly IExportService _export;
         private readonly IAiConsentService _consent;
         private readonly IAiAssistant _assistant;
@@ -62,12 +63,14 @@ namespace MedicalResultsTracker.ViewModel
         public SettingsViewModel(
             IMedicalDatabase database,
             IBloodTestRepository repository,
+            IBloodPressureRepository pressure,
             IExportService export,
             IAiConsentService consent,
             IAiAssistant assistant)
         {
             _database = database;
             _repository = repository;
+            _pressure = pressure;
             _export = export;
             _consent = consent;
             _assistant = assistant;
@@ -118,6 +121,13 @@ namespace MedicalResultsTracker.ViewModel
         }, S.Err_ExportList);
 
         [RelayCommand]
+        private Task ExportPressure() => RunAsync(async () =>
+        {
+            string path = await _export.ExportPressureCsvAsync();
+            await _export.ShareAsync(path, S.Share_Pressure);
+        }, S.Err_ExportPressure);
+
+        [RelayCommand]
         private Task ExportBackup() => RunAsync(async () =>
         {
             string path = await _export.ExportBackupAsync();
@@ -166,7 +176,11 @@ namespace MedicalResultsTracker.ViewModel
                 return;
             }
 
+            // «Всё» значит всё: дневник давления лежит в отдельной таблице, и оставить его
+            // после подтверждённого удаления было бы обманом — особенно в медицинских данных.
             await _repository.DeleteAllAsync();
+            await _pressure.DeleteAllAsync();
+
             await LoadAsync();
         }, S.Err_DeleteAll);
 

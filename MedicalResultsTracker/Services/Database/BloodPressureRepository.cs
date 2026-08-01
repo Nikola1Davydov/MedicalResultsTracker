@@ -59,6 +59,13 @@ namespace MedicalResultsTracker.Services.Database
             await connection.ExecuteAsync("delete from blood_pressure where Id = ?", id).ConfigureAwait(false);
         }
 
+        public async Task DeleteAllAsync()
+        {
+            SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
+
+            await connection.ExecuteAsync("delete from blood_pressure").ConfigureAwait(false);
+        }
+
         public async Task<int> CountAsync()
         {
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
