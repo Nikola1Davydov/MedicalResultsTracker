@@ -270,8 +270,12 @@ Generated_Code/
 # Backup & report files from converting an old project file
 # to a newer Visual Studio version. Backup files are not needed,
 # because we have git ;-)
+#
+# Ведущий слэш обязателен: без него Backup*/ ловит любую папку с таким именем
+# на любом уровне — и однажды уже проглотил Services/Backup с исходниками.
+# Мусор от конвертации лежит только в корне.
 _UpgradeReport_Files/
-Backup*/
+/Backup*/
 UpgradeLog*.XML
 UpgradeLog*.htm
 ServiceFabricBackup/
