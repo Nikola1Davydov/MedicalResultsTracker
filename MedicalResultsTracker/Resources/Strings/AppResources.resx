@@ -249,9 +249,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Edit_AddedWarn" xml:space="preserve">
     <value>{0} Nicht erkannt: {1}</value>
   </data>
-  <data name="Trend_Empty" xml:space="preserve">
-    <value>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.</value>
-  </data>
   <data name="Trend_FavoritesGroup" xml:space="preserve">
     <value>★ Favoriten</value>
   </data>
@@ -1191,9 +1188,6 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>Nur Favoriten</value>
   </data>
-  <data name="Trend_AlsoSingle" xml:space="preserve">
-    <value>Auch einzelne Messungen</value>
-  </data>
   <data name="Trend_FilterSummary" xml:space="preserve">
     <value>Filter: {0}</value>
   </data>
@@ -1220,5 +1214,11 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   </data>
   <data name="Dash_LowTitle" xml:space="preserve">
     <value>unter dem Referenzbereich</value>
+  </data>
+  <data name="Trend_OnlyWithHistory" xml:space="preserve">
+    <value>Nur mit Verlauf</value>
+  </data>
+  <data name="Trend_Empty" xml:space="preserve">
+    <value>Hier erscheinen alle erfassten Werte – auch die, die es bisher nur einmal gibt.</value>
   </data>
 </root>

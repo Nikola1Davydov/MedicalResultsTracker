@@ -72,8 +72,14 @@ namespace MedicalResultsTracker.ViewModel
         private string _assistantStatus = string.Empty;
 
         private TrendStatusFilter _statusFilter = TrendStatusFilter.Any;
-        private bool _onlyWithHistory = true;
         private bool _onlyFavorites;
+
+        /// <summary>
+        /// Прятать показатели с единственным измерением. По умолчанию выключено: показатель,
+        /// сданный один раз, — это тоже результат, и человек ищет его здесь наравне с прочими.
+        /// Раньше он был спрятан с самого начала, и найти его было негде.
+        /// </summary>
+        private bool _onlyWithHistory;
 
         public TrendsViewModel(
             IAnalysisService analysis,
@@ -163,7 +169,7 @@ namespace MedicalResultsTracker.ViewModel
         {
             _statusFilter = TrendStatusFilter.Any;
             _onlyFavorites = false;
-            _onlyWithHistory = true;
+            _onlyWithHistory = false;
 
             List<SeriesItemViewModel> hidden = _all.Where(i => i.IsHidden).ToList();
 
@@ -192,7 +198,7 @@ namespace MedicalResultsTracker.ViewModel
             (S.Trend_FilterHigh, () => _statusFilter = TrendStatusFilter.High),
             (S.Trend_FilterLow, () => _statusFilter = TrendStatusFilter.Low),
             (S.Trend_OnlyFavorites, () => _onlyFavorites = true),
-            (S.Trend_AlsoSingle, () => _onlyWithHistory = false),
+            (S.Trend_OnlyWithHistory, () => _onlyWithHistory = true),
         };
 
 
@@ -358,9 +364,9 @@ namespace MedicalResultsTracker.ViewModel
                 parts.Add(S.Trend_OnlyFavorites);
             }
 
-            if (!_onlyWithHistory)
+            if (_onlyWithHistory)
             {
-                parts.Add(S.Trend_AlsoSingle);
+                parts.Add(S.Trend_OnlyWithHistory);
             }
 
             int hidden = _all.Count(i => i.IsHidden);

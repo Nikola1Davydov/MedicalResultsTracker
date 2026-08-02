@@ -249,9 +249,6 @@
   <data name="Edit_AddedWarn" xml:space="preserve">
     <value>{0} Не разобрано: {1}</value>
   </data>
-  <data name="Trend_Empty" xml:space="preserve">
-    <value>Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями.</value>
-  </data>
   <data name="Trend_FavoritesGroup" xml:space="preserve">
     <value>★ Избранное</value>
   </data>
@@ -1191,9 +1188,6 @@
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>Только избранное</value>
   </data>
-  <data name="Trend_AlsoSingle" xml:space="preserve">
-    <value>Даже с одним измерением</value>
-  </data>
   <data name="Trend_FilterSummary" xml:space="preserve">
     <value>Фильтр: {0}</value>
   </data>
@@ -1220,5 +1214,11 @@
   </data>
   <data name="Dash_LowTitle" xml:space="preserve">
     <value>ниже нормы</value>
+  </data>
+  <data name="Trend_OnlyWithHistory" xml:space="preserve">
+    <value>Только с историей</value>
+  </data>
+  <data name="Trend_Empty" xml:space="preserve">
+    <value>Здесь появятся все внесённые показатели — в том числе те, что пока измерены один раз.</value>
   </data>
 </root>

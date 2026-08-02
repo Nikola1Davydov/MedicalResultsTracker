@@ -225,9 +225,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>{0} Nicht erkannt: {1}</summary>
         public static string Edit_AddedWarn => Get("Edit_AddedWarn");
 
-        /// <summary>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorlieg</summary>
-        public static string Trend_Empty => Get("Trend_Empty");
-
         /// <summary>★ Favoriten</summary>
         public static string Trend_FavoritesGroup => Get("Trend_FavoritesGroup");
 
@@ -1131,9 +1128,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Nur Favoriten</summary>
         public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
 
-        /// <summary>Auch einzelne Messungen</summary>
-        public static string Trend_AlsoSingle => Get("Trend_AlsoSingle");
-
         /// <summary>Filter: {0}</summary>
         public static string Trend_FilterSummary => Get("Trend_FilterSummary");
 
@@ -1160,5 +1154,11 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>unter dem Referenzbereich</summary>
         public static string Dash_LowTitle => Get("Dash_LowTitle");
+
+        /// <summary>Nur mit Verlauf</summary>
+        public static string Trend_OnlyWithHistory => Get("Trend_OnlyWithHistory");
+
+        /// <summary>Hier erscheinen alle erfassten Werte – auch die, die es bisher nur ein</summary>
+        public static string Trend_Empty => Get("Trend_Empty");
     }
 }

@@ -82,7 +82,6 @@ S = [
 ("Edit_Added","{0} Zeilen übernommen. Bitte vor dem Speichern prüfen.","Добавлено строк: {0}. Проверьте значения перед сохранением."),
 ("Edit_AddedWarn","{0} Nicht erkannt: {1}","{0} Не разобрано: {1}"),
 # --- Verlauf ---
-("Trend_Empty","Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.","Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями."),
 ("Trend_FavoritesGroup","★ Favoriten","★ Избранное"),
 ("Trend_NoGroup","Ohne Gruppe","Без группы"),
 ("Trend_OneMeasurement","eine Messung","одно измерение"),
@@ -517,7 +516,6 @@ S += [
 ("Trend_FilterHigh","Nur zu hohe Werte","Только выше нормы"),
 ("Trend_FilterLow","Nur zu niedrige Werte","Только ниже нормы"),
 ("Trend_OnlyFavorites","Nur Favoriten","Только избранное"),
-("Trend_AlsoSingle","Auch einzelne Messungen","Даже с одним измерением"),
 ("Trend_FilterSummary","Filter: {0}","Фильтр: {0}"),
 ("Trend_HiddenCount","{0} ausgeblendet","скрыто: {0}"),
 ]
@@ -534,4 +532,9 @@ S += [
 S += [
 ("Dash_HighTitle","über dem Referenzbereich","выше нормы"),
 ("Dash_LowTitle","unter dem Referenzbereich","ниже нормы"),
+]
+
+S += [
+("Trend_OnlyWithHistory","Nur mit Verlauf","Только с историей"),
+("Trend_Empty","Hier erscheinen alle erfassten Werte – auch die, die es bisher nur einmal gibt.","Здесь появятся все внесённые показатели — в том числе те, что пока измерены один раз."),
 ]
