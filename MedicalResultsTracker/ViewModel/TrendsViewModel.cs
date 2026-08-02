@@ -60,11 +60,13 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private string _search = string.Empty;
 
+        /// <summary>Что сейчас наложено — одной строкой под поиском, чтобы это было видно без открытия списка.</summary>
         [ObservableProperty]
-        private string _hiddenSummary = string.Empty;
+        private string _filterSummary = string.Empty;
 
         [ObservableProperty]
-        private bool _hasHidden;
+        [NotifyPropertyChangedFor(nameof(FilterGlyph))]
+        private bool _hasFilterSummary;
 
         [ObservableProperty]
         private string _assistantStatus = string.Empty;
@@ -87,28 +89,14 @@ namespace MedicalResultsTracker.ViewModel
             _assistant = assistant;
 
             Title = S.Tab_Trends;
-
-            Favorites = new FilterChipViewModel(S.Trend_OnlyFavorites, nameof(Favorites), _onlyFavorites);
-            History = new FilterChipViewModel(S.Trend_OnlyWithHistory, nameof(History), _onlyWithHistory);
-
-            Chips = new ObservableCollection<FilterChipViewModel>
-            {
-                Favorites,
-                History,
-                new(S.Trend_FilterOut, TrendStatusFilter.OutOfRange),
-                new(S.Trend_FilterHigh, TrendStatusFilter.High),
-                new(S.Trend_FilterLow, TrendStatusFilter.Low),
-            };
         }
 
         public ObservableCollection<SeriesGroupViewModel> Groups { get; } = new();
 
-        /// <summary>Фильтры одной лентой: два независимых переключателя и три состояния значения.</summary>
-        public ObservableCollection<FilterChipViewModel> Chips { get; }
-
-        private FilterChipViewModel Favorites { get; }
-
-        private FilterChipViewModel History { get; }
+        /// <summary>
+        /// Значок на кнопке: крестик, когда что-то наложено, иначе три полоски.
+        /// </summary>
+        public string FilterGlyph => HasFilterSummary ? "✕" : "≡";
 
         public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Charts);
 
@@ -124,43 +112,89 @@ namespace MedicalResultsTracker.ViewModel
                 $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(item.Key)}");
 
         /// <summary>
-        /// Нажатие на фильтр. Избранное и «с историей» переключаются сами по себе,
-        /// а состояние значения — одно из трёх: включить «выше нормы», когда включено
-        /// «ниже», значит выбрать «выше», а не оба сразу.
+        /// Одна кнопка на два действия, и какое сейчас — видно по значку.
+        ///
+        /// Крестик снимает всё одним нажатием: когда фильтр наложен, от него чаще всего
+        /// хотят избавиться, и заставлять ради этого открывать список и искать в нём
+        /// «Сбросить» — лишний шаг на ровном месте.
+        ///
+        /// Три полоски открывают список всех фильтров. Список растёт вниз и ничего не
+        /// занимает на экране — новый фильтр можно будет просто дописать, а не искать
+        /// ему место в ряду кнопок, который и так не помещался в ширину телефона.
         /// </summary>
         [RelayCommand]
-        private Task ToggleChip(FilterChipViewModel? chip)
+        private Task Filter() => RunAsync(async () =>
         {
-            if (chip is null)
+            if (HasFilterSummary)
             {
-                return Task.CompletedTask;
+                await ResetAsync();
+                return;
             }
 
-            if (chip.Parameter is TrendStatusFilter status)
-            {
-                _statusFilter = _statusFilter == status ? TrendStatusFilter.Any : status;
+            List<(string Label, Action Apply)> options = BuildFilterOptions();
 
-                foreach (FilterChipViewModel other in Chips)
+            string? chosen = await Dialog.ChooseAsync(
+                S.Trend_FilterTitle,
+                options.Select(o => o.Label).ToArray());
+
+            if (chosen is null)
+            {
+                return;
+            }
+
+            foreach ((string label, Action apply) in options)
+            {
+                if (label == chosen)
                 {
-                    if (other.Parameter is TrendStatusFilter value)
-                    {
-                        other.IsActive = value == _statusFilter;
-                    }
+                    apply();
+                    break;
                 }
-            }
-            else if (ReferenceEquals(chip, Favorites))
-            {
-                _onlyFavorites = chip.IsActive = !chip.IsActive;
-            }
-            else if (ReferenceEquals(chip, History))
-            {
-                _onlyWithHistory = chip.IsActive = !chip.IsActive;
             }
 
             ApplyFilters();
+        }, S.Err_Charts);
 
-            return Task.CompletedTask;
+        /// <summary>
+        /// Обычный вид: фильтры сняты, скрытое возвращено. Скрытие делается тем же жестом,
+        /// что и избранное, и человек считает его таким же фильтром — значит и снимается
+        /// оно тем же крестиком, а не походом в справочник.
+        /// </summary>
+        private async Task ResetAsync()
+        {
+            _statusFilter = TrendStatusFilter.Any;
+            _onlyFavorites = false;
+            _onlyWithHistory = true;
+
+            List<SeriesItemViewModel> hidden = _all.Where(i => i.IsHidden).ToList();
+
+            foreach (SeriesItemViewModel item in hidden)
+            {
+                await _catalog.SetHiddenAsync(item.Key, false);
+            }
+
+            // Перечитываем, только если что-то изменилось в базе: фильтры снимаются на месте.
+            if (hidden.Count > 0)
+            {
+                await LoadAsync();
+                return;
+            }
+
+            ApplyFilters();
         }
+
+        /// <summary>
+        /// Пункты списка вместе с тем, что каждый делает. Список открывается только когда
+        /// ничего не наложено, поэтому галочек в нём нет: каждый пункт что-то включает.
+        /// </summary>
+        private List<(string Label, Action Apply)> BuildFilterOptions() => new()
+        {
+            (S.Trend_FilterOut, () => _statusFilter = TrendStatusFilter.OutOfRange),
+            (S.Trend_FilterHigh, () => _statusFilter = TrendStatusFilter.High),
+            (S.Trend_FilterLow, () => _statusFilter = TrendStatusFilter.Low),
+            (S.Trend_OnlyFavorites, () => _onlyFavorites = true),
+            (S.Trend_AlsoSingle, () => _onlyWithHistory = false),
+        };
+
 
         /// <summary>Жест вправо: показатель попадает в избранное или уходит из него.</summary>
         [RelayCommand]
@@ -175,8 +209,8 @@ namespace MedicalResultsTracker.ViewModel
             }, S.Err_Charts);
 
         /// <summary>
-        /// Жест влево: показатель уходит из списков. Измерения при этом остаются на месте —
-        /// вернуть его можно в справочнике, о чём написано прямо под фильтрами.
+        /// Жест влево: показатель уходит из списков. Измерения остаются на месте, а под поиском
+        /// появляется «скрыто: N» — вернуть всё скрытое можно там же, в списке фильтров.
         /// </summary>
         [RelayCommand]
         private Task Hide(SeriesItemViewModel? item) => item is null
@@ -190,12 +224,12 @@ namespace MedicalResultsTracker.ViewModel
             }, S.Err_Charts);
 
         /// <summary>
-        /// Готовит таблицу текстом и открывает системный диалог «Поделиться».
-        /// Приложение не выбирает получателя и никуда само не отправляет: в какое приложение
-        /// уйдёт текст, решает пользователь в системном списке.
+        /// Кладёт отобранное в буфер обмена — после того, как человек прочитал, что именно
+        /// уйдёт. Приложение само никуда ничего не отправляет: текст просто оказывается
+        /// в буфере, а вставить его или нет, решает человек уже в своём чате.
         /// </summary>
         [RelayCommand]
-        private Task ShareForAi() => RunAsync(async () =>
+        private Task CopyForAi() => RunAsync(async () =>
         {
             if (_visibleKeys.Count == 0)
             {
@@ -203,9 +237,16 @@ namespace MedicalResultsTracker.ViewModel
                 return;
             }
 
+            if (!await Dialog.ConfirmAsync(S.Ai_Title, S.Ai_Body, S.Ai_Copy))
+            {
+                return;
+            }
+
             string text = await _export.BuildTextSummaryAsync(onlyKeys: _visibleKeys.ToList());
 
-            await _export.ShareTextAsync(text, S.Ai_Title);
+            await _export.CopyToClipboardAsync(text);
+
+            await Dialog.AlertAsync(S.Ai_CopiedTitle, S.Ai_CopiedBody);
         }, S.Err_Text);
 
         /// <summary>
@@ -290,12 +331,46 @@ namespace MedicalResultsTracker.ViewModel
             IsEmpty = _all.Count == 0;
             IsFilteredOut = _all.Count > 0 && items.Count == 0;
 
-            // Скрытое не исчезает бесследно: счётчик под фильтрами говорит, что оно есть,
-            // и где его искать. Иначе жест влево выглядит как потеря данных.
+            FilterSummary = BuildFilterSummary();
+            HasFilterSummary = FilterSummary.Length > 0;
+        }
+
+        /// <summary>
+        /// Что наложено — словами. Скрытое считается наравне с фильтрами: жест влево убирает
+        /// строку мгновенно, и без этой пометки это выглядело бы как потеря данных.
+        /// </summary>
+        private string BuildFilterSummary()
+        {
+            List<string> parts = new();
+
+            if (_statusFilter != TrendStatusFilter.Any)
+            {
+                parts.Add(_statusFilter switch
+                {
+                    TrendStatusFilter.OutOfRange => S.Trend_FilterOut,
+                    TrendStatusFilter.High => S.Trend_FilterHigh,
+                    _ => S.Trend_FilterLow
+                });
+            }
+
+            if (_onlyFavorites)
+            {
+                parts.Add(S.Trend_OnlyFavorites);
+            }
+
+            if (!_onlyWithHistory)
+            {
+                parts.Add(S.Trend_AlsoSingle);
+            }
+
             int hidden = _all.Count(i => i.IsHidden);
 
-            HasHidden = hidden > 0;
-            HiddenSummary = hidden > 0 ? string.Format(S.Trend_HiddenCount, hidden) : string.Empty;
+            if (hidden > 0)
+            {
+                parts.Add(string.Format(S.Trend_HiddenCount, hidden));
+            }
+
+            return parts.Count == 0 ? string.Empty : string.Format(S.Trend_FilterSummary, string.Join(" · ", parts));
         }
 
         private bool MatchesStatus(SeriesItemViewModel item) => _statusFilter switch

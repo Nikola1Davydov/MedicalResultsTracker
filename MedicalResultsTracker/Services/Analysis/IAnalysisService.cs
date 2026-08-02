@@ -24,8 +24,5 @@ namespace MedicalResultsTracker.Services.Analysis
         /// сколько бы бланков за это число ни было записано.
         /// </summary>
         Task<ResultMatrix> BuildMatrixAsync();
-
-        /// <summary>Ключ группировки показателя между анализами: код из каталога либо нормализованное название.</summary>
-        string GetKey(BloodParameter parameter);
     }
 }

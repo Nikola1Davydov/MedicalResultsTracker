@@ -30,27 +30,18 @@ namespace MedicalResultsTracker.ViewModel
         private bool _isEmpty = true;
 
         /// <summary>
-        /// Сводка вместо списка: «5 выше нормы, 2 ниже». Развёрнутый список тех же
-        /// показателей живёт во вкладке «Динамика», где его можно отобрать фильтрами, —
-        /// на главном экране он занимал полтора экрана прокрутки и повторял её.
+        /// Сводка вместо списка: два числа — сколько выше нормы и сколько ниже. Развёрнутый
+        /// список тех же показателей живёт во вкладке «Динамика», где его можно отобрать
+        /// фильтрами, — на главном экране он занимал полтора экрана прокрутки и повторял её.
         /// </summary>
         [ObservableProperty]
-        private string _highSummary = string.Empty;
+        private int _highCount;
 
         [ObservableProperty]
-        private string _lowSummary = string.Empty;
-
-        [ObservableProperty]
-        private bool _hasHigh;
-
-        [ObservableProperty]
-        private bool _hasLow;
+        private int _lowCount;
 
         [ObservableProperty]
         private bool _allInRange;
-
-        [ObservableProperty]
-        private bool _hasChanges;
 
         /// <summary>Последнее измерение давления — «130/85 · сегодня, 08:20» либо приглашение начать.</summary>
         [ObservableProperty]
@@ -78,9 +69,6 @@ namespace MedicalResultsTracker.ViewModel
             Title = S.Dash_Title;
         }
 
-        /// <summary>Заметно изменившиеся показатели, даже если они в норме.</summary>
-        public ObservableCollection<TrendItemViewModel> Changes { get; } = new();
-
         public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Load);
 
         [RelayCommand]
@@ -100,14 +88,6 @@ namespace MedicalResultsTracker.ViewModel
         private Task OpenLastTest() => _latestTestId is Guid id
             ? Shell.Current.GoToAsync($"{AppRoutes.TestEdit}?{AppRoutes.TestIdParameter}={id}")
             : Shell.Current.GoToAsync(AppRoutes.TestEdit);
-
-        [RelayCommand]
-        private Task OpenTrend(TrendItemViewModel? item) => item is null
-            ? Task.CompletedTask
-            : OpenSeriesAsync(item.Key);
-
-        private static Task OpenSeriesAsync(string key) => Shell.Current.GoToAsync(
-            $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(key)}");
 
         /// <summary>Сводка вне нормы ведёт туда, где эти показатели перечислены и отбираются.</summary>
         [RelayCommand]
@@ -129,31 +109,16 @@ namespace MedicalResultsTracker.ViewModel
                 ? S.Dash_NoTests
                 : string.Format(S.Dash_LastTest, latest.Title);
 
-            Changes.Clear();
+            HighCount = trends.Count(t => t.Status is ParameterStatus.High);
+            LowCount = trends.Count(t => t.Status is ParameterStatus.Low);
 
-            int high = trends.Count(t => t.Status is ParameterStatus.High);
-            int low = trends.Count(t => t.Status is ParameterStatus.Low);
+            AllInRange = HasData && HighCount == 0 && LowCount == 0;
 
-            HasHigh = high > 0;
-            HasLow = low > 0;
-            AllInRange = HasData && high == 0 && low == 0;
-
-            HighSummary = high > 0 ? string.Format(S.Dash_HighCount, high) : string.Empty;
-            LowSummary = low > 0 ? string.Format(S.Dash_LowCount, low) : string.Empty;
-
-            foreach (ParameterTrend trend in trends
-                .Where(t => t.Assessment is TrendAssessment.Improved or TrendAssessment.Worsened)
-                .OrderByDescending(t => Math.Abs(t.DeltaPercent ?? 0))
-                .Take(5))
-            {
-                Changes.Add(new TrendItemViewModel(trend, _analysis.GetKey(trend.Current)));
-            }
-
-            HasChanges = Changes.Count > 0;
-
+            // Показателей считаем столько, сколько их в сведённом дне: два бланка от одного
+            // числа — это по-прежнему один день, и в счёт идут оба.
             Summary = latest is null
                 ? S.Dash_EmptyHint
-                : BuildSummary(latest, count, high + low);
+                : BuildSummary(trends.Count, count, HighCount + LowCount);
 
             await LoadPressureAsync();
 
@@ -205,7 +170,7 @@ namespace MedicalResultsTracker.ViewModel
                 : StatusPalette.Normal;
         }
 
-        private static string BuildSummary(BloodTest latest, int totalTests, int attentionCount)
+        private static string BuildSummary(int parameterCount, int totalTests, int attentionCount)
         {
             string tests = totalTests == 1 ? S.Dash_OneTest : string.Format(S.Dash_ManyTests, totalTests);
 
@@ -216,7 +181,7 @@ namespace MedicalResultsTracker.ViewModel
                 _ => string.Format(S.Dash_ManyOut, attentionCount)
             };
 
-            return string.Format(S.Dash_Summary, latest.Parameters.Count, attention, tests);
+            return string.Format(S.Dash_Summary, parameterCount, attention, tests);
         }
     }
 }

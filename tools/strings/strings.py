@@ -31,7 +31,6 @@ S = [
 ("Dash_StartBody","Nehmen Sie Ihren Laborbefund und tragen Sie die Werte ein: Bezeichnung, Zahl, Einheit und den Referenzbereich aus der entsprechenden Spalte.","Возьмите бланк анализа и внесите значения — название, число, единицы и норму из колонки «референсные значения»."),
 ("Dash_StartNote","Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten übertragen.","Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется."),
 ("Dash_OutOfRange","Außerhalb des Referenzbereichs","Вне нормы"),
-("Dash_Changes","Deutliche Veränderungen","Заметные изменения"),
 ("Dash_Summary","{0} Werte · {1} · {2}","{0} показателей · {1} · {2}"),
 ("Dash_AllInRange","alle Werte im Referenzbereich","все показатели в пределах указанных норм"),
 ("Dash_OneOut","1 Wert außerhalb","1 показатель вне нормы"),
@@ -84,7 +83,6 @@ S = [
 ("Edit_AddedWarn","{0} Nicht erkannt: {1}","{0} Не разобрано: {1}"),
 # --- Verlauf ---
 ("Trend_Empty","Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.","Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями."),
-("Trend_OnlyFavorites","★ Nur Favoriten","★ Только избранное"),
 ("Trend_FavoritesGroup","★ Favoriten","★ Избранное"),
 ("Trend_NoGroup","Ohne Gruppe","Без группы"),
 ("Trend_OneMeasurement","eine Messung","одно измерение"),
@@ -105,10 +103,6 @@ S = [
 ("Assess_Worsened","schlechter als beim letzten Mal","хуже, чем в прошлый раз"),
 ("Assess_Stable","unverändert","без изменений"),
 ("Assess_Unknown","kein Vergleich möglich","не с чем сравнить"),
-("Item_RefKnown","Referenz {0}","норма {0}"),
-("Item_RefUnknown","kein Referenzbereich","норма не указана"),
-("Item_Previous","zuvor {0} · {1}","было {0} · {1}"),
-("Item_First","erste Messung","первое измерение"),
 # --- Werteverzeichnis ---
 ("Cat_Title","Werteverzeichnis","Справочник"),
 ("Cat_Search","Suche nach Bezeichnung","Поиск по названию"),
@@ -315,7 +309,6 @@ S += [
 ("Set_Version","Version {0} (Build {1})","Версия {0} (сборка {1})"),
 ]
 S += [
-("Trend_OnlyWithHistory","Nur mit Verlauf","Только с историей"),
 ("Matrix_NewView","＋ Neue Ansicht …","＋ Новый набор …"),
 ("Matrix_EditView","✎ Ausgewählte Ansicht ändern …","✎ Изменить выбранный набор …"),
 ("Set_HistoryBody","Alle erfassten Befunde, einzeln zum Öffnen und Ändern.","Все внесённые анализы — открыть и поправить любой."),
@@ -496,7 +489,6 @@ S += [
 S += [
 ("Ai_Title","KI fragen","Спросить у ИИ"),
 ("Ai_Body","Gesendet wird genau das, was die Filter übrig lassen. Die App stellt daraus eine Tabelle als Text zusammen und öffnet die Teilen-Auswahl – wohin der Text geht, entscheiden Sie.","Отправляется ровно то, что осталось после фильтров. Приложение соберёт из этого таблицу текстом и откроет системный список приложений — куда отправить, решаете вы."),
-("Ai_Button","🤖 Auswahl an KI-Chat senden","🤖 Отправить выбранное в ИИ-чат"),
 ("Ai_Off","KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.","ИИ-помощник выключен. Данные не покидают устройство."),
 ("Ai_On","KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.","ИИ-помощник: {0}. Разрешение можно отозвать в настройках."),
 ("Ai_NothingSelected","Die Filter lassen nichts übrig – es gibt nichts zu senden.","После фильтров ничего не осталось — отправлять нечего."),
@@ -504,22 +496,42 @@ S += [
 # Фильтры и жесты на экране динамики.
 S += [
 ("Trend_Search","Wert suchen","Найти показатель"),
-("Trend_FilterOut","Außerhalb","Вне нормы"),
-("Trend_FilterHigh","Zu hoch","Выше нормы"),
-("Trend_FilterLow","Zu niedrig","Ниже нормы"),
 ("Trend_NothingFound","Kein Wert passt zu den Filtern.","Под фильтры ничего не подошло."),
-("Trend_HiddenCount","{0} ausgeblendet · zurückholen im Werteverzeichnis","Скрыто: {0} · вернуть можно в справочнике"),
 ("Swipe_Favorite","★ Merken","★ В избранное"),
 ("Swipe_Unfavorite","☆ Nicht mehr merken","☆ Убрать из избранного"),
 ("Swipe_Hide","Ausblenden","Скрыть"),
 ]
 # Сводка на главном экране вместо длинного списка.
 S += [
-("Dash_HighCount","{0} über dem Referenzbereich","{0} выше нормы"),
-("Dash_LowCount","{0} unter dem Referenzbereich","{0} ниже нормы"),
 ("Dash_NoneOut","Alle Werte liegen im Referenzbereich Ihres Befunds.","Все показатели — в пределах норм из вашего бланка."),
 ("Dash_OpenTrends","Tippen für alle Werte","Нажмите, чтобы увидеть все показатели"),
 ]
 S += [
 ("Txt_Selection","Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.","Ниже — только выбранные показатели, а не весь бланк целиком."),
+]
+
+# Фильтры на экране динамики: один список вместо ленты кнопок.
+S += [
+("Trend_FilterTitle","Filter","Фильтры"),
+("Trend_FilterOut","Außerhalb des Referenzbereichs","Вне нормы"),
+("Trend_FilterHigh","Nur zu hohe Werte","Только выше нормы"),
+("Trend_FilterLow","Nur zu niedrige Werte","Только ниже нормы"),
+("Trend_OnlyFavorites","Nur Favoriten","Только избранное"),
+("Trend_AlsoSingle","Auch einzelne Messungen","Даже с одним измерением"),
+("Trend_FilterSummary","Filter: {0}","Фильтр: {0}"),
+("Trend_HiddenCount","{0} ausgeblendet","скрыто: {0}"),
+]
+# Отправка в ИИ: маленькая кнопка рядом с поиском и диалог с объяснением.
+S += [
+("Ai_Copy","Text kopieren","Скопировать текст"),
+("Ai_CopiedTitle","Kopiert","Скопировано"),
+("Ai_CopiedBody","Fügen Sie den Text in Ihren KI-Chat ein. Die App hat nichts gesendet.","Вставьте текст в свой ИИ-чат. Приложение ничего никуда не отправило."),
+("A11y_Filter","Filter","Фильтры"),
+("A11y_Ai","Werte für den KI-Chat kopieren","Скопировать показатели для ИИ-чата"),
+]
+
+# Два квадрата на главном экране: отдельно те, что выше нормы, и те, что ниже.
+S += [
+("Dash_HighTitle","über dem Referenzbereich","выше нормы"),
+("Dash_LowTitle","unter dem Referenzbereich","ниже нормы"),
 ]

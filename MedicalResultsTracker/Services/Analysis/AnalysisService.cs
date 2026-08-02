@@ -13,7 +13,7 @@ namespace MedicalResultsTracker.Services.Analysis
             _repository = repository;
         }
 
-        public string GetKey(BloodParameter parameter) => AnalyteCode.KeyOf(parameter.Code, parameter.Name);
+        private static string GetKey(BloodParameter parameter) => AnalyteCode.KeyOf(parameter.Code, parameter.Name);
 
         public async Task<ResultMatrix> BuildMatrixAsync()
         {
@@ -84,11 +84,12 @@ namespace MedicalResultsTracker.Services.Analysis
                 return Array.Empty<ParameterTrend>();
             }
 
-            // GetAllAsync отдаёт свежие сверху.
-            BloodTest current = tests[0];
-            BloodTest? previous = tests.Count > 1 ? tests[1] : null;
+            // Сравниваются дни, а не строки базы: за одно число бланков бывает несколько,
+            // и брать из них один означало бы потерять показатели из остальных, а «прошлым
+            // разом» назвать второй бланк того же дня.
+            List<BloodTest> byDay = DailyResults.ByDay(tests);
 
-            return BuildTrends(current, previous);
+            return BuildTrends(byDay[0], byDay.Count > 1 ? byDay[1] : null);
         }
 
         public async Task<IReadOnlyList<ParameterTrend>> CompareAsync(Guid currentTestId, Guid? previousTestId = null)

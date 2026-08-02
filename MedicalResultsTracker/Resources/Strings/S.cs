@@ -81,9 +81,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Außerhalb des Referenzbereichs</summary>
         public static string Dash_OutOfRange => Get("Dash_OutOfRange");
 
-        /// <summary>Deutliche Veränderungen</summary>
-        public static string Dash_Changes => Get("Dash_Changes");
-
         /// <summary>{0} Werte · {1} · {2}</summary>
         public static string Dash_Summary => Get("Dash_Summary");
 
@@ -231,9 +228,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorlieg</summary>
         public static string Trend_Empty => Get("Trend_Empty");
 
-        /// <summary>★ Nur Favoriten</summary>
-        public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
-
         /// <summary>★ Favoriten</summary>
         public static string Trend_FavoritesGroup => Get("Trend_FavoritesGroup");
 
@@ -290,18 +284,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>kein Vergleich möglich</summary>
         public static string Assess_Unknown => Get("Assess_Unknown");
-
-        /// <summary>Referenz {0}</summary>
-        public static string Item_RefKnown => Get("Item_RefKnown");
-
-        /// <summary>kein Referenzbereich</summary>
-        public static string Item_RefUnknown => Get("Item_RefUnknown");
-
-        /// <summary>zuvor {0} · {1}</summary>
-        public static string Item_Previous => Get("Item_Previous");
-
-        /// <summary>erste Messung</summary>
-        public static string Item_First => Get("Item_First");
 
         /// <summary>Werteverzeichnis</summary>
         public static string Cat_Title => Get("Cat_Title");
@@ -852,9 +834,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Version {0} (Build {1})</summary>
         public static string Set_Version => Get("Set_Version");
 
-        /// <summary>Nur mit Verlauf</summary>
-        public static string Trend_OnlyWithHistory => Get("Trend_OnlyWithHistory");
-
         /// <summary>＋ Neue Ansicht …</summary>
         public static string Matrix_NewView => Get("Matrix_NewView");
 
@@ -1104,9 +1083,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Gesendet wird genau das, was die Filter übrig lassen. Die App stellt d</summary>
         public static string Ai_Body => Get("Ai_Body");
 
-        /// <summary>🤖 Auswahl an KI-Chat senden</summary>
-        public static string Ai_Button => Get("Ai_Button");
-
         /// <summary>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</summary>
         public static string Ai_Off => Get("Ai_Off");
 
@@ -1119,20 +1095,8 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Wert suchen</summary>
         public static string Trend_Search => Get("Trend_Search");
 
-        /// <summary>Außerhalb</summary>
-        public static string Trend_FilterOut => Get("Trend_FilterOut");
-
-        /// <summary>Zu hoch</summary>
-        public static string Trend_FilterHigh => Get("Trend_FilterHigh");
-
-        /// <summary>Zu niedrig</summary>
-        public static string Trend_FilterLow => Get("Trend_FilterLow");
-
         /// <summary>Kein Wert passt zu den Filtern.</summary>
         public static string Trend_NothingFound => Get("Trend_NothingFound");
-
-        /// <summary>{0} ausgeblendet · zurückholen im Werteverzeichnis</summary>
-        public static string Trend_HiddenCount => Get("Trend_HiddenCount");
 
         /// <summary>★ Merken</summary>
         public static string Swipe_Favorite => Get("Swipe_Favorite");
@@ -1143,12 +1107,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Ausblenden</summary>
         public static string Swipe_Hide => Get("Swipe_Hide");
 
-        /// <summary>{0} über dem Referenzbereich</summary>
-        public static string Dash_HighCount => Get("Dash_HighCount");
-
-        /// <summary>{0} unter dem Referenzbereich</summary>
-        public static string Dash_LowCount => Get("Dash_LowCount");
-
         /// <summary>Alle Werte liegen im Referenzbereich Ihres Befunds.</summary>
         public static string Dash_NoneOut => Get("Dash_NoneOut");
 
@@ -1157,5 +1115,50 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.</summary>
         public static string Txt_Selection => Get("Txt_Selection");
+
+        /// <summary>Filter</summary>
+        public static string Trend_FilterTitle => Get("Trend_FilterTitle");
+
+        /// <summary>Außerhalb des Referenzbereichs</summary>
+        public static string Trend_FilterOut => Get("Trend_FilterOut");
+
+        /// <summary>Nur zu hohe Werte</summary>
+        public static string Trend_FilterHigh => Get("Trend_FilterHigh");
+
+        /// <summary>Nur zu niedrige Werte</summary>
+        public static string Trend_FilterLow => Get("Trend_FilterLow");
+
+        /// <summary>Nur Favoriten</summary>
+        public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
+
+        /// <summary>Auch einzelne Messungen</summary>
+        public static string Trend_AlsoSingle => Get("Trend_AlsoSingle");
+
+        /// <summary>Filter: {0}</summary>
+        public static string Trend_FilterSummary => Get("Trend_FilterSummary");
+
+        /// <summary>{0} ausgeblendet</summary>
+        public static string Trend_HiddenCount => Get("Trend_HiddenCount");
+
+        /// <summary>Text kopieren</summary>
+        public static string Ai_Copy => Get("Ai_Copy");
+
+        /// <summary>Kopiert</summary>
+        public static string Ai_CopiedTitle => Get("Ai_CopiedTitle");
+
+        /// <summary>Fügen Sie den Text in Ihren KI-Chat ein. Die App hat nichts gesendet.</summary>
+        public static string Ai_CopiedBody => Get("Ai_CopiedBody");
+
+        /// <summary>Filter</summary>
+        public static string A11y_Filter => Get("A11y_Filter");
+
+        /// <summary>Werte für den KI-Chat kopieren</summary>
+        public static string A11y_Ai => Get("A11y_Ai");
+
+        /// <summary>über dem Referenzbereich</summary>
+        public static string Dash_HighTitle => Get("Dash_HighTitle");
+
+        /// <summary>unter dem Referenzbereich</summary>
+        public static string Dash_LowTitle => Get("Dash_LowTitle");
     }
 }
