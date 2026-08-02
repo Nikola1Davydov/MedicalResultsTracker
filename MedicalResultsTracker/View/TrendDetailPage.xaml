@@ -25,7 +25,8 @@
                     <GraphicsView
                         Drawable="{Binding Chart}"
                         HeightRequest="220"
-                        IsVisible="{Binding HasData}" />
+                        IsVisible="{Binding HasData}"
+                        SemanticProperties.Description="{x:Static loc:S.A11y_TrendChart}" />
                 </VerticalStackLayout>
             </Border>
 

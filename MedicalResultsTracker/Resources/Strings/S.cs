@@ -1103,5 +1103,14 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Morgendliche Abnahme</summary>
         public static string Seed_Note_Cort => Get("Seed_Note_Cort");
+
+        /// <summary>Zeile entfernen</summary>
+        public static string A11y_RemoveRow => Get("A11y_RemoveRow");
+
+        /// <summary>Verlauf des Werts als Diagramm</summary>
+        public static string A11y_TrendChart => Get("A11y_TrendChart");
+
+        /// <summary>Verlauf des Blutdrucks als Diagramm</summary>
+        public static string A11y_PressureChart => Get("A11y_PressureChart");
     }
 }

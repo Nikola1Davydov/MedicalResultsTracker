@@ -65,7 +65,8 @@
                                 <GraphicsView
                                     Grid.Column="1"
                                     Drawable="{Binding Chart}"
-                                    HeightRequest="56" />
+                                    HeightRequest="56"
+                                    SemanticProperties.Description="{x:Static loc:S.A11y_TrendChart}" />
                             </Grid>
                         </Border>
                     </DataTemplate>

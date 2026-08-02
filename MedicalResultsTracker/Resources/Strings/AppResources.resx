@@ -1164,4 +1164,13 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Seed_Note_Cort" xml:space="preserve">
     <value>Morgendliche Abnahme</value>
   </data>
+  <data name="A11y_RemoveRow" xml:space="preserve">
+    <value>Zeile entfernen</value>
+  </data>
+  <data name="A11y_TrendChart" xml:space="preserve">
+    <value>Verlauf des Werts als Diagramm</value>
+  </data>
+  <data name="A11y_PressureChart" xml:space="preserve">
+    <value>Verlauf des Blutdrucks als Diagramm</value>
+  </data>
 </root>

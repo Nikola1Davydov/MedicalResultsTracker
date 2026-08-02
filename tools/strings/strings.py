@@ -490,3 +490,9 @@ S += [
 ("Seed_Note_Tsto","Bereich für Männer","Диапазон для мужчин"),
 ("Seed_Note_Cort","Morgendliche Abnahme","Утренний забор"),
 ]
+# Подписи для чтения с экрана: кнопки со значком и графики иначе остаются немыми.
+S += [
+("A11y_RemoveRow","Zeile entfernen","Убрать строку"),
+("A11y_TrendChart","Verlauf des Werts als Diagramm","График показателя"),
+("A11y_PressureChart","Verlauf des Blutdrucks als Diagramm","График давления"),
+]

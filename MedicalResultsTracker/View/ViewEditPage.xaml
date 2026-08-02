@@ -8,7 +8,7 @@
     Title="{Binding Title}"
     x:DataType="vm:ViewEditViewModel">
 
-    <Grid Padding="16,8" RowDefinitions="Auto,*,Auto" RowSpacing="10">
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="10">
 
         <VerticalStackLayout Grid.Row="0" Spacing="6">
             <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.ViewEdit_Name}" />
@@ -62,6 +62,7 @@
                 Grid.Column="2"
                 Command="{Binding DeleteCommand}"
                 IsVisible="{Binding IsExisting}"
+                SemanticProperties.Description="{x:Static loc:S.Common_Delete}"
                 Text="🗑" />
         </Grid>
 

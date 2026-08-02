@@ -1164,4 +1164,13 @@
   <data name="Seed_Note_Cort" xml:space="preserve">
     <value>Утренний забор</value>
   </data>
+  <data name="A11y_RemoveRow" xml:space="preserve">
+    <value>Убрать строку</value>
+  </data>
+  <data name="A11y_TrendChart" xml:space="preserve">
+    <value>График показателя</value>
+  </data>
+  <data name="A11y_PressureChart" xml:space="preserve">
+    <value>График давления</value>
+  </data>
 </root>

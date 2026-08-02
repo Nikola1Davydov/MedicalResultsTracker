@@ -104,6 +104,7 @@
                                             Grid.Column="1"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TestEditViewModel}}, Path=RemoveRowCommand}"
                                             CommandParameter="{Binding .}"
+                                            SemanticProperties.Description="{x:Static loc:S.A11y_RemoveRow}"
                                             Text="✕"
                                             WidthRequest="48" />
                                     </Grid>
@@ -164,6 +165,7 @@
                 Grid.Column="2"
                 Command="{Binding DeleteCommand}"
                 IsVisible="{Binding IsExisting}"
+                SemanticProperties.Description="{x:Static loc:S.Common_Delete}"
                 Text="🗑" />
         </Grid>
 
