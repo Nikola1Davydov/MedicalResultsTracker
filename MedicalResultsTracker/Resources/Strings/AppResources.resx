@@ -1096,4 +1096,10 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Err_ExportPressure" xml:space="preserve">
     <value>Blutdruck konnte nicht exportiert werden</value>
   </data>
+  <data name="Bp_ChartNoData" xml:space="preserve">
+    <value>Noch zu wenig Messungen für einen Verlauf</value>
+  </data>
+  <data name="Bp_ChartLegend" xml:space="preserve">
+    <value>letzte {0} Messungen</value>
+  </data>
 </root>

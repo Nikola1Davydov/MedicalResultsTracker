@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.PressurePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctl="clr-namespace:MedicalResultsTracker.Controls"
     xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
@@ -11,6 +12,30 @@
     <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="12">
 
         <VerticalStackLayout Grid.Row="0" Spacing="4">
+            <!--  График прямо над списком, без отдельного экрана: ради динамики дневник
+                  и ведут, и лишний переход тут только мешал бы.  -->
+            <Border IsVisible="{Binding HasChart}" Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <GraphicsView Drawable="{Binding Chart}" HeightRequest="200" />
+                    <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="12">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource Caption}"
+                            Text="{x:Static loc:S.Bp_Systolic}"
+                            TextColor="{x:Static ctl:StatusPalette.High}" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource Caption}"
+                            Text="{x:Static loc:S.Bp_Diastolic}"
+                            TextColor="{x:Static ctl:StatusPalette.Low}" />
+                        <Label
+                            Grid.Column="2"
+                            HorizontalTextAlignment="End"
+                            Style="{StaticResource Caption}"
+                            Text="{Binding ChartLegend}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
             <Label Style="{StaticResource Caption}" Text="{Binding TargetSummary}" />
             <Label
                 IsVisible="{Binding IsEmpty}"

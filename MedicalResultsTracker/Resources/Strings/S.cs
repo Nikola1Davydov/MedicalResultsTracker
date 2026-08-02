@@ -1064,5 +1064,11 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Blutdruck konnte nicht exportiert werden</summary>
         public static string Err_ExportPressure => Get("Err_ExportPressure");
+
+        /// <summary>Noch zu wenig Messungen für einen Verlauf</summary>
+        public static string Bp_ChartNoData => Get("Bp_ChartNoData");
+
+        /// <summary>letzte {0} Messungen</summary>
+        public static string Bp_ChartLegend => Get("Bp_ChartLegend");
     }
 }

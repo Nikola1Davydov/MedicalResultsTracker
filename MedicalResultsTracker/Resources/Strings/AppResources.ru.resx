@@ -1096,4 +1096,10 @@
   <data name="Err_ExportPressure" xml:space="preserve">
     <value>Не удалось выгрузить давление</value>
   </data>
+  <data name="Bp_ChartNoData" xml:space="preserve">
+    <value>Пока мало измерений для графика</value>
+  </data>
+  <data name="Bp_ChartLegend" xml:space="preserve">
+    <value>последние {0} измерений</value>
+  </data>
 </root>
