@@ -13,6 +13,8 @@ namespace MedicalResultsTracker.Services.Database
     ///
     /// Названия групп намеренно не переводятся: они хранятся в базе и должны совпадать
     /// у всех языков интерфейса, иначе группировка развалится при смене локали.
+    /// На экране их переводит <see cref="Resources.Strings.AnalyteDisplay"/> — так же,
+    /// как примечания: в <c>notes</c> здесь стоит ключ ресурса, а не готовый текст.
     /// </summary>
     internal static class AnalyteSeedData
     {
@@ -37,8 +39,8 @@ namespace MedicalResultsTracker.Services.Database
         internal static IReadOnlyList<Analyte> BuiltIn { get; } = new List<Analyte>
         {
             New("WBC", "Leukozyten", "/nl", Cbc, 4.0, 10.0, order: 10),
-            New("RBC", "Erythrozyten", "/pl", Cbc, 4.3, 5.8, order: 20, notes: "Bei Frauen liegt die Untergrenze niedriger"),
-            New("HGB", "Hämoglobin", "g/dl", Cbc, 12.0, 17.5, order: 30, notes: "Frauen 12,0–16,0 · Männer 13,5–17,5"),
+            New("RBC", "Erythrozyten", "/pl", Cbc, 4.3, 5.8, order: 20, notes: "Seed_Note_Rbc"),
+            New("HGB", "Hämoglobin", "g/dl", Cbc, 12.0, 17.5, order: 30, notes: "Seed_Note_Hgb"),
             New("HCT", "Hämatokrit", "%", Cbc, 37, 50, order: 40),
             New("PLT", "Thrombozyten", "/nl", Cbc, 150, 400, order: 50),
             New("MCV", "MCV", "fl", Cbc, 80, 96, order: 60),
@@ -56,11 +58,11 @@ namespace MedicalResultsTracker.Services.Database
             New("UA", "Harnsäure", "mg/dl", Kidney, 3.4, 7.0, order: 40),
 
             New("CHOL", "Cholesterin gesamt", "mg/dl", Lipids, null, 200, order: 10),
-            New("LDL", "LDL-Cholesterin", "mg/dl", Lipids, null, 116, order: 20, notes: "Zielwert hängt vom kardiovaskulären Risiko ab"),
-            New("HDL", "HDL-Cholesterin", "mg/dl", Lipids, 40, null, order: 30, notes: "Bei Frauen ab 50"),
+            New("LDL", "LDL-Cholesterin", "mg/dl", Lipids, null, 116, order: 20, notes: "Seed_Note_Ldl"),
+            New("HDL", "HDL-Cholesterin", "mg/dl", Lipids, 40, null, order: 30, notes: "Seed_Note_Hdl"),
             New("TG", "Triglyzeride", "mg/dl", Lipids, null, 150, order: 40),
 
-            New("GLU", "Glukose", "mg/dl", Metabolism, 70, 100, order: 10, notes: "Nüchtern"),
+            New("GLU", "Glukose", "mg/dl", Metabolism, 70, 100, order: 10, notes: "Seed_Note_Glu"),
             New("HBA1C", "HbA1c", "%", Metabolism, null, 5.7, order: 20),
             New("TP", "Gesamteiweiß", "g/l", Metabolism, 66, 83, order: 30),
 
@@ -82,8 +84,8 @@ namespace MedicalResultsTracker.Services.Database
             New("FT4", "fT4", "ng/dl", Thyroid, 0.9, 1.7, order: 20),
             New("FT3", "fT3", "pg/ml", Thyroid, 2.0, 4.4, order: 30),
 
-            New("TSTO", "Testosteron gesamt", "ng/ml", Hormones, 2.8, 8.0, order: 10, notes: "Bereich für Männer"),
-            New("CORT", "Cortisol", "µg/dl", Hormones, 5, 25, order: 20, notes: "Morgendliche Abnahme"),
+            New("TSTO", "Testosteron gesamt", "ng/ml", Hormones, 2.8, 8.0, order: 10, notes: "Seed_Note_Tsto"),
+            New("CORT", "Cortisol", "µg/dl", Hormones, 5, 25, order: 20, notes: "Seed_Note_Cort"),
 
             New("CRP", "CRP", "mg/l", Inflammation, null, 5.0, order: 10),
         };

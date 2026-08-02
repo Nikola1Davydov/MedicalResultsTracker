@@ -1143,4 +1143,25 @@ Regeln:
 
 Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   </data>
+  <data name="Seed_Note_Rbc" xml:space="preserve">
+    <value>Bei Frauen liegt die Untergrenze niedriger</value>
+  </data>
+  <data name="Seed_Note_Hgb" xml:space="preserve">
+    <value>Frauen 12,0–16,0 · Männer 13,5–17,5</value>
+  </data>
+  <data name="Seed_Note_Ldl" xml:space="preserve">
+    <value>Zielwert hängt vom kardiovaskulären Risiko ab</value>
+  </data>
+  <data name="Seed_Note_Hdl" xml:space="preserve">
+    <value>Bei Frauen ab 50</value>
+  </data>
+  <data name="Seed_Note_Glu" xml:space="preserve">
+    <value>Nüchtern</value>
+  </data>
+  <data name="Seed_Note_Tsto" xml:space="preserve">
+    <value>Bereich für Männer</value>
+  </data>
+  <data name="Seed_Note_Cort" xml:space="preserve">
+    <value>Morgendliche Abnahme</value>
+  </data>
 </root>

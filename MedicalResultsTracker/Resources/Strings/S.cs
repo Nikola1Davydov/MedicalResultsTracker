@@ -1082,5 +1082,26 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>- Gleicht ein Wert einer Bezeichnung aus der Liste unten – auch abgekü</summary>
         public static string Imp_PromptKnownNames => Get("Imp_PromptKnownNames");
+
+        /// <summary>Bei Frauen liegt die Untergrenze niedriger</summary>
+        public static string Seed_Note_Rbc => Get("Seed_Note_Rbc");
+
+        /// <summary>Frauen 12,0–16,0 · Männer 13,5–17,5</summary>
+        public static string Seed_Note_Hgb => Get("Seed_Note_Hgb");
+
+        /// <summary>Zielwert hängt vom kardiovaskulären Risiko ab</summary>
+        public static string Seed_Note_Ldl => Get("Seed_Note_Ldl");
+
+        /// <summary>Bei Frauen ab 50</summary>
+        public static string Seed_Note_Hdl => Get("Seed_Note_Hdl");
+
+        /// <summary>Nüchtern</summary>
+        public static string Seed_Note_Glu => Get("Seed_Note_Glu");
+
+        /// <summary>Bereich für Männer</summary>
+        public static string Seed_Note_Tsto => Get("Seed_Note_Tsto");
+
+        /// <summary>Morgendliche Abnahme</summary>
+        public static string Seed_Note_Cort => Get("Seed_Note_Cort");
     }
 }

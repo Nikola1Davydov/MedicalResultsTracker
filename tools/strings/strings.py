@@ -480,3 +480,13 @@ S += [
 ("Imp_PromptFreeNames", FREE_DE, FREE_RU),
 ("Imp_PromptKnownNames", KNOWN_DE, KNOWN_RU),
 ]
+# Примечания встроенного справочника: в базе лежат эти ключи, перевод подставляется при выводе.
+S += [
+("Seed_Note_Rbc","Bei Frauen liegt die Untergrenze niedriger","У женщин нижняя граница ниже"),
+("Seed_Note_Hgb","Frauen 12,0–16,0 · Männer 13,5–17,5","Женщины 12,0–16,0 · мужчины 13,5–17,5"),
+("Seed_Note_Ldl","Zielwert hängt vom kardiovaskulären Risiko ab","Целевое значение зависит от сердечно-сосудистого риска"),
+("Seed_Note_Hdl","Bei Frauen ab 50","У женщин — от 50"),
+("Seed_Note_Glu","Nüchtern","Натощак"),
+("Seed_Note_Tsto","Bereich für Männer","Диапазон для мужчин"),
+("Seed_Note_Cort","Morgendliche Abnahme","Утренний забор"),
+]

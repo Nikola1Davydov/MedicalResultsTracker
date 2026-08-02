@@ -1143,4 +1143,25 @@
 
 Названия, которые у меня уже есть (Название | Единица):</value>
   </data>
+  <data name="Seed_Note_Rbc" xml:space="preserve">
+    <value>У женщин нижняя граница ниже</value>
+  </data>
+  <data name="Seed_Note_Hgb" xml:space="preserve">
+    <value>Женщины 12,0–16,0 · мужчины 13,5–17,5</value>
+  </data>
+  <data name="Seed_Note_Ldl" xml:space="preserve">
+    <value>Целевое значение зависит от сердечно-сосудистого риска</value>
+  </data>
+  <data name="Seed_Note_Hdl" xml:space="preserve">
+    <value>У женщин — от 50</value>
+  </data>
+  <data name="Seed_Note_Glu" xml:space="preserve">
+    <value>Натощак</value>
+  </data>
+  <data name="Seed_Note_Tsto" xml:space="preserve">
+    <value>Диапазон для мужчин</value>
+  </data>
+  <data name="Seed_Note_Cort" xml:space="preserve">
+    <value>Утренний забор</value>
+  </data>
 </root>

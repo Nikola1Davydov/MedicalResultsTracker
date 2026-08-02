@@ -249,7 +249,8 @@ namespace MedicalResultsTracker.ViewModel
             Category = current.Category;
             RefMinText = Format(current.RefMin);
             RefMaxText = Format(current.RefMax);
-            Notes = current.Notes;
+            // У встроенных записей в базе лежит ключ ресурса — в поле должен попасть текст.
+            Notes = AnalyteDisplay.Note(current.Notes);
             IsHidden = current.IsHidden;
             IsFavorite = current.IsFavorite;
             IsBuiltIn = current.IsBuiltIn;

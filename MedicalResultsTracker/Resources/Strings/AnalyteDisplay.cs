@@ -22,5 +22,13 @@ namespace MedicalResultsTracker.Resources.Strings
 
             return S.Find(AnalyteCategories.ResourceKey(stored)) ?? stored.Trim();
         }
+
+        /// <summary>
+        /// Примечание к показателю. У встроенных записей в базе лежит ключ ресурса
+        /// («Seed_Note_Hgb»), у своих — то, что человек написал сам. Первое переводится,
+        /// второе показывается как есть; отличить их можно ровно по тому, есть ли такой ключ.
+        /// </summary>
+        public static string? Note(string? stored) =>
+            string.IsNullOrWhiteSpace(stored) ? stored : S.Find(stored.Trim()) ?? stored;
     }
 }
