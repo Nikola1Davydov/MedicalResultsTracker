@@ -1,5 +1,6 @@
 using System.Globalization;
 using MedicalResultsTracker.Services.Ai;
+using MedicalResultsTracker.Services.Backup;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.UI;
 using MedicalResultsTracker.Services.Database;
@@ -18,6 +19,7 @@ namespace MedicalResultsTracker.ViewModel
         private readonly IMedicalDatabase _database;
         private readonly IBloodTestRepository _repository;
         private readonly IBloodPressureRepository _pressure;
+        private readonly IAutoBackupService _autoBackup;
         private readonly IExportService _export;
         private readonly IAiConsentService _consent;
         private readonly IAiAssistant _assistant;
@@ -42,6 +44,13 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private bool _backupOverdue;
 
+        /// <summary>Папка для автоматических копий: выбрана ли и какая.</summary>
+        [ObservableProperty]
+        private string _autoBackupSummary = string.Empty;
+
+        [ObservableProperty]
+        private bool _hasAutoBackupFolder;
+
         /// <summary>
         /// Порог, выше которого измерение давления подсвечивается. Не диагноз и не степень:
         /// число вписывает сам человек со слов врача, приложение только сравнивает.
@@ -64,6 +73,7 @@ namespace MedicalResultsTracker.ViewModel
             IMedicalDatabase database,
             IBloodTestRepository repository,
             IBloodPressureRepository pressure,
+            IAutoBackupService autoBackup,
             IExportService export,
             IAiConsentService consent,
             IAiAssistant assistant)
@@ -71,6 +81,7 @@ namespace MedicalResultsTracker.ViewModel
             _database = database;
             _repository = repository;
             _pressure = pressure;
+            _autoBackup = autoBackup;
             _export = export;
             _consent = consent;
             _assistant = assistant;
@@ -194,6 +205,45 @@ namespace MedicalResultsTracker.ViewModel
         private Task OpenPressure() => Shell.Current.GoToAsync(AppRoutes.Pressure);
 
         [RelayCommand]
+        private Task ChooseBackupFolder() => RunAsync(async () =>
+        {
+            if (!await _autoBackup.ChooseFolderAsync())
+            {
+                return;
+            }
+
+            // Первая копия сразу: иначе человек выбрал папку и не знает, работает ли это.
+            await _autoBackup.BackupNowAsync();
+
+            UpdateAutoBackupSummary();
+        }, S.Err_Backup);
+
+        [RelayCommand]
+        private Task BackupToFolderNow() => RunAsync(async () =>
+        {
+            bool written = await _autoBackup.BackupNowAsync();
+
+            UpdateAutoBackupSummary();
+
+            await Dialog.AlertAsync(
+                written ? S.Auto_DoneTitle : S.Common_Error,
+                written ? string.Format(S.Auto_DoneBody, _autoBackup.FolderName) : S.Auto_Failed);
+        }, S.Err_Backup);
+
+        [RelayCommand]
+        private Task ForgetBackupFolder() => RunAsync(async () =>
+        {
+            if (!await Dialog.ConfirmAsync(S.Auto_ForgetTitle, S.Auto_ForgetBody, S.Common_Delete))
+            {
+                return;
+            }
+
+            _autoBackup.Forget();
+
+            UpdateAutoBackupSummary();
+        }, S.Err_Backup);
+
+        [RelayCommand]
         private Task SavePressureTarget() => RunAsync(async () =>
         {
             if (!int.TryParse(PressureTargetSystolic.Trim(), out int systolic) ||
@@ -249,6 +299,7 @@ namespace MedicalResultsTracker.ViewModel
 
             UpdateAssistantSummary();
             UpdateBackupSummary();
+            UpdateAutoBackupSummary();
 
             PressureTargetSystolic = BloodPressureTarget.Systolic.ToString(CultureInfo.CurrentCulture);
             PressureTargetDiastolic = BloodPressureTarget.Diastolic.ToString(CultureInfo.CurrentCulture);
@@ -287,6 +338,23 @@ namespace MedicalResultsTracker.ViewModel
             };
 
             BackupOverdue = days >= OverdueDays;
+        }
+
+        private void UpdateAutoBackupSummary()
+        {
+            HasAutoBackupFolder = _autoBackup.IsConfigured;
+
+            if (!HasAutoBackupFolder)
+            {
+                AutoBackupSummary = S.Auto_NoFolder;
+                return;
+            }
+
+            string when = _autoBackup.LastBackupUtc is DateTime last
+                ? last.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)
+                : S.Auto_NeverYet;
+
+            AutoBackupSummary = string.Format(S.Auto_Summary, _autoBackup.FolderName, when);
         }
 
         private void UpdateAssistantSummary()

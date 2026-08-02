@@ -1102,4 +1102,43 @@
   <data name="Bp_ChartLegend" xml:space="preserve">
     <value>последние {0} измерений</value>
   </data>
+  <data name="Auto_Title" xml:space="preserve">
+    <value>Автоматическая копия</value>
+  </data>
+  <data name="Auto_Body" xml:space="preserve">
+    <value>Выберите папку один раз. При открытии приложения туда кладётся копия — но только если с прошлого раза что-то изменилось. Приложение ничего не отправляет; если папку синхронизирует облако, это делает оно, а не мы.</value>
+  </data>
+  <data name="Auto_NoFolder" xml:space="preserve">
+    <value>Папка не выбрана — автоматически ничего не сохраняется.</value>
+  </data>
+  <data name="Auto_Summary" xml:space="preserve">
+    <value>Папка: {0}. Последняя автоматическая копия: {1}.</value>
+  </data>
+  <data name="Auto_NeverYet" xml:space="preserve">
+    <value>ещё не было</value>
+  </data>
+  <data name="Auto_ChooseFolder" xml:space="preserve">
+    <value>Выбрать папку</value>
+  </data>
+  <data name="Auto_Now" xml:space="preserve">
+    <value>Сохранить сейчас</value>
+  </data>
+  <data name="Auto_Forget" xml:space="preserve">
+    <value>Забыть папку</value>
+  </data>
+  <data name="Auto_DoneTitle" xml:space="preserve">
+    <value>Сохранено</value>
+  </data>
+  <data name="Auto_DoneBody" xml:space="preserve">
+    <value>Копия лежит в «{0}».</value>
+  </data>
+  <data name="Auto_Failed" xml:space="preserve">
+    <value>Не удалось положить копию. Скорее всего папки больше нет или разрешение отозвано — выберите её заново.</value>
+  </data>
+  <data name="Auto_ForgetTitle" xml:space="preserve">
+    <value>Забыть папку?</value>
+  </data>
+  <data name="Auto_ForgetBody" xml:space="preserve">
+    <value>Автоматические копии прекратятся. Уже созданные файлы останутся на месте.</value>
+  </data>
 </root>

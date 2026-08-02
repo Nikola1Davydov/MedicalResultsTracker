@@ -4,6 +4,7 @@ using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Analysis;
+using MedicalResultsTracker.Services.Backup;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Export;
 using MedicalResultsTracker.Services.UI;
@@ -15,6 +16,7 @@ namespace MedicalResultsTracker.ViewModel
     {
         private readonly IBloodTestRepository _repository;
         private readonly IBloodPressureRepository _pressure;
+        private readonly IAutoBackupService _backup;
         private readonly IAnalysisService _analysis;
         private readonly IExportService _export;
         private readonly IAiConsentService _consent;
@@ -50,9 +52,13 @@ namespace MedicalResultsTracker.ViewModel
 
         private Guid? _latestTestId;
 
+        /// <summary>За один запуск копия делается один раз, а не на каждое открытие вкладки.</summary>
+        private bool _backupChecked;
+
         public MainViewModel(
             IBloodTestRepository repository,
             IBloodPressureRepository pressure,
+            IAutoBackupService backup,
             IAnalysisService analysis,
             IExportService export,
             IAiConsentService consent,
@@ -60,6 +66,7 @@ namespace MedicalResultsTracker.ViewModel
         {
             _repository = repository;
             _pressure = pressure;
+            _backup = backup;
             _analysis = analysis;
             _export = export;
             _consent = consent;
@@ -158,9 +165,37 @@ namespace MedicalResultsTracker.ViewModel
 
             await LoadPressureAsync();
 
+            // Копия делается один раз за запуск и только если данные изменились.
+            // Молча и в фоне: это обслуживание, а не действие пользователя, и мешать ему нечем.
+            _ = BackupQuietlyAsync();
+
             AssistantStatus = _consent.Current.Scope == AiConsentScope.None
                 ? S.Dash_AiOff
                 : string.Format(S.Dash_AiOn, _assistant.ProviderName);
+        }
+
+        /// <summary>
+        /// Автосохранение не должно ни задерживать экран, ни показывать ошибок: папка могла
+        /// исчезнуть, разрешение — быть отозвано, и человек узнает об этом в настройках,
+        /// где видно дату последней копии, а не всплывающим окном на главной.
+        /// </summary>
+        private async Task BackupQuietlyAsync()
+        {
+            if (_backupChecked)
+            {
+                return;
+            }
+
+            _backupChecked = true;
+
+            try
+            {
+                await _backup.BackupIfChangedAsync();
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine($"[MedicalResultsTracker] Автосохранение не удалось: {exception}");
+            }
         }
 
         private async Task LoadPressureAsync()

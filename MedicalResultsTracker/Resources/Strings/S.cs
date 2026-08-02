@@ -1070,5 +1070,44 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>letzte {0} Messungen</summary>
         public static string Bp_ChartLegend => Get("Bp_ChartLegend");
+
+        /// <summary>Automatische Sicherung</summary>
+        public static string Auto_Title => Get("Auto_Title");
+
+        /// <summary>Wählen Sie einmal einen Ordner. Beim Öffnen der App legt sie dort eine</summary>
+        public static string Auto_Body => Get("Auto_Body");
+
+        /// <summary>Kein Ordner gewählt — es wird nichts automatisch gesichert.</summary>
+        public static string Auto_NoFolder => Get("Auto_NoFolder");
+
+        /// <summary>Ordner: {0}. Letzte automatische Sicherung: {1}.</summary>
+        public static string Auto_Summary => Get("Auto_Summary");
+
+        /// <summary>noch keine</summary>
+        public static string Auto_NeverYet => Get("Auto_NeverYet");
+
+        /// <summary>Ordner wählen</summary>
+        public static string Auto_ChooseFolder => Get("Auto_ChooseFolder");
+
+        /// <summary>Jetzt sichern</summary>
+        public static string Auto_Now => Get("Auto_Now");
+
+        /// <summary>Ordner vergessen</summary>
+        public static string Auto_Forget => Get("Auto_Forget");
+
+        /// <summary>Gesichert</summary>
+        public static string Auto_DoneTitle => Get("Auto_DoneTitle");
+
+        /// <summary>Die Sicherung liegt in «{0}».</summary>
+        public static string Auto_DoneBody => Get("Auto_DoneBody");
+
+        /// <summary>Die Sicherung konnte nicht abgelegt werden. Vermutlich gibt es den Ord</summary>
+        public static string Auto_Failed => Get("Auto_Failed");
+
+        /// <summary>Ordner vergessen?</summary>
+        public static string Auto_ForgetTitle => Get("Auto_ForgetTitle");
+
+        /// <summary>Automatische Sicherungen hören auf. Bereits abgelegte Dateien bleiben,</summary>
+        public static string Auto_ForgetBody => Get("Auto_ForgetBody");
     }
 }

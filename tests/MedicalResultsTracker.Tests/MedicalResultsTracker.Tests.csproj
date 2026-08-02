@@ -27,6 +27,7 @@
     <ItemGroup>
         <Compile Include="..\..\MedicalResultsTracker\Model\*.cs" LinkBase="Linked\Model" />
         <Compile Include="..\..\MedicalResultsTracker\Services\Ai\AiDraft.cs" LinkBase="Linked\Services" />
+        <Compile Include="..\..\MedicalResultsTracker\Services\Backup\BackupSignature.cs" LinkBase="Linked\Services" />
         <Compile Include="..\..\MedicalResultsTracker\Services\Import\*.cs" LinkBase="Linked\Services" />
         <Compile Include="..\..\MedicalResultsTracker\Resources\Strings\S.cs" LinkBase="Linked\Resources" />
     </ItemGroup>
