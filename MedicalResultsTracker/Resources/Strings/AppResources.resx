@@ -91,12 +91,6 @@
   <data name="Dash_EmptyHint" xml:space="preserve">
     <value>Erfassen Sie den ersten Befund – den Verlauf zeigt die App dann von selbst.</value>
   </data>
-  <data name="Dash_AddTest" xml:space="preserve">
-    <value>➕ Befund erfassen</value>
-  </data>
-  <data name="Dash_Export" xml:space="preserve">
-    <value>⬇ Exportieren</value>
-  </data>
   <data name="Dash_StartTitle" xml:space="preserve">
     <value>So fangen Sie an</value>
   </data>
@@ -106,38 +100,11 @@
   <data name="Dash_StartNote" xml:space="preserve">
     <value>Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten übertragen.</value>
   </data>
-  <data name="Dash_Favorites" xml:space="preserve">
-    <value>★ Favoriten</value>
-  </data>
-  <data name="Dash_FavHintTitle" xml:space="preserve">
-    <value>Werte im Blick behalten</value>
-  </data>
-  <data name="Dash_FavHintBody" xml:space="preserve">
-    <value>Markieren Sie im Werteverzeichnis mit dem Stern, was Sie dauerhaft verfolgen – diese Werte stehen dann ganz oben.</value>
-  </data>
-  <data name="Dash_OpenCatalog" xml:space="preserve">
-    <value>Werteverzeichnis öffnen</value>
-  </data>
   <data name="Dash_OutOfRange" xml:space="preserve">
     <value>Außerhalb des Referenzbereichs</value>
   </data>
   <data name="Dash_Changes" xml:space="preserve">
     <value>Deutliche Veränderungen</value>
-  </data>
-  <data name="Dash_AiTitle" xml:space="preserve">
-    <value>KI fragen</value>
-  </data>
-  <data name="Dash_AiBody" xml:space="preserve">
-    <value>Die App stellt die Tabelle als Text zusammen und öffnet die Teilen-Auswahl. Wohin die Daten gehen, entscheiden Sie – von selbst sendet die App nichts.</value>
-  </data>
-  <data name="Dash_AiButton" xml:space="preserve">
-    <value>🤖 Tabelle an KI-Chat senden</value>
-  </data>
-  <data name="Dash_AiOff" xml:space="preserve">
-    <value>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</value>
-  </data>
-  <data name="Dash_AiOn" xml:space="preserve">
-    <value>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.</value>
   </data>
   <data name="Dash_Summary" xml:space="preserve">
     <value>{0} Werte · {1} · {2}</value>
@@ -226,12 +193,6 @@
   <data name="Edit_RowName" xml:space="preserve">
     <value>Bezeichnung</value>
   </data>
-  <data name="Edit_RowValue" xml:space="preserve">
-    <value>Wert</value>
-  </data>
-  <data name="Edit_RowUnit" xml:space="preserve">
-    <value>Einheit</value>
-  </data>
   <data name="Edit_RowRefMin" xml:space="preserve">
     <value>Referenz von</value>
   </data>
@@ -291,17 +252,11 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Edit_AddedWarn" xml:space="preserve">
     <value>{0} Nicht erkannt: {1}</value>
   </data>
-  <data name="Edit_MyValues" xml:space="preserve">
-    <value>Meine Werte</value>
-  </data>
   <data name="Trend_Empty" xml:space="preserve">
     <value>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.</value>
   </data>
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>★ Nur Favoriten</value>
-  </data>
-  <data name="Trend_AllOrHistory" xml:space="preserve">
-    <value>Alle / mit Verlauf</value>
   </data>
   <data name="Trend_FavoritesGroup" xml:space="preserve">
     <value>★ Favoriten</value>
@@ -335,9 +290,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Trend_ChartNoData" xml:space="preserve">
     <value>Keine Daten</value>
-  </data>
-  <data name="Trend_Parameter" xml:space="preserve">
-    <value>Wert</value>
   </data>
   <data name="Status_Low" xml:space="preserve">
     <value>unter dem Referenzbereich</value>
@@ -423,9 +375,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Cat_ManyParams" xml:space="preserve">
     <value>{0} Werte</value>
   </data>
-  <data name="CatEdit_Title" xml:space="preserve">
-    <value>Wert</value>
-  </data>
   <data name="CatEdit_TitleNew" xml:space="preserve">
     <value>Neuer Wert</value>
   </data>
@@ -434,9 +383,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="CatEdit_NamePlaceholder" xml:space="preserve">
     <value>z. B. Homocystein</value>
-  </data>
-  <data name="CatEdit_Unit" xml:space="preserve">
-    <value>Einheit</value>
   </data>
   <data name="CatEdit_UnitPlaceholder" xml:space="preserve">
     <value>µmol/l</value>
@@ -599,18 +545,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Set_AiCopy" xml:space="preserve">
     <value>Tabelle in die Zwischenablage</value>
-  </data>
-  <data name="Set_AiScan" xml:space="preserve">
-    <value>Befund erkennen</value>
-  </data>
-  <data name="Set_AiScanNote" xml:space="preserve">
-    <value>Foto oder PDF geht erst beim Antippen von «Erkennen» an den Anbieter.</value>
-  </data>
-  <data name="Set_AiComment" xml:space="preserve">
-    <value>Erläuterungen zum Verlauf</value>
-  </data>
-  <data name="Set_AiCommentNote" xml:space="preserve">
-    <value>Übertragen werden nur die ausgewählten Werte, ohne Namen und weitere Daten.</value>
   </data>
   <data name="Set_AiOff" xml:space="preserve">
     <value>Alles aus: Die App sendet kein einziges Byte nach außen.</value>
@@ -1140,5 +1074,148 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   </data>
   <data name="Auto_ForgetBody" xml:space="preserve">
     <value>Automatische Sicherungen hören auf. Bereits abgelegte Dateien bleiben, wo sie sind.</value>
+  </data>
+  <data name="Edit_AmbiguousTitle" xml:space="preserve">
+    <value>Punkt als Tausendertrennung gelesen</value>
+  </data>
+  <data name="Edit_AmbiguousBody" xml:space="preserve">
+    <value>Diese Eingaben sind so verstanden worden:
+
+{0}
+
+Ist das gemeint? Für einen Dezimalwert schreiben Sie ein Komma.</value>
+  </data>
+  <data name="Edit_AmbiguousAccept" xml:space="preserve">
+    <value>So übernehmen</value>
+  </data>
+  <data name="Edit_AmbiguousBack" xml:space="preserve">
+    <value>Zurück zur Eingabe</value>
+  </data>
+  <data name="Imp_Prompt" xml:space="preserve">
+    <value>Unten ist das Foto eines Laborbefunds. Übertrage die Daten daraus als reinen Text
+genau in diesem Format und ergänze nichts von dir aus.
+
+Die ersten beiden Zeilen:
+Datum: TT.MM.JJJJ
+Labor: Name oder Strich
+
+Danach eine Zeile je Wert, die Felder mit einem senkrechten Strich getrennt:
+Bezeichnung | Ergebnis | Einheit | Referenz von | Referenz bis
+
+Regeln:
+- Das Ergebnis ist nur eine Zahl. Ist es nicht numerisch, schreibe es als Wort
+  («negativ», «Spuren»).
+- Der Referenzbereich sind zwei getrennte Zahlen. Ist er einseitig («bis 5,2»),
+  fülle nur das passende Feld, das andere bleibt leer.
+- Rate nichts und rechne nichts um: Ist ein Feld im Befund nicht lesbar, lass es leer.
+- Keine Tabellenüberschrift, keine Nummerierung, keine Erläuterungen, keine
+  Schlussfolgerungen und keine Empfehlungen. Nur die Datenzeilen.</value>
+  </data>
+  <data name="Imp_PromptFreeNames" xml:space="preserve">
+    <value>- Übernimm die Bezeichnungen genau wie im Befund: nicht übersetzen, nicht abkürzen,
+  nicht umbenennen.</value>
+  </data>
+  <data name="Imp_PromptKnownNames" xml:space="preserve">
+    <value>- Gleicht ein Wert einer Bezeichnung aus der Liste unten – auch abgekürzt («Hb»),
+  in einer anderen Sprache («Hemoglobin») oder anders geschrieben –, dann schreibe
+  die Bezeichnung genau so, wie sie in der Liste steht. Nur so landet der Wert in
+  derselben Zeile meiner Tabelle wie bisher und nicht in einer zweiten daneben.
+- Steht ein Wert nicht in der Liste, übernimm seine Bezeichnung unverändert
+  aus dem Befund: nicht übersetzen, nicht abkürzen, nicht umbenennen.
+- Zahl und Einheit bleiben immer so, wie sie im Befund gedruckt sind. Rechne
+  auch dann nicht um, wenn die Liste eine andere Einheit nennt – schreibe die
+  Einheit des Befunds hin. Die Angleichung betrifft ausschließlich die Bezeichnung.
+
+Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
+  </data>
+  <data name="Seed_Note_Rbc" xml:space="preserve">
+    <value>Bei Frauen liegt die Untergrenze niedriger</value>
+  </data>
+  <data name="Seed_Note_Hgb" xml:space="preserve">
+    <value>Frauen 12,0–16,0 · Männer 13,5–17,5</value>
+  </data>
+  <data name="Seed_Note_Ldl" xml:space="preserve">
+    <value>Zielwert hängt vom kardiovaskulären Risiko ab</value>
+  </data>
+  <data name="Seed_Note_Hdl" xml:space="preserve">
+    <value>Bei Frauen ab 50</value>
+  </data>
+  <data name="Seed_Note_Glu" xml:space="preserve">
+    <value>Nüchtern</value>
+  </data>
+  <data name="Seed_Note_Tsto" xml:space="preserve">
+    <value>Bereich für Männer</value>
+  </data>
+  <data name="Seed_Note_Cort" xml:space="preserve">
+    <value>Morgendliche Abnahme</value>
+  </data>
+  <data name="A11y_RemoveRow" xml:space="preserve">
+    <value>Zeile entfernen</value>
+  </data>
+  <data name="A11y_TrendChart" xml:space="preserve">
+    <value>Verlauf des Werts als Diagramm</value>
+  </data>
+  <data name="A11y_PressureChart" xml:space="preserve">
+    <value>Verlauf des Blutdrucks als Diagramm</value>
+  </data>
+  <data name="Ai_Title" xml:space="preserve">
+    <value>KI fragen</value>
+  </data>
+  <data name="Ai_Body" xml:space="preserve">
+    <value>Gesendet wird genau das, was die Filter übrig lassen. Die App stellt daraus eine Tabelle als Text zusammen und öffnet die Teilen-Auswahl – wohin der Text geht, entscheiden Sie.</value>
+  </data>
+  <data name="Ai_Button" xml:space="preserve">
+    <value>🤖 Auswahl an KI-Chat senden</value>
+  </data>
+  <data name="Ai_Off" xml:space="preserve">
+    <value>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</value>
+  </data>
+  <data name="Ai_On" xml:space="preserve">
+    <value>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.</value>
+  </data>
+  <data name="Ai_NothingSelected" xml:space="preserve">
+    <value>Die Filter lassen nichts übrig – es gibt nichts zu senden.</value>
+  </data>
+  <data name="Trend_Search" xml:space="preserve">
+    <value>Wert suchen</value>
+  </data>
+  <data name="Trend_FilterOut" xml:space="preserve">
+    <value>Außerhalb</value>
+  </data>
+  <data name="Trend_FilterHigh" xml:space="preserve">
+    <value>Zu hoch</value>
+  </data>
+  <data name="Trend_FilterLow" xml:space="preserve">
+    <value>Zu niedrig</value>
+  </data>
+  <data name="Trend_NothingFound" xml:space="preserve">
+    <value>Kein Wert passt zu den Filtern.</value>
+  </data>
+  <data name="Trend_HiddenCount" xml:space="preserve">
+    <value>{0} ausgeblendet · zurückholen im Werteverzeichnis</value>
+  </data>
+  <data name="Swipe_Favorite" xml:space="preserve">
+    <value>★ Merken</value>
+  </data>
+  <data name="Swipe_Unfavorite" xml:space="preserve">
+    <value>☆ Nicht mehr merken</value>
+  </data>
+  <data name="Swipe_Hide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="Dash_HighCount" xml:space="preserve">
+    <value>{0} über dem Referenzbereich</value>
+  </data>
+  <data name="Dash_LowCount" xml:space="preserve">
+    <value>{0} unter dem Referenzbereich</value>
+  </data>
+  <data name="Dash_NoneOut" xml:space="preserve">
+    <value>Alle Werte liegen im Referenzbereich Ihres Befunds.</value>
+  </data>
+  <data name="Dash_OpenTrends" xml:space="preserve">
+    <value>Tippen für alle Werte</value>
+  </data>
+  <data name="Txt_Selection" xml:space="preserve">
+    <value>Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.</value>
   </data>
 </root>

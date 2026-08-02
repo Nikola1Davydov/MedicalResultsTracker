@@ -87,21 +87,22 @@ namespace MedicalResultsTracker.ViewModel
         }
 
         /// <summary>
-        /// Принимает и "5.2", и "5,2": на бланках и клавиатурах разделитель разный,
-        /// заставлять пользователя думать об этом не нужно.
+        /// Принимает и «5.2», и «5,2»: на бланках и клавиатурах разделитель разный,
+        /// заставлять пользователя думать об этом не нужно. Разбор общий с импортом из
+        /// чата: раньше здесь была своя, более наивная версия, и одно и то же число
+        /// в форме и во вставке читалось по-разному.
         /// </summary>
-        public static double? ParseNumber(string? text)
+        public static double? ParseNumber(string? text) => LabNumber.Parse(text);
+
+        /// <summary>Запись, которую нельзя прочитать однозначно, — о ней предупреждают перед сохранением.</summary>
+        public bool HasAmbiguousValue
         {
-            if (string.IsNullOrWhiteSpace(text))
+            get
             {
-                return null;
+                LabNumber.Parse(ValueText, out bool ambiguous);
+
+                return ambiguous;
             }
-
-            string normalized = text.Trim().Replace(',', '.').Replace(" ", string.Empty);
-
-            return double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out double value)
-                ? value
-                : null;
         }
 
         partial void OnValueTextChanged(string value) => RefreshStatus();

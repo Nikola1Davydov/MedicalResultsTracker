@@ -16,7 +16,10 @@
                   и ведут, и лишний переход тут только мешал бы.  -->
             <Border IsVisible="{Binding HasChart}" Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
-                    <GraphicsView Drawable="{Binding Chart}" HeightRequest="200" />
+                    <GraphicsView
+                        Drawable="{Binding Chart}"
+                        HeightRequest="200"
+                        SemanticProperties.Description="{x:Static loc:S.A11y_PressureChart}" />
                     <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="12">
                         <Label
                             Grid.Column="0"

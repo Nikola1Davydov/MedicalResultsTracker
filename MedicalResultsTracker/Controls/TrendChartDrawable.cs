@@ -171,7 +171,7 @@ namespace MedicalResultsTracker.Controls
                 Microsoft.Maui.Graphics.VerticalAlignment.Center);
 
             canvas.DrawString(
-                points[0].Date.ToString("dd.MM.yy"),
+                DateDisplay.Compact(points[0].Date),
                 plot.X,
                 plot.Bottom + 4f,
                 plot.Width / 2f,
@@ -182,7 +182,7 @@ namespace MedicalResultsTracker.Controls
             if (points.Count > 1)
             {
                 canvas.DrawString(
-                    points[^1].Date.ToString("dd.MM.yy"),
+                    DateDisplay.Compact(points[^1].Date),
                     plot.Center.X,
                     plot.Bottom + 4f,
                     plot.Width / 2f,

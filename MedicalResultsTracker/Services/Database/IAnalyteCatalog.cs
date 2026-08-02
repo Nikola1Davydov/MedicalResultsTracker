@@ -31,6 +31,12 @@ namespace MedicalResultsTracker.Services.Database
         /// <summary>Быстрое переключение избранного прямо из списка, без открытия карточки.</summary>
         Task SetFavoriteAsync(string code, bool isFavorite);
 
+        /// <summary>
+        /// Убрать показатель из списков, не удаляя его измерения. Тем же способом, что и избранное:
+        /// жестом по строке, без захода в карточку. Вернуть можно в справочнике.
+        /// </summary>
+        Task SetHiddenAsync(string code, bool isHidden);
+
         Task SaveAsync(Analyte analyte);
 
         Task DeleteAsync(string code);

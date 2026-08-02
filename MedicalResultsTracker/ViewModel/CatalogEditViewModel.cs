@@ -58,6 +58,9 @@ namespace MedicalResultsTracker.ViewModel
         private string? _code;
         private int _usageCount;
 
+        /// <summary>Место записи в своей группе. Правка названия не должна перекидывать её наверх.</summary>
+        private int _sortOrder;
+
         public CatalogEditViewModel(IAnalyteCatalog catalog, IBloodTestRepository repository)
         {
             _catalog = catalog;
@@ -122,8 +125,13 @@ namespace MedicalResultsTracker.ViewModel
                 RefMax = ParameterRowViewModel.ParseNumber(RefMaxText),
                 Notes = string.IsNullOrWhiteSpace(Notes) ? null : Notes.Trim(),
                 IsBuiltIn = IsBuiltIn,
+                // Правленую встроенную запись обновление набора больше не трогает: выпуск
+                // приложения не имеет права молча вернуть норму к типовой, когда человек
+                // вписал туда границы своей лаборатории.
+                IsCustomized = IsBuiltIn,
                 IsHidden = IsHidden,
                 IsFavorite = IsFavorite,
+                SortOrder = _sortOrder,
             });
 
             await Shell.Current.GoToAsync("..");
@@ -249,10 +257,12 @@ namespace MedicalResultsTracker.ViewModel
             Category = current.Category;
             RefMinText = Format(current.RefMin);
             RefMaxText = Format(current.RefMax);
-            Notes = current.Notes;
+            // У встроенных записей в базе лежит ключ ресурса — в поле должен попасть текст.
+            Notes = AnalyteDisplay.Note(current.Notes);
             IsHidden = current.IsHidden;
             IsFavorite = current.IsFavorite;
             IsBuiltIn = current.IsBuiltIn;
+            _sortOrder = current.SortOrder;
             CodeText = string.Format(S.CatEdit_Code, current.Code);
             Title = current.Name;
 

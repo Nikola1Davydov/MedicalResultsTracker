@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctl="clr-namespace:MedicalResultsTracker.Controls"
     xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
@@ -47,47 +48,34 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <VerticalStackLayout IsVisible="{Binding HasAttention}" Spacing="8">
-                    <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_OutOfRange}" />
-                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Attention}" Spacing="8">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="vm:TrendItemViewModel">
-                                <Border Style="{StaticResource Card}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=OpenTrendCommand}" CommandParameter="{Binding .}" />
-                                    </Border.GestureRecognizers>
-                                    <Grid ColumnDefinitions="4,*,Auto" ColumnSpacing="10">
-                                        <BoxView Grid.Column="0" Color="{Binding StatusColor}" />
-                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
-                                            <Label FontAttributes="Bold" Text="{Binding Name}" />
-                                            <Label Style="{StaticResource Caption}" Text="{Binding RangeText}" />
-                                            <Label Style="{StaticResource Caption}" Text="{Binding ComparisonHint}" />
-                                        </VerticalStackLayout>
-                                        <VerticalStackLayout
-                                            Grid.Column="2"
-                                            HorizontalOptions="End"
-                                            Spacing="2">
-                                            <Label
-                                                FontAttributes="Bold"
-                                                HorizontalTextAlignment="End"
-                                                Text="{Binding Value}"
-                                                TextColor="{Binding StatusColor}" />
-                                            <Label
-                                                HorizontalTextAlignment="End"
-                                                Style="{StaticResource Caption}"
-                                                Text="{Binding StatusText}" />
-                                            <Label
-                                                HorizontalTextAlignment="End"
-                                                Style="{StaticResource Caption}"
-                                                Text="{Binding DeltaText}"
-                                                TextColor="{Binding AssessmentColor}" />
-                                        </VerticalStackLayout>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                <!--  Сводка вместо списка: сколько показателей вышло за норму и в какую
+                      сторону. Перечислять их здесь незачем — за этим человек идёт
+                      в «Динамику», где тот же список отбирается фильтрами.  -->
+                <Border IsVisible="{Binding HasData}" Style="{StaticResource Card}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenTrendsCommand}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_OutOfRange}" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            IsVisible="{Binding HasHigh}"
+                            Text="{Binding HighSummary}"
+                            TextColor="{x:Static ctl:StatusPalette.High}" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            IsVisible="{Binding HasLow}"
+                            Text="{Binding LowSummary}"
+                            TextColor="{x:Static ctl:StatusPalette.Low}" />
+                        <Label
+                            IsVisible="{Binding AllInRange}"
+                            Text="{x:Static loc:S.Dash_NoneOut}"
+                            TextColor="{x:Static ctl:StatusPalette.Normal}" />
+                        <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Dash_OpenTrends}" />
                     </VerticalStackLayout>
-                </VerticalStackLayout>
+                </Border>
 
                 <VerticalStackLayout IsVisible="{Binding HasChanges}" Spacing="8">
                     <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_Changes}" />
@@ -126,15 +114,8 @@
                     </VerticalStackLayout>
                 </VerticalStackLayout>
 
-                <Border IsVisible="{Binding HasData}" Style="{StaticResource Card}">
-                    <VerticalStackLayout Spacing="8">
-                        <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Dash_AiTitle}" />
-                        <Label Text="{x:Static loc:S.Dash_AiBody}" />
-                        <Button Command="{Binding AskAiCommand}" Text="{x:Static loc:S.Dash_AiButton}" />
-                    </VerticalStackLayout>
-                </Border>
-
-                <Label Style="{StaticResource Caption}" Text="{Binding AssistantStatus}" />
+                <!--  Отправка в ИИ-чат живёт во вкладке «Динамика»: там видно все показатели
+                      и есть фильтры, а отправлять осмысленно именно отобранное.  -->
 
             </VerticalStackLayout>
         </ScrollView>

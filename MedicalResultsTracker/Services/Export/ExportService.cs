@@ -230,7 +230,7 @@ namespace MedicalResultsTracker.Services.Export
             return imported;
         }
 
-        public async Task<string> BuildTextSummaryAsync(int maxTests = 6)
+        public async Task<string> BuildTextSummaryAsync(int maxTests = 6, IReadOnlyCollection<string>? onlyKeys = null)
         {
             // Ограничение считается в датах, а не в бланках: для читателя таблицы столбец — это день.
             ResultMatrix matrix = (await _analysis.BuildMatrixAsync().ConfigureAwait(false))
@@ -241,6 +241,24 @@ namespace MedicalResultsTracker.Services.Export
                 return S.Txt_Empty;
             }
 
+            bool selection = onlyKeys is { Count: > 0 };
+
+            if (selection)
+            {
+                HashSet<string> wanted = new(onlyKeys!, StringComparer.Ordinal);
+
+                matrix = new ResultMatrix
+                {
+                    Dates = matrix.Dates,
+                    Lines = matrix.Lines.Where(line => wanted.Contains(line.Key)).ToList(),
+                };
+
+                if (matrix.Lines.Count == 0)
+                {
+                    return S.Txt_Empty;
+                }
+            }
+
             BloodTest? latest = await _repository.GetLatestAsync().ConfigureAwait(false);
 
             StringBuilder builder = new();
@@ -248,6 +266,12 @@ namespace MedicalResultsTracker.Services.Export
             builder.AppendLine(S.Txt_Header);
             builder.AppendLine(S.Txt_NoPersonal);
             builder.AppendLine(S.Txt_RefNote);
+
+            if (selection)
+            {
+                builder.AppendLine(S.Txt_Selection);
+            }
+
             builder.AppendLine();
 
             builder.AppendLine(string.Format(
@@ -282,8 +306,14 @@ namespace MedicalResultsTracker.Services.Export
                 builder.AppendLine();
             }
 
+            // Давление прикладывается только к полной выгрузке: когда человек отобрал
+            // фильтрами три показателя, дневник давления рядом с ними — чужая тема.
+            if (!selection)
+            {
+                await AppendPressureAsync(builder).ConfigureAwait(false);
+            }
+
             // Итог по последнему столбцу, а не по последнему бланку: за один день их могло быть два.
-            await AppendPressureAsync(builder).ConfigureAwait(false);
 
             List<BloodParameter> outOfRange = matrix.Lines
                 .Select(line => line.Cells[^1])

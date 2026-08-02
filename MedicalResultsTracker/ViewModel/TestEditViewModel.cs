@@ -150,7 +150,7 @@ namespace MedicalResultsTracker.ViewModel
 
             if (previous is null)
             {
-                await Dialog.AlertAsync(S.Trend_ChartNoData, S.Edit_NoPrevBody);
+                await Dialog.AlertAsync(S.Edit_NoPrevTitle, S.Edit_NoPrevBody);
                 return;
             }
 
@@ -179,7 +179,12 @@ namespace MedicalResultsTracker.ViewModel
 
             if (filled.Any(r => string.IsNullOrWhiteSpace(r.Name)))
             {
-                await Dialog.AlertAsync(S.CatEdit_NoNameTitle, S.Edit_NoNameBody);
+                await Dialog.AlertAsync(S.Edit_NoNameTitle, S.Edit_NoNameBody);
+                return;
+            }
+
+            if (!await ConfirmAmbiguousNumbersAsync(filled))
+            {
                 return;
             }
 
@@ -225,6 +230,41 @@ namespace MedicalResultsTracker.ViewModel
 
             await Shell.Current.GoToAsync("..");
         }, S.Err_SaveTest);
+
+        /// <summary>
+        /// Точка в наборе руками могла означать и разряды, и дробную часть: «254.000» — это
+        /// 254 000 тромбоцитов на немецком бланке и 254 в английской записи. Читаем как разряды
+        /// (так напечатан бланк), но молча уводить число в тысячу раз нельзя — показываем
+        /// прочитанное до сохранения.
+        ///
+        /// Вставка из чата предупреждает о том же в подсказке над строками — здесь та же проверка
+        /// для набранного руками, диалогом, потому что дальше сразу запись.
+        /// </summary>
+        private async Task<bool> ConfirmAmbiguousNumbersAsync(List<ParameterRowViewModel> rows)
+        {
+            List<ParameterRowViewModel> unclear = rows.Where(r => r.HasAmbiguousValue).ToList();
+
+            if (unclear.Count == 0)
+            {
+                return true;
+            }
+
+            string list = string.Join("\n", unclear
+                .Take(MaxConflictsShown)
+                .Select(r => $"{r.Name}: «{r.ValueText.Trim()}» → " +
+                             ParameterRowViewModel.ParseNumber(r.ValueText)?.ToString("0.####", CultureInfo.CurrentCulture)));
+
+            if (unclear.Count > MaxConflictsShown)
+            {
+                list += "\n" + string.Format(S.Edit_MergeMore, unclear.Count - MaxConflictsShown);
+            }
+
+            return await Dialog.ConfirmAsync(
+                S.Edit_AmbiguousTitle,
+                string.Format(S.Edit_AmbiguousBody, list),
+                S.Edit_AmbiguousAccept,
+                S.Edit_AmbiguousBack);
+        }
 
         /// <summary>
         /// Дописывает новый бланк в анализ за то же число.

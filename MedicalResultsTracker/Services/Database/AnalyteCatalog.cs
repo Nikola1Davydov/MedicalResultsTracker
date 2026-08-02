@@ -61,7 +61,10 @@ namespace MedicalResultsTracker.Services.Database
                         continue;
                     }
 
-                    if (!refresh)
+                    // Запись, которую человек правил сам, не трогаем никогда: там стоят
+                    // границы его лаборатории, а не типовые, и вернуть их к типовым молча —
+                    // это подменить данные в медицинской записи.
+                    if (!refresh || current.IsCustomized)
                     {
                         continue;
                     }
@@ -193,6 +196,20 @@ namespace MedicalResultsTracker.Services.Database
             }
 
             analyte.IsFavorite = isFavorite;
+
+            await SaveAsync(analyte).ConfigureAwait(false);
+        }
+
+        public async Task SetHiddenAsync(string code, bool isHidden)
+        {
+            Analyte? analyte = await FindAsync(code).ConfigureAwait(false);
+
+            if (analyte is null || analyte.IsHidden == isHidden)
+            {
+                return;
+            }
+
+            analyte.IsHidden = isHidden;
 
             await SaveAsync(analyte).ConfigureAwait(false);
         }

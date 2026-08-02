@@ -3,6 +3,7 @@
     x:Class="MedicalResultsTracker.View.TrendsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctl="clr-namespace:MedicalResultsTracker.Controls"
     xmlns:loc="clr-namespace:MedicalResultsTracker.Resources.Strings"
     xmlns:vm="clr-namespace:MedicalResultsTracker.ViewModel"
     Title="{Binding Title}"
@@ -11,24 +12,41 @@
     <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="12">
 
         <VerticalStackLayout Grid.Row="0" Spacing="8">
+            <SearchBar Placeholder="{x:Static loc:S.Trend_Search}" Text="{Binding Search}" />
+
+            <!--  Фильтры одной лентой: их пять, в две колонки они уже не помещаются,
+                  а перенос строки на узком экране рвал бы ряд посередине.  -->
+            <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Chips}" Spacing="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:FilterChipViewModel">
+                            <Button
+                                Padding="14,6"
+                                BackgroundColor="{Binding Background}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TrendsViewModel}}, Path=ToggleChipCommand}"
+                                CommandParameter="{Binding .}"
+                                FontSize="13"
+                                Text="{Binding Text}"
+                                TextColor="{Binding Foreground}" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <Label
+                IsVisible="{Binding HasHidden}"
+                Style="{StaticResource Caption}"
+                Text="{Binding HiddenSummary}" />
+
             <Label
                 IsVisible="{Binding IsEmpty}"
                 Style="{StaticResource Caption}"
                 Text="{x:Static loc:S.Trend_Empty}" />
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Button
-                    Grid.Column="0"
-                    BackgroundColor="{Binding FavoritesFilterBackground}"
-                    Command="{Binding ToggleFavoritesFilterCommand}"
-                    Text="{Binding FavoritesFilterText}"
-                    TextColor="{Binding FavoritesFilterForeground}" />
-                <Button
-                    Grid.Column="1"
-                    BackgroundColor="{Binding HistoryFilterBackground}"
-                    Command="{Binding ToggleHistoryFilterCommand}"
-                    Text="{Binding HistoryFilterText}"
-                    TextColor="{Binding HistoryFilterForeground}" />
-            </Grid>
+
+            <Label
+                IsVisible="{Binding IsFilteredOut}"
+                Style="{StaticResource Caption}"
+                Text="{x:Static loc:S.Trend_NothingFound}" />
         </VerticalStackLayout>
 
         <RefreshView
@@ -52,24 +70,61 @@
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:SeriesItemViewModel">
-                        <Border Style="{StaticResource Card}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TrendsViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
-                            </Border.GestureRecognizers>
-                            <Grid ColumnDefinitions="*,120" ColumnSpacing="10">
-                                <VerticalStackLayout Grid.Column="0" Spacing="2">
-                                    <Label FontAttributes="Bold" Text="{Binding Name}" />
-                                    <Label Text="{Binding LatestText}" TextColor="{Binding StatusColor}" />
-                                    <Label Style="{StaticResource Caption}" Text="{Binding DeltaText}" />
-                                </VerticalStackLayout>
-                                <GraphicsView
-                                    Grid.Column="1"
-                                    Drawable="{Binding Chart}"
-                                    HeightRequest="56" />
-                            </Grid>
-                        </Border>
+                        <!--  Жест вправо — избранное, влево — убрать из списка. Команды берутся
+                              у самой карточки: внутри SwipeItem поиск родительской ViewModel
+                              по дереву работает ненадёжно.  -->
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="{x:Static ctl:StatusPalette.FilterOn}"
+                                        Command="{Binding FavoriteCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="{Binding FavoriteActionText}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="{x:Static ctl:StatusPalette.FilterOff}"
+                                        Command="{Binding HideCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="{x:Static loc:S.Swipe_Hide}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Border Style="{StaticResource Card}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TrendsViewModel}}, Path=OpenCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*,120" ColumnSpacing="10">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label FontAttributes="Bold" Text="{Binding Name}" />
+                                        <Label Text="{Binding LatestText}" TextColor="{Binding StatusColor}" />
+                                        <Label Style="{StaticResource Caption}" Text="{Binding DeltaText}" />
+                                    </VerticalStackLayout>
+                                    <GraphicsView
+                                        Grid.Column="1"
+                                        Drawable="{Binding Chart}"
+                                        HeightRequest="56"
+                                        SemanticProperties.Description="{x:Static loc:S.A11y_TrendChart}" />
+                                </Grid>
+                            </Border>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <!--  Отправка в чат стоит под списком, а не кнопкой сверху: сначала человек
+                          отбирает фильтрами, что показать, и только потом решает отправить
+                          именно это.  -->
+                    <Border Margin="0,14,0,0" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Ai_Title}" />
+                            <Label Text="{x:Static loc:S.Ai_Body}" />
+                            <Button Command="{Binding ShareForAiCommand}" Text="{x:Static loc:S.Ai_Button}" />
+                            <Label Style="{StaticResource Caption}" Text="{Binding AssistantStatus}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </CollectionView.Footer>
             </CollectionView>
         </RefreshView>
 

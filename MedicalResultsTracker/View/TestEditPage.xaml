@@ -17,7 +17,8 @@
                 <Border Style="{StaticResource Card}">
                     <VerticalStackLayout Spacing="8">
                         <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_Date}" />
-                        <DatePicker Date="{Binding Date}" Format="dd.MM.yyyy" />
+                        <!--  «d» — короткая дата языка интерфейса, а не немецкая навсегда.  -->
+                        <DatePicker Date="{Binding Date}" Format="d" />
 
                         <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_Lab}" />
                         <Entry Placeholder="{x:Static loc:S.Edit_LabPlaceholder}" Text="{Binding Laboratory}" />
@@ -103,6 +104,7 @@
                                             Grid.Column="1"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TestEditViewModel}}, Path=RemoveRowCommand}"
                                             CommandParameter="{Binding .}"
+                                            SemanticProperties.Description="{x:Static loc:S.A11y_RemoveRow}"
                                             Text="✕"
                                             WidthRequest="48" />
                                     </Grid>
@@ -163,6 +165,7 @@
                 Grid.Column="2"
                 Command="{Binding DeleteCommand}"
                 IsVisible="{Binding IsExisting}"
+                SemanticProperties.Description="{x:Static loc:S.Common_Delete}"
                 Text="🗑" />
         </Grid>
 

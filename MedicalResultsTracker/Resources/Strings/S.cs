@@ -6,7 +6,10 @@ namespace MedicalResultsTracker.Resources.Strings
     /// <summary>
     /// Тексты интерфейса. Немецкий — язык по умолчанию, русский подхватывается,
     /// если он выбран в настройках или стоит в системе.
-    /// Файл сгенерирован из AppResources.resx: править нужно resx, а не его.
+    ///
+    /// Файл собран из tools/strings/strings.py вместе с обоими .resx — править нужно
+    /// таблицу и заново запускать tools/strings/gen.py. Правка здесь или в resx
+    /// пропадёт при следующей сборке строк.
     /// </summary>
     public static class S
     {
@@ -66,12 +69,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Erfassen Sie den ersten Befund – den Verlauf zeigt die App dann von se</summary>
         public static string Dash_EmptyHint => Get("Dash_EmptyHint");
 
-        /// <summary>➕ Befund erfassen</summary>
-        public static string Dash_AddTest => Get("Dash_AddTest");
-
-        /// <summary>⬇ Exportieren</summary>
-        public static string Dash_Export => Get("Dash_Export");
-
         /// <summary>So fangen Sie an</summary>
         public static string Dash_StartTitle => Get("Dash_StartTitle");
 
@@ -81,38 +78,11 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten ü</summary>
         public static string Dash_StartNote => Get("Dash_StartNote");
 
-        /// <summary>★ Favoriten</summary>
-        public static string Dash_Favorites => Get("Dash_Favorites");
-
-        /// <summary>Werte im Blick behalten</summary>
-        public static string Dash_FavHintTitle => Get("Dash_FavHintTitle");
-
-        /// <summary>Markieren Sie im Werteverzeichnis mit dem Stern, was Sie dauerhaft ver</summary>
-        public static string Dash_FavHintBody => Get("Dash_FavHintBody");
-
-        /// <summary>Werteverzeichnis öffnen</summary>
-        public static string Dash_OpenCatalog => Get("Dash_OpenCatalog");
-
         /// <summary>Außerhalb des Referenzbereichs</summary>
         public static string Dash_OutOfRange => Get("Dash_OutOfRange");
 
         /// <summary>Deutliche Veränderungen</summary>
         public static string Dash_Changes => Get("Dash_Changes");
-
-        /// <summary>KI fragen</summary>
-        public static string Dash_AiTitle => Get("Dash_AiTitle");
-
-        /// <summary>Die App stellt die Tabelle als Text zusammen und öffnet die Teilen-Aus</summary>
-        public static string Dash_AiBody => Get("Dash_AiBody");
-
-        /// <summary>🤖 Tabelle an KI-Chat senden</summary>
-        public static string Dash_AiButton => Get("Dash_AiButton");
-
-        /// <summary>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</summary>
-        public static string Dash_AiOff => Get("Dash_AiOff");
-
-        /// <summary>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen wi</summary>
-        public static string Dash_AiOn => Get("Dash_AiOn");
 
         /// <summary>{0} Werte · {1} · {2}</summary>
         public static string Dash_Summary => Get("Dash_Summary");
@@ -201,12 +171,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Bezeichnung</summary>
         public static string Edit_RowName => Get("Edit_RowName");
 
-        /// <summary>Wert</summary>
-        public static string Edit_RowValue => Get("Edit_RowValue");
-
-        /// <summary>Einheit</summary>
-        public static string Edit_RowUnit => Get("Edit_RowUnit");
-
         /// <summary>Referenz von</summary>
         public static string Edit_RowRefMin => Get("Edit_RowRefMin");
 
@@ -264,17 +228,11 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>{0} Nicht erkannt: {1}</summary>
         public static string Edit_AddedWarn => Get("Edit_AddedWarn");
 
-        /// <summary>Meine Werte</summary>
-        public static string Edit_MyValues => Get("Edit_MyValues");
-
         /// <summary>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorlieg</summary>
         public static string Trend_Empty => Get("Trend_Empty");
 
         /// <summary>★ Nur Favoriten</summary>
         public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
-
-        /// <summary>Alle / mit Verlauf</summary>
-        public static string Trend_AllOrHistory => Get("Trend_AllOrHistory");
 
         /// <summary>★ Favoriten</summary>
         public static string Trend_FavoritesGroup => Get("Trend_FavoritesGroup");
@@ -308,9 +266,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Keine Daten</summary>
         public static string Trend_ChartNoData => Get("Trend_ChartNoData");
-
-        /// <summary>Wert</summary>
-        public static string Trend_Parameter => Get("Trend_Parameter");
 
         /// <summary>unter dem Referenzbereich</summary>
         public static string Status_Low => Get("Status_Low");
@@ -396,9 +351,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>{0} Werte</summary>
         public static string Cat_ManyParams => Get("Cat_ManyParams");
 
-        /// <summary>Wert</summary>
-        public static string CatEdit_Title => Get("CatEdit_Title");
-
         /// <summary>Neuer Wert</summary>
         public static string CatEdit_TitleNew => Get("CatEdit_TitleNew");
 
@@ -407,9 +359,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>z. B. Homocystein</summary>
         public static string CatEdit_NamePlaceholder => Get("CatEdit_NamePlaceholder");
-
-        /// <summary>Einheit</summary>
-        public static string CatEdit_Unit => Get("CatEdit_Unit");
 
         /// <summary>µmol/l</summary>
         public static string CatEdit_UnitPlaceholder => Get("CatEdit_UnitPlaceholder");
@@ -572,18 +521,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Tabelle in die Zwischenablage</summary>
         public static string Set_AiCopy => Get("Set_AiCopy");
-
-        /// <summary>Befund erkennen</summary>
-        public static string Set_AiScan => Get("Set_AiScan");
-
-        /// <summary>Foto oder PDF geht erst beim Antippen von «Erkennen» an den Anbieter.</summary>
-        public static string Set_AiScanNote => Get("Set_AiScanNote");
-
-        /// <summary>Erläuterungen zum Verlauf</summary>
-        public static string Set_AiComment => Get("Set_AiComment");
-
-        /// <summary>Übertragen werden nur die ausgewählten Werte, ohne Namen und weitere D</summary>
-        public static string Set_AiCommentNote => Get("Set_AiCommentNote");
 
         /// <summary>Alles aus: Die App sendet kein einziges Byte nach außen.</summary>
         public static string Set_AiOff => Get("Set_AiOff");
@@ -1109,5 +1046,116 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Automatische Sicherungen hören auf. Bereits abgelegte Dateien bleiben,</summary>
         public static string Auto_ForgetBody => Get("Auto_ForgetBody");
+
+        /// <summary>Punkt als Tausendertrennung gelesen</summary>
+        public static string Edit_AmbiguousTitle => Get("Edit_AmbiguousTitle");
+
+        /// <summary>Diese Eingaben sind so verstanden worden: {0} Ist das gemeint? Für ein</summary>
+        public static string Edit_AmbiguousBody => Get("Edit_AmbiguousBody");
+
+        /// <summary>So übernehmen</summary>
+        public static string Edit_AmbiguousAccept => Get("Edit_AmbiguousAccept");
+
+        /// <summary>Zurück zur Eingabe</summary>
+        public static string Edit_AmbiguousBack => Get("Edit_AmbiguousBack");
+
+        /// <summary>Unten ist das Foto eines Laborbefunds. Übertrage die Daten daraus als </summary>
+        public static string Imp_Prompt => Get("Imp_Prompt");
+
+        /// <summary>- Übernimm die Bezeichnungen genau wie im Befund: nicht übersetzen, ni</summary>
+        public static string Imp_PromptFreeNames => Get("Imp_PromptFreeNames");
+
+        /// <summary>- Gleicht ein Wert einer Bezeichnung aus der Liste unten – auch abgekü</summary>
+        public static string Imp_PromptKnownNames => Get("Imp_PromptKnownNames");
+
+        /// <summary>Bei Frauen liegt die Untergrenze niedriger</summary>
+        public static string Seed_Note_Rbc => Get("Seed_Note_Rbc");
+
+        /// <summary>Frauen 12,0–16,0 · Männer 13,5–17,5</summary>
+        public static string Seed_Note_Hgb => Get("Seed_Note_Hgb");
+
+        /// <summary>Zielwert hängt vom kardiovaskulären Risiko ab</summary>
+        public static string Seed_Note_Ldl => Get("Seed_Note_Ldl");
+
+        /// <summary>Bei Frauen ab 50</summary>
+        public static string Seed_Note_Hdl => Get("Seed_Note_Hdl");
+
+        /// <summary>Nüchtern</summary>
+        public static string Seed_Note_Glu => Get("Seed_Note_Glu");
+
+        /// <summary>Bereich für Männer</summary>
+        public static string Seed_Note_Tsto => Get("Seed_Note_Tsto");
+
+        /// <summary>Morgendliche Abnahme</summary>
+        public static string Seed_Note_Cort => Get("Seed_Note_Cort");
+
+        /// <summary>Zeile entfernen</summary>
+        public static string A11y_RemoveRow => Get("A11y_RemoveRow");
+
+        /// <summary>Verlauf des Werts als Diagramm</summary>
+        public static string A11y_TrendChart => Get("A11y_TrendChart");
+
+        /// <summary>Verlauf des Blutdrucks als Diagramm</summary>
+        public static string A11y_PressureChart => Get("A11y_PressureChart");
+
+        /// <summary>KI fragen</summary>
+        public static string Ai_Title => Get("Ai_Title");
+
+        /// <summary>Gesendet wird genau das, was die Filter übrig lassen. Die App stellt d</summary>
+        public static string Ai_Body => Get("Ai_Body");
+
+        /// <summary>🤖 Auswahl an KI-Chat senden</summary>
+        public static string Ai_Button => Get("Ai_Button");
+
+        /// <summary>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</summary>
+        public static string Ai_Off => Get("Ai_Off");
+
+        /// <summary>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen wi</summary>
+        public static string Ai_On => Get("Ai_On");
+
+        /// <summary>Die Filter lassen nichts übrig – es gibt nichts zu senden.</summary>
+        public static string Ai_NothingSelected => Get("Ai_NothingSelected");
+
+        /// <summary>Wert suchen</summary>
+        public static string Trend_Search => Get("Trend_Search");
+
+        /// <summary>Außerhalb</summary>
+        public static string Trend_FilterOut => Get("Trend_FilterOut");
+
+        /// <summary>Zu hoch</summary>
+        public static string Trend_FilterHigh => Get("Trend_FilterHigh");
+
+        /// <summary>Zu niedrig</summary>
+        public static string Trend_FilterLow => Get("Trend_FilterLow");
+
+        /// <summary>Kein Wert passt zu den Filtern.</summary>
+        public static string Trend_NothingFound => Get("Trend_NothingFound");
+
+        /// <summary>{0} ausgeblendet · zurückholen im Werteverzeichnis</summary>
+        public static string Trend_HiddenCount => Get("Trend_HiddenCount");
+
+        /// <summary>★ Merken</summary>
+        public static string Swipe_Favorite => Get("Swipe_Favorite");
+
+        /// <summary>☆ Nicht mehr merken</summary>
+        public static string Swipe_Unfavorite => Get("Swipe_Unfavorite");
+
+        /// <summary>Ausblenden</summary>
+        public static string Swipe_Hide => Get("Swipe_Hide");
+
+        /// <summary>{0} über dem Referenzbereich</summary>
+        public static string Dash_HighCount => Get("Dash_HighCount");
+
+        /// <summary>{0} unter dem Referenzbereich</summary>
+        public static string Dash_LowCount => Get("Dash_LowCount");
+
+        /// <summary>Alle Werte liegen im Referenzbereich Ihres Befunds.</summary>
+        public static string Dash_NoneOut => Get("Dash_NoneOut");
+
+        /// <summary>Tippen für alle Werte</summary>
+        public static string Dash_OpenTrends => Get("Dash_OpenTrends");
+
+        /// <summary>Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.</summary>
+        public static string Txt_Selection => Get("Txt_Selection");
     }
 }

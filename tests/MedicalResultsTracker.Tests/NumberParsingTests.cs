@@ -1,3 +1,4 @@
+using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Import;
 using Xunit;
@@ -77,6 +78,49 @@ namespace MedicalResultsTracker.Tests
             AiDraft draft = Import.Parse($"Kalium | {printed} | mmol/l");
 
             Assert.Empty(draft.Warnings);
+        }
+
+        /// <summary>
+        /// Одно и то же число, набранное руками и вставленное из чата, обязано дать один результат.
+        ///
+        /// Разборов было два, и они разошлись: «254.000» из бланка становилось 254 000 при вставке
+        /// и 254 при наборе, а «1.234,5» руками терялось совсем. Внешне ничего не ломалось —
+        /// в истории просто оказывалось другое число, и увидеть это можно было только по бланку.
+        /// Теперь разбор один; этот тест держит его одним.
+        /// </summary>
+        [Theory]
+        [InlineData("254.000")]
+        [InlineData("1.234")]
+        [InlineData("1.234.567")]
+        [InlineData("1.234,5")]
+        [InlineData("1,234.5")]
+        [InlineData("1 234,5")]
+        [InlineData("1'234.5")]
+        [InlineData("12,7")]
+        [InlineData("0.123")]
+        [InlineData("116.0")]
+        [InlineData("1.2345")]
+        [InlineData("negativ")]
+        public void TypedByHandAndPastedFromChatAgree(string printed) =>
+            Assert.Equal(ValueOf(printed), LabNumber.Parse(printed));
+
+        /// <summary>
+        /// Неоднозначность видна и при ручном вводе — на ней стоит диалог перед сохранением.
+        /// </summary>
+        [Theory]
+        [InlineData("254.000", true)]
+        [InlineData("1.234", true)]
+        [InlineData("1.2345", false)]
+        [InlineData("0.123", false)]
+        [InlineData("116.0", false)]
+        [InlineData("1.234,5", false)]
+        [InlineData("12,7", false)]
+        [InlineData("", false)]
+        public void ReportsWhetherTheNotationWasIndistinguishable(string printed, bool expected)
+        {
+            LabNumber.Parse(printed, out bool ambiguous);
+
+            Assert.Equal(expected, ambiguous);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace MedicalResultsTracker.Model
         [Ignore]
         [JsonIgnore]
         public string Title => string.IsNullOrWhiteSpace(Laboratory)
-            ? Date.ToString("dd MMM yyyy")
-            : $"{Date:dd MMM yyyy} · {Laboratory}";
+            ? DateDisplay.Short(Date)
+            : $"{DateDisplay.Short(Date)} · {Laboratory}";
     }
 }
