@@ -12,31 +12,42 @@
     <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="12">
 
         <VerticalStackLayout Grid.Row="0" Spacing="8">
-            <SearchBar Placeholder="{x:Static loc:S.Trend_Search}" Text="{Binding Search}" />
-
-            <!--  Фильтры одной лентой: их пять, в две колонки они уже не помещаются,
-                  а перенос строки на узком экране рвал бы ряд посередине.  -->
-            <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
-                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Chips}" Spacing="8">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="vm:FilterChipViewModel">
-                            <Button
-                                Padding="14,6"
-                                BackgroundColor="{Binding Background}"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TrendsViewModel}}, Path=ToggleChipCommand}"
-                                CommandParameter="{Binding .}"
-                                FontSize="13"
-                                Text="{Binding Text}"
-                                TextColor="{Binding Foreground}" />
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </HorizontalStackLayout>
-            </ScrollView>
+            <!--  Поиск, фильтр и отправка в чат — одной строкой. Кнопки круглые и одного
+                  размера: рядом с полем ввода они читаются как значки, а не как надписи,
+                  и не растягивают строку, сколько бы фильтров ни добавилось потом.  -->
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <SearchBar
+                    Grid.Column="0"
+                    Placeholder="{x:Static loc:S.Trend_Search}"
+                    Text="{Binding Search}" />
+                <Button
+                    Grid.Column="1"
+                    Padding="0"
+                    Command="{Binding FilterCommand}"
+                    CornerRadius="22"
+                    FontSize="18"
+                    HeightRequest="44"
+                    SemanticProperties.Description="{x:Static loc:S.A11y_Filter}"
+                    Text="{Binding FilterGlyph}"
+                    VerticalOptions="Center"
+                    WidthRequest="44" />
+                <Button
+                    Grid.Column="2"
+                    Padding="0"
+                    Command="{Binding CopyForAiCommand}"
+                    CornerRadius="22"
+                    FontSize="18"
+                    HeightRequest="44"
+                    SemanticProperties.Description="{x:Static loc:S.A11y_Ai}"
+                    Text="🤖"
+                    VerticalOptions="Center"
+                    WidthRequest="44" />
+            </Grid>
 
             <Label
-                IsVisible="{Binding HasHidden}"
+                IsVisible="{Binding HasFilterSummary}"
                 Style="{StaticResource Caption}"
-                Text="{Binding HiddenSummary}" />
+                Text="{Binding FilterSummary}" />
 
             <Label
                 IsVisible="{Binding IsEmpty}"
@@ -70,12 +81,15 @@
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:SeriesItemViewModel">
-                        <!--  Жест вправо — избранное, влево — убрать из списка. Команды берутся
-                              у самой карточки: внутри SwipeItem поиск родительской ViewModel
-                              по дереву работает ненадёжно.  -->
+                        <!--  Жест вправо — избранное, влево — убрать из списка. Mode="Execute":
+                              действие происходит по самому жесту, без второго нажатия
+                              по открывшейся кнопке, — как в почте.
+
+                              Команды берутся у самой карточки: внутри SwipeItem поиск
+                              родительской ViewModel по дереву работает ненадёжно.  -->
                         <SwipeView>
                             <SwipeView.LeftItems>
-                                <SwipeItems>
+                                <SwipeItems Mode="Execute">
                                     <SwipeItem
                                         BackgroundColor="{x:Static ctl:StatusPalette.FilterOn}"
                                         Command="{Binding FavoriteCommand}"
@@ -84,7 +98,7 @@
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
-                                <SwipeItems>
+                                <SwipeItems Mode="Execute">
                                     <SwipeItem
                                         BackgroundColor="{x:Static ctl:StatusPalette.FilterOff}"
                                         Command="{Binding HideCommand}"
@@ -113,17 +127,13 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>
-                    <!--  Отправка в чат стоит под списком, а не кнопкой сверху: сначала человек
-                          отбирает фильтрами, что показать, и только потом решает отправить
-                          именно это.  -->
-                    <Border Margin="0,14,0,0" Style="{StaticResource Card}">
-                        <VerticalStackLayout Spacing="8">
-                            <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Ai_Title}" />
-                            <Label Text="{x:Static loc:S.Ai_Body}" />
-                            <Button Command="{Binding ShareForAiCommand}" Text="{x:Static loc:S.Ai_Button}" />
-                            <Label Style="{StaticResource Caption}" Text="{Binding AssistantStatus}" />
-                        </VerticalStackLayout>
-                    </Border>
+                    <!--  Под списком остаётся только строчка о том, включён ли ИИ-помощник.
+                          Само действие — кнопкой рядом с поиском: карточка на полэкрана
+                          под каждым списком мешала читать сам список.  -->
+                    <Label
+                        Margin="0,14,0,0"
+                        Style="{StaticResource Caption}"
+                        Text="{Binding AssistantStatus}" />
                 </CollectionView.Footer>
             </CollectionView>
         </RefreshView>

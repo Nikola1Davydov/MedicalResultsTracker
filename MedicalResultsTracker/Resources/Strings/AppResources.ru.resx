@@ -255,9 +255,6 @@
   <data name="Trend_Empty" xml:space="preserve">
     <value>Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями.</value>
   </data>
-  <data name="Trend_OnlyFavorites" xml:space="preserve">
-    <value>★ Только избранное</value>
-  </data>
   <data name="Trend_FavoritesGroup" xml:space="preserve">
     <value>★ Избранное</value>
   </data>
@@ -880,9 +877,6 @@
   <data name="Set_Version" xml:space="preserve">
     <value>Версия {0} (сборка {1})</value>
   </data>
-  <data name="Trend_OnlyWithHistory" xml:space="preserve">
-    <value>Только с историей</value>
-  </data>
   <data name="Matrix_NewView" xml:space="preserve">
     <value>＋ Новый набор …</value>
   </data>
@@ -1164,9 +1158,6 @@
   <data name="Ai_Body" xml:space="preserve">
     <value>Отправляется ровно то, что осталось после фильтров. Приложение соберёт из этого таблицу текстом и откроет системный список приложений — куда отправить, решаете вы.</value>
   </data>
-  <data name="Ai_Button" xml:space="preserve">
-    <value>🤖 Отправить выбранное в ИИ-чат</value>
-  </data>
   <data name="Ai_Off" xml:space="preserve">
     <value>ИИ-помощник выключен. Данные не покидают устройство.</value>
   </data>
@@ -1179,20 +1170,8 @@
   <data name="Trend_Search" xml:space="preserve">
     <value>Найти показатель</value>
   </data>
-  <data name="Trend_FilterOut" xml:space="preserve">
-    <value>Вне нормы</value>
-  </data>
-  <data name="Trend_FilterHigh" xml:space="preserve">
-    <value>Выше нормы</value>
-  </data>
-  <data name="Trend_FilterLow" xml:space="preserve">
-    <value>Ниже нормы</value>
-  </data>
   <data name="Trend_NothingFound" xml:space="preserve">
     <value>Под фильтры ничего не подошло.</value>
-  </data>
-  <data name="Trend_HiddenCount" xml:space="preserve">
-    <value>Скрыто: {0} · вернуть можно в справочнике</value>
   </data>
   <data name="Swipe_Favorite" xml:space="preserve">
     <value>★ В избранное</value>
@@ -1217,5 +1196,59 @@
   </data>
   <data name="Txt_Selection" xml:space="preserve">
     <value>Ниже — только выбранные показатели, а не весь бланк целиком.</value>
+  </data>
+  <data name="Trend_FilterTitle" xml:space="preserve">
+    <value>Фильтры</value>
+  </data>
+  <data name="Trend_FilterAll" xml:space="preserve">
+    <value>Все показатели</value>
+  </data>
+  <data name="Trend_FilterOut" xml:space="preserve">
+    <value>Вне нормы</value>
+  </data>
+  <data name="Trend_FilterHigh" xml:space="preserve">
+    <value>Только выше нормы</value>
+  </data>
+  <data name="Trend_FilterLow" xml:space="preserve">
+    <value>Только ниже нормы</value>
+  </data>
+  <data name="Trend_OnlyFavorites" xml:space="preserve">
+    <value>Только избранное</value>
+  </data>
+  <data name="Trend_AllValues" xml:space="preserve">
+    <value>Не только избранное</value>
+  </data>
+  <data name="Trend_OnlyWithHistory" xml:space="preserve">
+    <value>Только с историей</value>
+  </data>
+  <data name="Trend_AlsoSingle" xml:space="preserve">
+    <value>Даже с одним измерением</value>
+  </data>
+  <data name="Trend_ShowHidden" xml:space="preserve">
+    <value>Показать скрытые ({0})</value>
+  </data>
+  <data name="Trend_FilterReset" xml:space="preserve">
+    <value>Сбросить фильтры</value>
+  </data>
+  <data name="Trend_FilterSummary" xml:space="preserve">
+    <value>Фильтр: {0}</value>
+  </data>
+  <data name="Trend_HiddenCount" xml:space="preserve">
+    <value>скрыто: {0}</value>
+  </data>
+  <data name="Ai_Copy" xml:space="preserve">
+    <value>Скопировать текст</value>
+  </data>
+  <data name="Ai_CopiedTitle" xml:space="preserve">
+    <value>Скопировано</value>
+  </data>
+  <data name="Ai_CopiedBody" xml:space="preserve">
+    <value>Вставьте текст в свой ИИ-чат. Приложение ничего никуда не отправило.</value>
+  </data>
+  <data name="A11y_Filter" xml:space="preserve">
+    <value>Фильтры</value>
+  </data>
+  <data name="A11y_Ai" xml:space="preserve">
+    <value>Скопировать показатели для ИИ-чата</value>
   </data>
 </root>

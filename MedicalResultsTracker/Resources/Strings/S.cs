@@ -231,9 +231,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorlieg</summary>
         public static string Trend_Empty => Get("Trend_Empty");
 
-        /// <summary>★ Nur Favoriten</summary>
-        public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
-
         /// <summary>★ Favoriten</summary>
         public static string Trend_FavoritesGroup => Get("Trend_FavoritesGroup");
 
@@ -852,9 +849,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Version {0} (Build {1})</summary>
         public static string Set_Version => Get("Set_Version");
 
-        /// <summary>Nur mit Verlauf</summary>
-        public static string Trend_OnlyWithHistory => Get("Trend_OnlyWithHistory");
-
         /// <summary>＋ Neue Ansicht …</summary>
         public static string Matrix_NewView => Get("Matrix_NewView");
 
@@ -1104,9 +1098,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Gesendet wird genau das, was die Filter übrig lassen. Die App stellt d</summary>
         public static string Ai_Body => Get("Ai_Body");
 
-        /// <summary>🤖 Auswahl an KI-Chat senden</summary>
-        public static string Ai_Button => Get("Ai_Button");
-
         /// <summary>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</summary>
         public static string Ai_Off => Get("Ai_Off");
 
@@ -1119,20 +1110,8 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Wert suchen</summary>
         public static string Trend_Search => Get("Trend_Search");
 
-        /// <summary>Außerhalb</summary>
-        public static string Trend_FilterOut => Get("Trend_FilterOut");
-
-        /// <summary>Zu hoch</summary>
-        public static string Trend_FilterHigh => Get("Trend_FilterHigh");
-
-        /// <summary>Zu niedrig</summary>
-        public static string Trend_FilterLow => Get("Trend_FilterLow");
-
         /// <summary>Kein Wert passt zu den Filtern.</summary>
         public static string Trend_NothingFound => Get("Trend_NothingFound");
-
-        /// <summary>{0} ausgeblendet · zurückholen im Werteverzeichnis</summary>
-        public static string Trend_HiddenCount => Get("Trend_HiddenCount");
 
         /// <summary>★ Merken</summary>
         public static string Swipe_Favorite => Get("Swipe_Favorite");
@@ -1157,5 +1136,59 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.</summary>
         public static string Txt_Selection => Get("Txt_Selection");
+
+        /// <summary>Filter</summary>
+        public static string Trend_FilterTitle => Get("Trend_FilterTitle");
+
+        /// <summary>Alle Werte</summary>
+        public static string Trend_FilterAll => Get("Trend_FilterAll");
+
+        /// <summary>Außerhalb des Referenzbereichs</summary>
+        public static string Trend_FilterOut => Get("Trend_FilterOut");
+
+        /// <summary>Nur zu hohe Werte</summary>
+        public static string Trend_FilterHigh => Get("Trend_FilterHigh");
+
+        /// <summary>Nur zu niedrige Werte</summary>
+        public static string Trend_FilterLow => Get("Trend_FilterLow");
+
+        /// <summary>Nur Favoriten</summary>
+        public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
+
+        /// <summary>Auch ohne Favoriten</summary>
+        public static string Trend_AllValues => Get("Trend_AllValues");
+
+        /// <summary>Nur mit Verlauf</summary>
+        public static string Trend_OnlyWithHistory => Get("Trend_OnlyWithHistory");
+
+        /// <summary>Auch einzelne Messungen</summary>
+        public static string Trend_AlsoSingle => Get("Trend_AlsoSingle");
+
+        /// <summary>Ausgeblendete wieder zeigen ({0})</summary>
+        public static string Trend_ShowHidden => Get("Trend_ShowHidden");
+
+        /// <summary>Filter zurücksetzen</summary>
+        public static string Trend_FilterReset => Get("Trend_FilterReset");
+
+        /// <summary>Filter: {0}</summary>
+        public static string Trend_FilterSummary => Get("Trend_FilterSummary");
+
+        /// <summary>{0} ausgeblendet</summary>
+        public static string Trend_HiddenCount => Get("Trend_HiddenCount");
+
+        /// <summary>Text kopieren</summary>
+        public static string Ai_Copy => Get("Ai_Copy");
+
+        /// <summary>Kopiert</summary>
+        public static string Ai_CopiedTitle => Get("Ai_CopiedTitle");
+
+        /// <summary>Fügen Sie den Text in Ihren KI-Chat ein. Die App hat nichts gesendet.</summary>
+        public static string Ai_CopiedBody => Get("Ai_CopiedBody");
+
+        /// <summary>Filter</summary>
+        public static string A11y_Filter => Get("A11y_Filter");
+
+        /// <summary>Werte für den KI-Chat kopieren</summary>
+        public static string A11y_Ai => Get("A11y_Ai");
     }
 }
