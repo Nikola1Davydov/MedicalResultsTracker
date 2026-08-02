@@ -106,21 +106,6 @@
   <data name="Dash_Changes" xml:space="preserve">
     <value>Deutliche Veränderungen</value>
   </data>
-  <data name="Dash_AiTitle" xml:space="preserve">
-    <value>KI fragen</value>
-  </data>
-  <data name="Dash_AiBody" xml:space="preserve">
-    <value>Die App stellt die Tabelle als Text zusammen und öffnet die Teilen-Auswahl. Wohin die Daten gehen, entscheiden Sie – von selbst sendet die App nichts.</value>
-  </data>
-  <data name="Dash_AiButton" xml:space="preserve">
-    <value>🤖 Tabelle an KI-Chat senden</value>
-  </data>
-  <data name="Dash_AiOff" xml:space="preserve">
-    <value>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</value>
-  </data>
-  <data name="Dash_AiOn" xml:space="preserve">
-    <value>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.</value>
-  </data>
   <data name="Dash_Summary" xml:space="preserve">
     <value>{0} Werte · {1} · {2}</value>
   </data>
@@ -1172,5 +1157,65 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   </data>
   <data name="A11y_PressureChart" xml:space="preserve">
     <value>Verlauf des Blutdrucks als Diagramm</value>
+  </data>
+  <data name="Ai_Title" xml:space="preserve">
+    <value>KI fragen</value>
+  </data>
+  <data name="Ai_Body" xml:space="preserve">
+    <value>Gesendet wird genau das, was die Filter übrig lassen. Die App stellt daraus eine Tabelle als Text zusammen und öffnet die Teilen-Auswahl – wohin der Text geht, entscheiden Sie.</value>
+  </data>
+  <data name="Ai_Button" xml:space="preserve">
+    <value>🤖 Auswahl an KI-Chat senden</value>
+  </data>
+  <data name="Ai_Off" xml:space="preserve">
+    <value>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</value>
+  </data>
+  <data name="Ai_On" xml:space="preserve">
+    <value>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.</value>
+  </data>
+  <data name="Ai_NothingSelected" xml:space="preserve">
+    <value>Die Filter lassen nichts übrig – es gibt nichts zu senden.</value>
+  </data>
+  <data name="Trend_Search" xml:space="preserve">
+    <value>Wert suchen</value>
+  </data>
+  <data name="Trend_FilterOut" xml:space="preserve">
+    <value>Außerhalb</value>
+  </data>
+  <data name="Trend_FilterHigh" xml:space="preserve">
+    <value>Zu hoch</value>
+  </data>
+  <data name="Trend_FilterLow" xml:space="preserve">
+    <value>Zu niedrig</value>
+  </data>
+  <data name="Trend_NothingFound" xml:space="preserve">
+    <value>Kein Wert passt zu den Filtern.</value>
+  </data>
+  <data name="Trend_HiddenCount" xml:space="preserve">
+    <value>{0} ausgeblendet · zurückholen im Werteverzeichnis</value>
+  </data>
+  <data name="Swipe_Favorite" xml:space="preserve">
+    <value>★ Merken</value>
+  </data>
+  <data name="Swipe_Unfavorite" xml:space="preserve">
+    <value>☆ Nicht mehr merken</value>
+  </data>
+  <data name="Swipe_Hide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="Dash_HighCount" xml:space="preserve">
+    <value>{0} über dem Referenzbereich</value>
+  </data>
+  <data name="Dash_LowCount" xml:space="preserve">
+    <value>{0} unter dem Referenzbereich</value>
+  </data>
+  <data name="Dash_NoneOut" xml:space="preserve">
+    <value>Alle Werte liegen im Referenzbereich Ihres Befunds.</value>
+  </data>
+  <data name="Dash_OpenTrends" xml:space="preserve">
+    <value>Tippen für alle Werte</value>
+  </data>
+  <data name="Txt_Selection" xml:space="preserve">
+    <value>Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.</value>
   </data>
 </root>

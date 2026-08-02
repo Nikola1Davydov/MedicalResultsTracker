@@ -200,6 +200,20 @@ namespace MedicalResultsTracker.Services.Database
             await SaveAsync(analyte).ConfigureAwait(false);
         }
 
+        public async Task SetHiddenAsync(string code, bool isHidden)
+        {
+            Analyte? analyte = await FindAsync(code).ConfigureAwait(false);
+
+            if (analyte is null || analyte.IsHidden == isHidden)
+            {
+                return;
+            }
+
+            analyte.IsHidden = isHidden;
+
+            await SaveAsync(analyte).ConfigureAwait(false);
+        }
+
         public async Task SaveAsync(Analyte analyte)
         {
             SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);

@@ -84,21 +84,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Deutliche Veränderungen</summary>
         public static string Dash_Changes => Get("Dash_Changes");
 
-        /// <summary>KI fragen</summary>
-        public static string Dash_AiTitle => Get("Dash_AiTitle");
-
-        /// <summary>Die App stellt die Tabelle als Text zusammen und öffnet die Teilen-Aus</summary>
-        public static string Dash_AiBody => Get("Dash_AiBody");
-
-        /// <summary>🤖 Tabelle an KI-Chat senden</summary>
-        public static string Dash_AiButton => Get("Dash_AiButton");
-
-        /// <summary>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</summary>
-        public static string Dash_AiOff => Get("Dash_AiOff");
-
-        /// <summary>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen wi</summary>
-        public static string Dash_AiOn => Get("Dash_AiOn");
-
         /// <summary>{0} Werte · {1} · {2}</summary>
         public static string Dash_Summary => Get("Dash_Summary");
 
@@ -1112,5 +1097,65 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Verlauf des Blutdrucks als Diagramm</summary>
         public static string A11y_PressureChart => Get("A11y_PressureChart");
+
+        /// <summary>KI fragen</summary>
+        public static string Ai_Title => Get("Ai_Title");
+
+        /// <summary>Gesendet wird genau das, was die Filter übrig lassen. Die App stellt d</summary>
+        public static string Ai_Body => Get("Ai_Body");
+
+        /// <summary>🤖 Auswahl an KI-Chat senden</summary>
+        public static string Ai_Button => Get("Ai_Button");
+
+        /// <summary>KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.</summary>
+        public static string Ai_Off => Get("Ai_Off");
+
+        /// <summary>KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen wi</summary>
+        public static string Ai_On => Get("Ai_On");
+
+        /// <summary>Die Filter lassen nichts übrig – es gibt nichts zu senden.</summary>
+        public static string Ai_NothingSelected => Get("Ai_NothingSelected");
+
+        /// <summary>Wert suchen</summary>
+        public static string Trend_Search => Get("Trend_Search");
+
+        /// <summary>Außerhalb</summary>
+        public static string Trend_FilterOut => Get("Trend_FilterOut");
+
+        /// <summary>Zu hoch</summary>
+        public static string Trend_FilterHigh => Get("Trend_FilterHigh");
+
+        /// <summary>Zu niedrig</summary>
+        public static string Trend_FilterLow => Get("Trend_FilterLow");
+
+        /// <summary>Kein Wert passt zu den Filtern.</summary>
+        public static string Trend_NothingFound => Get("Trend_NothingFound");
+
+        /// <summary>{0} ausgeblendet · zurückholen im Werteverzeichnis</summary>
+        public static string Trend_HiddenCount => Get("Trend_HiddenCount");
+
+        /// <summary>★ Merken</summary>
+        public static string Swipe_Favorite => Get("Swipe_Favorite");
+
+        /// <summary>☆ Nicht mehr merken</summary>
+        public static string Swipe_Unfavorite => Get("Swipe_Unfavorite");
+
+        /// <summary>Ausblenden</summary>
+        public static string Swipe_Hide => Get("Swipe_Hide");
+
+        /// <summary>{0} über dem Referenzbereich</summary>
+        public static string Dash_HighCount => Get("Dash_HighCount");
+
+        /// <summary>{0} unter dem Referenzbereich</summary>
+        public static string Dash_LowCount => Get("Dash_LowCount");
+
+        /// <summary>Alle Werte liegen im Referenzbereich Ihres Befunds.</summary>
+        public static string Dash_NoneOut => Get("Dash_NoneOut");
+
+        /// <summary>Tippen für alle Werte</summary>
+        public static string Dash_OpenTrends => Get("Dash_OpenTrends");
+
+        /// <summary>Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.</summary>
+        public static string Txt_Selection => Get("Txt_Selection");
     }
 }

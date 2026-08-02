@@ -106,21 +106,6 @@
   <data name="Dash_Changes" xml:space="preserve">
     <value>Заметные изменения</value>
   </data>
-  <data name="Dash_AiTitle" xml:space="preserve">
-    <value>Спросить у ИИ</value>
-  </data>
-  <data name="Dash_AiBody" xml:space="preserve">
-    <value>Приложение соберёт таблицу текстом и откроет системный список приложений. Куда отправить — выбираете вы; само оно никуда ничего не шлёт.</value>
-  </data>
-  <data name="Dash_AiButton" xml:space="preserve">
-    <value>🤖 Отправить таблицу в ИИ-чат</value>
-  </data>
-  <data name="Dash_AiOff" xml:space="preserve">
-    <value>ИИ-помощник выключен. Данные не покидают устройство.</value>
-  </data>
-  <data name="Dash_AiOn" xml:space="preserve">
-    <value>ИИ-помощник: {0}. Разрешение можно отозвать в настройках.</value>
-  </data>
   <data name="Dash_Summary" xml:space="preserve">
     <value>{0} показателей · {1} · {2}</value>
   </data>
@@ -1172,5 +1157,65 @@
   </data>
   <data name="A11y_PressureChart" xml:space="preserve">
     <value>График давления</value>
+  </data>
+  <data name="Ai_Title" xml:space="preserve">
+    <value>Спросить у ИИ</value>
+  </data>
+  <data name="Ai_Body" xml:space="preserve">
+    <value>Отправляется ровно то, что осталось после фильтров. Приложение соберёт из этого таблицу текстом и откроет системный список приложений — куда отправить, решаете вы.</value>
+  </data>
+  <data name="Ai_Button" xml:space="preserve">
+    <value>🤖 Отправить выбранное в ИИ-чат</value>
+  </data>
+  <data name="Ai_Off" xml:space="preserve">
+    <value>ИИ-помощник выключен. Данные не покидают устройство.</value>
+  </data>
+  <data name="Ai_On" xml:space="preserve">
+    <value>ИИ-помощник: {0}. Разрешение можно отозвать в настройках.</value>
+  </data>
+  <data name="Ai_NothingSelected" xml:space="preserve">
+    <value>После фильтров ничего не осталось — отправлять нечего.</value>
+  </data>
+  <data name="Trend_Search" xml:space="preserve">
+    <value>Найти показатель</value>
+  </data>
+  <data name="Trend_FilterOut" xml:space="preserve">
+    <value>Вне нормы</value>
+  </data>
+  <data name="Trend_FilterHigh" xml:space="preserve">
+    <value>Выше нормы</value>
+  </data>
+  <data name="Trend_FilterLow" xml:space="preserve">
+    <value>Ниже нормы</value>
+  </data>
+  <data name="Trend_NothingFound" xml:space="preserve">
+    <value>Под фильтры ничего не подошло.</value>
+  </data>
+  <data name="Trend_HiddenCount" xml:space="preserve">
+    <value>Скрыто: {0} · вернуть можно в справочнике</value>
+  </data>
+  <data name="Swipe_Favorite" xml:space="preserve">
+    <value>★ В избранное</value>
+  </data>
+  <data name="Swipe_Unfavorite" xml:space="preserve">
+    <value>☆ Убрать из избранного</value>
+  </data>
+  <data name="Swipe_Hide" xml:space="preserve">
+    <value>Скрыть</value>
+  </data>
+  <data name="Dash_HighCount" xml:space="preserve">
+    <value>{0} выше нормы</value>
+  </data>
+  <data name="Dash_LowCount" xml:space="preserve">
+    <value>{0} ниже нормы</value>
+  </data>
+  <data name="Dash_NoneOut" xml:space="preserve">
+    <value>Все показатели — в пределах норм из вашего бланка.</value>
+  </data>
+  <data name="Dash_OpenTrends" xml:space="preserve">
+    <value>Нажмите, чтобы увидеть все показатели</value>
+  </data>
+  <data name="Txt_Selection" xml:space="preserve">
+    <value>Ниже — только выбранные показатели, а не весь бланк целиком.</value>
   </data>
 </root>

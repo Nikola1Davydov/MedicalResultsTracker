@@ -30,7 +30,12 @@ namespace MedicalResultsTracker.Services.Export
         /// единицы, границы норм и даты.
         /// </summary>
         /// <param name="maxTests">Сколько последних анализов включать. 0 — все.</param>
-        Task<string> BuildTextSummaryAsync(int maxTests = 6);
+        /// <param name="onlyKeys">
+        /// Ключи показателей, которые нужно оставить, — то, что человек отобрал фильтрами
+        /// на экране. null или пустой список — вся таблица. Дневник давления в отобранную
+        /// выборку не попадает: спрашивают про конкретные показатели, а не про всё сразу.
+        /// </param>
+        Task<string> BuildTextSummaryAsync(int maxTests = 6, IReadOnlyCollection<string>? onlyKeys = null);
 
         /// <summary>Открывает системный диалог "Поделиться" для готового файла.</summary>
         Task ShareAsync(string filePath, string title);

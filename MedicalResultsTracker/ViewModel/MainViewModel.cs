@@ -2,11 +2,9 @@ using System.Globalization;
 using MedicalResultsTracker.Controls;
 using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Resources.Strings;
-using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Analysis;
 using MedicalResultsTracker.Services.Backup;
 using MedicalResultsTracker.Services.Database;
-using MedicalResultsTracker.Services.Export;
 using MedicalResultsTracker.Services.UI;
 
 namespace MedicalResultsTracker.ViewModel
@@ -18,9 +16,6 @@ namespace MedicalResultsTracker.ViewModel
         private readonly IBloodPressureRepository _pressure;
         private readonly IAutoBackupService _backup;
         private readonly IAnalysisService _analysis;
-        private readonly IExportService _export;
-        private readonly IAiConsentService _consent;
-        private readonly IAiAssistant _assistant;
 
         [ObservableProperty]
         private string _lastTestTitle = S.Dash_NoTests;
@@ -34,14 +29,28 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private bool _isEmpty = true;
 
+        /// <summary>
+        /// Сводка вместо списка: «5 выше нормы, 2 ниже». Развёрнутый список тех же
+        /// показателей живёт во вкладке «Динамика», где его можно отобрать фильтрами, —
+        /// на главном экране он занимал полтора экрана прокрутки и повторял её.
+        /// </summary>
         [ObservableProperty]
-        private bool _hasAttention;
+        private string _highSummary = string.Empty;
+
+        [ObservableProperty]
+        private string _lowSummary = string.Empty;
+
+        [ObservableProperty]
+        private bool _hasHigh;
+
+        [ObservableProperty]
+        private bool _hasLow;
+
+        [ObservableProperty]
+        private bool _allInRange;
 
         [ObservableProperty]
         private bool _hasChanges;
-
-        [ObservableProperty]
-        private string _assistantStatus = string.Empty;
 
         /// <summary>Последнее измерение давления — «130/85 · сегодня, 08:20» либо приглашение начать.</summary>
         [ObservableProperty]
@@ -59,24 +68,15 @@ namespace MedicalResultsTracker.ViewModel
             IBloodTestRepository repository,
             IBloodPressureRepository pressure,
             IAutoBackupService backup,
-            IAnalysisService analysis,
-            IExportService export,
-            IAiConsentService consent,
-            IAiAssistant assistant)
+            IAnalysisService analysis)
         {
             _repository = repository;
             _pressure = pressure;
             _backup = backup;
             _analysis = analysis;
-            _export = export;
-            _consent = consent;
-            _assistant = assistant;
 
             Title = S.Dash_Title;
         }
-
-        /// <summary>Показатели, вышедшие за норму, — их хочется видеть первыми.</summary>
-        public ObservableCollection<TrendItemViewModel> Attention { get; } = new();
 
         /// <summary>Заметно изменившиеся показатели, даже если они в норме.</summary>
         public ObservableCollection<TrendItemViewModel> Changes { get; } = new();
@@ -109,17 +109,9 @@ namespace MedicalResultsTracker.ViewModel
         private static Task OpenSeriesAsync(string key) => Shell.Current.GoToAsync(
             $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(key)}");
 
-        /// <summary>
-        /// Готовит таблицу текстом и открывает системный диалог «Поделиться».
-        /// Приложение не выбирает получателя и никуда само не отправляет: в какое приложение
-        /// уйдёт текст, решает пользователь в системном списке.
-        /// </summary>
+        /// <summary>Сводка вне нормы ведёт туда, где эти показатели перечислены и отбираются.</summary>
         [RelayCommand]
-        private Task AskAi() => RunAsync(async () =>
-        {
-            string text = await _export.BuildTextSummaryAsync();
-            await _export.ShareTextAsync(text, S.Dash_Title);
-        }, S.Err_Text);
+        private Task OpenTrends() => Shell.Current.GoToAsync(AppRoutes.Trends);
 
         private async Task LoadAsync()
         {
@@ -137,16 +129,17 @@ namespace MedicalResultsTracker.ViewModel
                 ? S.Dash_NoTests
                 : string.Format(S.Dash_LastTest, latest.Title);
 
-            Attention.Clear();
             Changes.Clear();
 
-            foreach (ParameterTrend trend in trends
-                .Where(t => t.Status is ParameterStatus.Low or ParameterStatus.High)
-                .OrderByDescending(t => t.Assessment == TrendAssessment.Worsened)
-                .ThenBy(t => t.Name))
-            {
-                Attention.Add(new TrendItemViewModel(trend, _analysis.GetKey(trend.Current)));
-            }
+            int high = trends.Count(t => t.Status is ParameterStatus.High);
+            int low = trends.Count(t => t.Status is ParameterStatus.Low);
+
+            HasHigh = high > 0;
+            HasLow = low > 0;
+            AllInRange = HasData && high == 0 && low == 0;
+
+            HighSummary = high > 0 ? string.Format(S.Dash_HighCount, high) : string.Empty;
+            LowSummary = low > 0 ? string.Format(S.Dash_LowCount, low) : string.Empty;
 
             foreach (ParameterTrend trend in trends
                 .Where(t => t.Assessment is TrendAssessment.Improved or TrendAssessment.Worsened)
@@ -156,22 +149,17 @@ namespace MedicalResultsTracker.ViewModel
                 Changes.Add(new TrendItemViewModel(trend, _analysis.GetKey(trend.Current)));
             }
 
-            HasAttention = Attention.Count > 0;
             HasChanges = Changes.Count > 0;
 
             Summary = latest is null
                 ? S.Dash_EmptyHint
-                : BuildSummary(latest, count, Attention.Count);
+                : BuildSummary(latest, count, high + low);
 
             await LoadPressureAsync();
 
             // Копия делается один раз за запуск и только если данные изменились.
             // Молча и в фоне: это обслуживание, а не действие пользователя, и мешать ему нечем.
             _ = BackupQuietlyAsync();
-
-            AssistantStatus = _consent.Current.Scope == AiConsentScope.None
-                ? S.Dash_AiOff
-                : string.Format(S.Dash_AiOn, _assistant.ProviderName);
         }
 
         /// <summary>

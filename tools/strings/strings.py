@@ -32,11 +32,6 @@ S = [
 ("Dash_StartNote","Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten übertragen.","Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется."),
 ("Dash_OutOfRange","Außerhalb des Referenzbereichs","Вне нормы"),
 ("Dash_Changes","Deutliche Veränderungen","Заметные изменения"),
-("Dash_AiTitle","KI fragen","Спросить у ИИ"),
-("Dash_AiBody","Die App stellt die Tabelle als Text zusammen und öffnet die Teilen-Auswahl. Wohin die Daten gehen, entscheiden Sie – von selbst sendet die App nichts.","Приложение соберёт таблицу текстом и откроет системный список приложений. Куда отправить — выбираете вы; само оно никуда ничего не шлёт."),
-("Dash_AiButton","🤖 Tabelle an KI-Chat senden","🤖 Отправить таблицу в ИИ-чат"),
-("Dash_AiOff","KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.","ИИ-помощник выключен. Данные не покидают устройство."),
-("Dash_AiOn","KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.","ИИ-помощник: {0}. Разрешение можно отозвать в настройках."),
 ("Dash_Summary","{0} Werte · {1} · {2}","{0} показателей · {1} · {2}"),
 ("Dash_AllInRange","alle Werte im Referenzbereich","все показатели в пределах указанных норм"),
 ("Dash_OneOut","1 Wert außerhalb","1 показатель вне нормы"),
@@ -495,4 +490,36 @@ S += [
 ("A11y_RemoveRow","Zeile entfernen","Убрать строку"),
 ("A11y_TrendChart","Verlauf des Werts als Diagramm","График показателя"),
 ("A11y_PressureChart","Verlauf des Blutdrucks als Diagramm","График давления"),
+]
+
+# ИИ-блок живёт на экране динамики: отправляется то, что осталось после фильтров.
+S += [
+("Ai_Title","KI fragen","Спросить у ИИ"),
+("Ai_Body","Gesendet wird genau das, was die Filter übrig lassen. Die App stellt daraus eine Tabelle als Text zusammen und öffnet die Teilen-Auswahl – wohin der Text geht, entscheiden Sie.","Отправляется ровно то, что осталось после фильтров. Приложение соберёт из этого таблицу текстом и откроет системный список приложений — куда отправить, решаете вы."),
+("Ai_Button","🤖 Auswahl an KI-Chat senden","🤖 Отправить выбранное в ИИ-чат"),
+("Ai_Off","KI-Assistent ist aus. Die Daten verlassen das Gerät nicht.","ИИ-помощник выключен. Данные не покидают устройство."),
+("Ai_On","KI-Assistent: {0}. Die Berechtigung lässt sich in den Einstellungen widerrufen.","ИИ-помощник: {0}. Разрешение можно отозвать в настройках."),
+("Ai_NothingSelected","Die Filter lassen nichts übrig – es gibt nichts zu senden.","После фильтров ничего не осталось — отправлять нечего."),
+]
+# Фильтры и жесты на экране динамики.
+S += [
+("Trend_Search","Wert suchen","Найти показатель"),
+("Trend_FilterOut","Außerhalb","Вне нормы"),
+("Trend_FilterHigh","Zu hoch","Выше нормы"),
+("Trend_FilterLow","Zu niedrig","Ниже нормы"),
+("Trend_NothingFound","Kein Wert passt zu den Filtern.","Под фильтры ничего не подошло."),
+("Trend_HiddenCount","{0} ausgeblendet · zurückholen im Werteverzeichnis","Скрыто: {0} · вернуть можно в справочнике"),
+("Swipe_Favorite","★ Merken","★ В избранное"),
+("Swipe_Unfavorite","☆ Nicht mehr merken","☆ Убрать из избранного"),
+("Swipe_Hide","Ausblenden","Скрыть"),
+]
+# Сводка на главном экране вместо длинного списка.
+S += [
+("Dash_HighCount","{0} über dem Referenzbereich","{0} выше нормы"),
+("Dash_LowCount","{0} unter dem Referenzbereich","{0} ниже нормы"),
+("Dash_NoneOut","Alle Werte liegen im Referenzbereich Ihres Befunds.","Все показатели — в пределах норм из вашего бланка."),
+("Dash_OpenTrends","Tippen für alle Werte","Нажмите, чтобы увидеть все показатели"),
+]
+S += [
+("Txt_Selection","Unten stehen nur ausgewählte Werte, nicht der vollständige Befund.","Ниже — только выбранные показатели, а не весь бланк целиком."),
 ]
