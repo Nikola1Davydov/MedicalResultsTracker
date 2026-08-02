@@ -91,12 +91,6 @@
   <data name="Dash_EmptyHint" xml:space="preserve">
     <value>Erfassen Sie den ersten Befund – den Verlauf zeigt die App dann von selbst.</value>
   </data>
-  <data name="Dash_AddTest" xml:space="preserve">
-    <value>➕ Befund erfassen</value>
-  </data>
-  <data name="Dash_Export" xml:space="preserve">
-    <value>⬇ Exportieren</value>
-  </data>
   <data name="Dash_StartTitle" xml:space="preserve">
     <value>So fangen Sie an</value>
   </data>
@@ -105,18 +99,6 @@
   </data>
   <data name="Dash_StartNote" xml:space="preserve">
     <value>Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten übertragen.</value>
-  </data>
-  <data name="Dash_Favorites" xml:space="preserve">
-    <value>★ Favoriten</value>
-  </data>
-  <data name="Dash_FavHintTitle" xml:space="preserve">
-    <value>Werte im Blick behalten</value>
-  </data>
-  <data name="Dash_FavHintBody" xml:space="preserve">
-    <value>Markieren Sie im Werteverzeichnis mit dem Stern, was Sie dauerhaft verfolgen – diese Werte stehen dann ganz oben.</value>
-  </data>
-  <data name="Dash_OpenCatalog" xml:space="preserve">
-    <value>Werteverzeichnis öffnen</value>
   </data>
   <data name="Dash_OutOfRange" xml:space="preserve">
     <value>Außerhalb des Referenzbereichs</value>
@@ -226,12 +208,6 @@
   <data name="Edit_RowName" xml:space="preserve">
     <value>Bezeichnung</value>
   </data>
-  <data name="Edit_RowValue" xml:space="preserve">
-    <value>Wert</value>
-  </data>
-  <data name="Edit_RowUnit" xml:space="preserve">
-    <value>Einheit</value>
-  </data>
   <data name="Edit_RowRefMin" xml:space="preserve">
     <value>Referenz von</value>
   </data>
@@ -291,17 +267,11 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Edit_AddedWarn" xml:space="preserve">
     <value>{0} Nicht erkannt: {1}</value>
   </data>
-  <data name="Edit_MyValues" xml:space="preserve">
-    <value>Meine Werte</value>
-  </data>
   <data name="Trend_Empty" xml:space="preserve">
     <value>Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.</value>
   </data>
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>★ Nur Favoriten</value>
-  </data>
-  <data name="Trend_AllOrHistory" xml:space="preserve">
-    <value>Alle / mit Verlauf</value>
   </data>
   <data name="Trend_FavoritesGroup" xml:space="preserve">
     <value>★ Favoriten</value>
@@ -335,9 +305,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Trend_ChartNoData" xml:space="preserve">
     <value>Keine Daten</value>
-  </data>
-  <data name="Trend_Parameter" xml:space="preserve">
-    <value>Wert</value>
   </data>
   <data name="Status_Low" xml:space="preserve">
     <value>unter dem Referenzbereich</value>
@@ -423,9 +390,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Cat_ManyParams" xml:space="preserve">
     <value>{0} Werte</value>
   </data>
-  <data name="CatEdit_Title" xml:space="preserve">
-    <value>Wert</value>
-  </data>
   <data name="CatEdit_TitleNew" xml:space="preserve">
     <value>Neuer Wert</value>
   </data>
@@ -434,9 +398,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="CatEdit_NamePlaceholder" xml:space="preserve">
     <value>z. B. Homocystein</value>
-  </data>
-  <data name="CatEdit_Unit" xml:space="preserve">
-    <value>Einheit</value>
   </data>
   <data name="CatEdit_UnitPlaceholder" xml:space="preserve">
     <value>µmol/l</value>
@@ -599,18 +560,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Set_AiCopy" xml:space="preserve">
     <value>Tabelle in die Zwischenablage</value>
-  </data>
-  <data name="Set_AiScan" xml:space="preserve">
-    <value>Befund erkennen</value>
-  </data>
-  <data name="Set_AiScanNote" xml:space="preserve">
-    <value>Foto oder PDF geht erst beim Antippen von «Erkennen» an den Anbieter.</value>
-  </data>
-  <data name="Set_AiComment" xml:space="preserve">
-    <value>Erläuterungen zum Verlauf</value>
-  </data>
-  <data name="Set_AiCommentNote" xml:space="preserve">
-    <value>Übertragen werden nur die ausgewählten Werte, ohne Namen und weitere Daten.</value>
   </data>
   <data name="Set_AiOff" xml:space="preserve">
     <value>Alles aus: Die App sendet kein einziges Byte nach außen.</value>
@@ -1156,5 +1105,42 @@ Ist das gemeint? Für einen Dezimalwert schreiben Sie ein Komma.</value>
   </data>
   <data name="Edit_AmbiguousBack" xml:space="preserve">
     <value>Zurück zur Eingabe</value>
+  </data>
+  <data name="Imp_Prompt" xml:space="preserve">
+    <value>Unten ist das Foto eines Laborbefunds. Übertrage die Daten daraus als reinen Text
+genau in diesem Format und ergänze nichts von dir aus.
+
+Die ersten beiden Zeilen:
+Datum: TT.MM.JJJJ
+Labor: Name oder Strich
+
+Danach eine Zeile je Wert, die Felder mit einem senkrechten Strich getrennt:
+Bezeichnung | Ergebnis | Einheit | Referenz von | Referenz bis
+
+Regeln:
+- Das Ergebnis ist nur eine Zahl. Ist es nicht numerisch, schreibe es als Wort
+  («negativ», «Spuren»).
+- Der Referenzbereich sind zwei getrennte Zahlen. Ist er einseitig («bis 5,2»),
+  fülle nur das passende Feld, das andere bleibt leer.
+- Rate nichts und rechne nichts um: Ist ein Feld im Befund nicht lesbar, lass es leer.
+- Keine Tabellenüberschrift, keine Nummerierung, keine Erläuterungen, keine
+  Schlussfolgerungen und keine Empfehlungen. Nur die Datenzeilen.</value>
+  </data>
+  <data name="Imp_PromptFreeNames" xml:space="preserve">
+    <value>- Übernimm die Bezeichnungen genau wie im Befund: nicht übersetzen, nicht abkürzen,
+  nicht umbenennen.</value>
+  </data>
+  <data name="Imp_PromptKnownNames" xml:space="preserve">
+    <value>- Gleicht ein Wert einer Bezeichnung aus der Liste unten – auch abgekürzt («Hb»),
+  in einer anderen Sprache («Hemoglobin») oder anders geschrieben –, dann schreibe
+  die Bezeichnung genau so, wie sie in der Liste steht. Nur so landet der Wert in
+  derselben Zeile meiner Tabelle wie bisher und nicht in einer zweiten daneben.
+- Steht ein Wert nicht in der Liste, übernimm seine Bezeichnung unverändert
+  aus dem Befund: nicht übersetzen, nicht abkürzen, nicht umbenennen.
+- Zahl und Einheit bleiben immer so, wie sie im Befund gedruckt sind. Rechne
+  auch dann nicht um, wenn die Liste eine andere Einheit nennt – schreibe die
+  Einheit des Befunds hin. Die Angleichung betrifft ausschließlich die Bezeichnung.
+
+Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   </data>
 </root>

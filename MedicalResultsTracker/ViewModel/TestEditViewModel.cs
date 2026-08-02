@@ -150,7 +150,7 @@ namespace MedicalResultsTracker.ViewModel
 
             if (previous is null)
             {
-                await Dialog.AlertAsync(S.Trend_ChartNoData, S.Edit_NoPrevBody);
+                await Dialog.AlertAsync(S.Edit_NoPrevTitle, S.Edit_NoPrevBody);
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace MedicalResultsTracker.ViewModel
 
             if (filled.Any(r => string.IsNullOrWhiteSpace(r.Name)))
             {
-                await Dialog.AlertAsync(S.CatEdit_NoNameTitle, S.Edit_NoNameBody);
+                await Dialog.AlertAsync(S.Edit_NoNameTitle, S.Edit_NoNameBody);
                 return;
             }
 

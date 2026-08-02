@@ -91,12 +91,6 @@
   <data name="Dash_EmptyHint" xml:space="preserve">
     <value>Добавьте первый анализ — дальше приложение само покажет динамику.</value>
   </data>
-  <data name="Dash_AddTest" xml:space="preserve">
-    <value>➕ Внести анализ</value>
-  </data>
-  <data name="Dash_Export" xml:space="preserve">
-    <value>⬇ Выгрузить</value>
-  </data>
   <data name="Dash_StartTitle" xml:space="preserve">
     <value>С чего начать</value>
   </data>
@@ -105,18 +99,6 @@
   </data>
   <data name="Dash_StartNote" xml:space="preserve">
     <value>Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется.</value>
-  </data>
-  <data name="Dash_Favorites" xml:space="preserve">
-    <value>★ Избранное</value>
-  </data>
-  <data name="Dash_FavHintTitle" xml:space="preserve">
-    <value>Следить за показателем</value>
-  </data>
-  <data name="Dash_FavHintBody" xml:space="preserve">
-    <value>Отметьте звёздочкой в справочнике то, за чем следите постоянно, — эти показатели будут наверху главного экрана.</value>
-  </data>
-  <data name="Dash_OpenCatalog" xml:space="preserve">
-    <value>Открыть справочник</value>
   </data>
   <data name="Dash_OutOfRange" xml:space="preserve">
     <value>Вне нормы</value>
@@ -226,12 +208,6 @@
   <data name="Edit_RowName" xml:space="preserve">
     <value>Название показателя</value>
   </data>
-  <data name="Edit_RowValue" xml:space="preserve">
-    <value>Значение</value>
-  </data>
-  <data name="Edit_RowUnit" xml:space="preserve">
-    <value>Единицы</value>
-  </data>
   <data name="Edit_RowRefMin" xml:space="preserve">
     <value>Норма от</value>
   </data>
@@ -291,17 +267,11 @@
   <data name="Edit_AddedWarn" xml:space="preserve">
     <value>{0} Не разобрано: {1}</value>
   </data>
-  <data name="Edit_MyValues" xml:space="preserve">
-    <value>Мои показатели</value>
-  </data>
   <data name="Trend_Empty" xml:space="preserve">
     <value>Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями.</value>
   </data>
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>★ Только избранное</value>
-  </data>
-  <data name="Trend_AllOrHistory" xml:space="preserve">
-    <value>Все / с историей</value>
   </data>
   <data name="Trend_FavoritesGroup" xml:space="preserve">
     <value>★ Избранное</value>
@@ -335,9 +305,6 @@
   </data>
   <data name="Trend_ChartNoData" xml:space="preserve">
     <value>Нет данных</value>
-  </data>
-  <data name="Trend_Parameter" xml:space="preserve">
-    <value>Показатель</value>
   </data>
   <data name="Status_Low" xml:space="preserve">
     <value>ниже нормы</value>
@@ -423,9 +390,6 @@
   <data name="Cat_ManyParams" xml:space="preserve">
     <value>{0} показателей</value>
   </data>
-  <data name="CatEdit_Title" xml:space="preserve">
-    <value>Показатель</value>
-  </data>
   <data name="CatEdit_TitleNew" xml:space="preserve">
     <value>Новый показатель</value>
   </data>
@@ -434,9 +398,6 @@
   </data>
   <data name="CatEdit_NamePlaceholder" xml:space="preserve">
     <value>Например, Гомоцистеин</value>
-  </data>
-  <data name="CatEdit_Unit" xml:space="preserve">
-    <value>Единицы</value>
   </data>
   <data name="CatEdit_UnitPlaceholder" xml:space="preserve">
     <value>мкмоль/л</value>
@@ -599,18 +560,6 @@
   </data>
   <data name="Set_AiCopy" xml:space="preserve">
     <value>Скопировать таблицу в буфер</value>
-  </data>
-  <data name="Set_AiScan" xml:space="preserve">
-    <value>Распознавание бланка</value>
-  </data>
-  <data name="Set_AiScanNote" xml:space="preserve">
-    <value>Фото или PDF уходит провайдеру только в момент нажатия «Распознать».</value>
-  </data>
-  <data name="Set_AiComment" xml:space="preserve">
-    <value>Пояснения к динамике</value>
-  </data>
-  <data name="Set_AiCommentNote" xml:space="preserve">
-    <value>Отправляются только выбранные показатели, без имени и других данных.</value>
   </data>
   <data name="Set_AiOff" xml:space="preserve">
     <value>Всё выключено: приложение не отправляет наружу ни одного байта.</value>
@@ -1156,5 +1105,42 @@
   </data>
   <data name="Edit_AmbiguousBack" xml:space="preserve">
     <value>Вернуться к вводу</value>
+  </data>
+  <data name="Imp_Prompt" xml:space="preserve">
+    <value>Ниже — фотография бланка анализов. Перепиши данные из неё обычным текстом
+ровно в этом формате и ничего не добавляй от себя.
+
+Первые две строки:
+Дата: ДД.ММ.ГГГГ
+Лаборатория: название или прочерк
+
+Дальше по строке на каждый показатель, поля разделены вертикальной чертой:
+Название | Результат | Единица | Норма от | Норма до
+
+Правила:
+- Результат — только число. Если он не числовой, напиши его словом
+  («отрицательно», «следы»).
+- Норма — два отдельных числа. Если она односторонняя («до 5,2»),
+  заполни только подходящее поле, второе оставь пустым.
+- Ничего не угадывай и не пересчитывай: не читается поле в бланке — оставь его пустым.
+- Без заголовка таблицы, без нумерации, без пояснений, без выводов
+  и без рекомендаций. Только строки с данными.</value>
+  </data>
+  <data name="Imp_PromptFreeNames" xml:space="preserve">
+    <value>- Названия переписывай точно как в бланке: не переводи, не сокращай,
+  не переименовывай.</value>
+  </data>
+  <data name="Imp_PromptKnownNames" xml:space="preserve">
+    <value>- Если показатель совпадает с названием из списка ниже — пусть даже сокращённым
+  («Hb»), на другом языке («Hemoglobin») или написанным иначе, — пиши название
+  ровно так, как оно стоит в списке. Только тогда значение попадёт в ту же строку
+  моей таблицы, что и раньше, а не во вторую рядом.
+- Если показателя в списке нет, перепиши его название из бланка без изменений:
+  не переводи, не сокращай, не переименовывай.
+- Число и единица всегда остаются такими, как напечатаны в бланке. Не пересчитывай,
+  даже если в списке стоит другая единица, — пиши единицу бланка. Приведение
+  касается только названия.
+
+Названия, которые у меня уже есть (Название | Единица):</value>
   </data>
 </root>

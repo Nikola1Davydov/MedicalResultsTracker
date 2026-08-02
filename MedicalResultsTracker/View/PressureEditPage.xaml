@@ -15,13 +15,16 @@
                 <VerticalStackLayout Spacing="8">
                     <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_When}" />
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <!--  «d» и «t» — короткие дата и время того языка, что выбран
+                              в настройках. Свой формат здесь означал бы, что немецкая
+                              запись поедет и в русский, и в английский интерфейс.  -->
                         <DatePicker
                             Grid.Column="0"
                             Date="{Binding Date}"
-                            Format="dd.MM.yyyy" />
+                            Format="d" />
                         <TimePicker
                             Grid.Column="1"
-                            Format="HH:mm"
+                            Format="t"
                             Time="{Binding Time}" />
                     </Grid>
                 </VerticalStackLayout>

@@ -1,3 +1,4 @@
+using MedicalResultsTracker.Model;
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Import;
 using Xunit;
@@ -112,6 +113,34 @@ namespace MedicalResultsTracker.Tests
             Assert.Equal(new DateTime(2026, 3, 12), draft.Date);
             Assert.Equal("Инвитро", draft.Laboratory);
             Assert.Single(draft.Rows);
+        }
+
+        /// <summary>
+        /// Запрос переехал в ресурсы, и теперь его может править переводчик, не заглядывая
+        /// в разбор. Но чат-бот отвечает ровно так, как его попросили: уберите из запроса
+        /// «Datum:» или вертикальную черту — и ни одна строка больше не прочитается.
+        /// Здесь проверяется тот минимум, на который опирается <see cref="TextImportService.Parse"/>.
+        /// </summary>
+        [Fact]
+        public void PromptStillAsksForTheFormatTheParserReads()
+        {
+            string prompt = Import.BuildPrompt(Array.Empty<Analyte>());
+
+            Assert.Contains("Datum:", prompt);
+            Assert.Contains("Labor:", prompt);
+            Assert.Contains("|", prompt);
+        }
+
+        /// <summary>Известные названия попадают в запрос: ради них он и собирается заново каждый раз.</summary>
+        [Fact]
+        public void PromptListsTheNamesAlreadyKnown()
+        {
+            string prompt = Import.BuildPrompt(new[]
+            {
+                new Analyte { Code = "FER", Name = "Ferritin", Unit = "ng/ml" },
+            });
+
+            Assert.Contains("Ferritin | ng/ml", prompt);
         }
     }
 }

@@ -28,55 +28,24 @@ namespace MedicalResultsTracker.Services.Import
         /// </summary>
         private const int MaxKnownNames = 200;
 
+        /// <summary>
+        /// Запрос лежит в ресурсах, а не в коде: человек его читает и вставляет в свой чат,
+        /// то есть это такой же текст интерфейса, как надписи на кнопках. Разбор ответа
+        /// понимает шапку и на немецком, и на русском, поэтому переведённый запрос
+        /// возвращается ровно тем же форматом.
+        /// </summary>
         public string BuildPrompt(IReadOnlyList<Analyte> known)
         {
-            string prompt =
-                """
-                Unten ist das Foto eines Laborbefunds. Übertrage die Daten daraus als reinen Text
-                genau in diesem Format und ergänze nichts von dir aus.
-
-                Die ersten beiden Zeilen:
-                Datum: TT.MM.JJJJ
-                Labor: Name oder Strich
-
-                Danach eine Zeile je Wert, die Felder mit einem senkrechten Strich getrennt:
-                Bezeichnung | Ergebnis | Einheit | Referenz von | Referenz bis
-
-                Regeln:
-                - Das Ergebnis ist nur eine Zahl. Ist es nicht numerisch, schreibe es als Wort
-                  («negativ», «Spuren»).
-                - Der Referenzbereich sind zwei getrennte Zahlen. Ist er einseitig («bis 5,2»),
-                  fülle nur das passende Feld, das andere bleibt leer.
-                - Rate nichts und rechne nichts um: Ist ein Feld im Befund nicht lesbar, lass es leer.
-                - Keine Tabellenüberschrift, keine Nummerierung, keine Erläuterungen, keine
-                  Schlussfolgerungen und keine Empfehlungen. Nur die Datenzeilen.
-                """;
-
             string names = FormatKnownNames(known);
 
             if (names.Length == 0)
             {
-                return prompt + Environment.NewLine + """
-                    - Übernimm die Bezeichnungen genau wie im Befund: nicht übersetzen, nicht abkürzen,
-                      nicht umbenennen.
-                    """;
+                return S.Imp_Prompt + Environment.NewLine + S.Imp_PromptFreeNames;
             }
 
             // Список идёт после правил: сначала формат, потом справочные данные к нему.
-            return prompt + Environment.NewLine + """
-                - Gleicht ein Wert einer Bezeichnung aus der Liste unten – auch abgekürzt («Hb»),
-                  in einer anderen Sprache («Hemoglobin») oder anders geschrieben –, dann schreibe
-                  die Bezeichnung genau so, wie sie in der Liste steht. Nur so landet der Wert in
-                  derselben Zeile meiner Tabelle wie bisher und nicht in einer zweiten daneben.
-                - Steht ein Wert nicht in der Liste, übernimm seine Bezeichnung unverändert
-                  aus dem Befund: nicht übersetzen, nicht abkürzen, nicht umbenennen.
-                - Zahl und Einheit bleiben immer so, wie sie im Befund gedruckt sind. Rechne
-                  auch dann nicht um, wenn die Liste eine andere Einheit nennt – schreibe die
-                  Einheit des Befunds hin. Die Angleichung betrifft ausschließlich die Bezeichnung.
-
-                Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):
-
-                """ + names;
+            return S.Imp_Prompt + Environment.NewLine + S.Imp_PromptKnownNames +
+                   Environment.NewLine + Environment.NewLine + names;
         }
 
         /// <summary>

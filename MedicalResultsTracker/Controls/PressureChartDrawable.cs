@@ -159,12 +159,12 @@ namespace MedicalResultsTracker.Controls
             Label(canvas, Format(min), dirtyRect.X, plot.Bottom - 7f, plot.X - dirtyRect.X - 4f,
                 Microsoft.Maui.Graphics.HorizontalAlignment.Right);
 
-            Label(canvas, readings[0].MeasuredAt.ToString("dd.MM.yy"), plot.X, plot.Bottom + 4f, plot.Width / 2f,
+            Label(canvas, DateDisplay.Compact(readings[0].MeasuredAt), plot.X, plot.Bottom + 4f, plot.Width / 2f,
                 Microsoft.Maui.Graphics.HorizontalAlignment.Left);
 
             if (readings.Count > 1)
             {
-                Label(canvas, readings[^1].MeasuredAt.ToString("dd.MM.yy"), plot.Center.X, plot.Bottom + 4f,
+                Label(canvas, DateDisplay.Compact(readings[^1].MeasuredAt), plot.Center.X, plot.Bottom + 4f,
                     plot.Width / 2f, Microsoft.Maui.Graphics.HorizontalAlignment.Right);
             }
         }
