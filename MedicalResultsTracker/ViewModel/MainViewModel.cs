@@ -181,7 +181,7 @@ namespace MedicalResultsTracker.ViewModel
                 _ => string.Format(S.Dash_ManyOut, attentionCount)
             };
 
-            return string.Format(S.Dash_Summary, latest.Parameters.Count, attention, tests);
+            return string.Format(S.Dash_Summary, parameterCount, attention, tests);
         }
     }
 }
