@@ -10,6 +10,9 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Дневник давления: список измерений, свежие сверху.</summary>
     public partial class PressureViewModel : BaseViewModel
     {
+        /// <summary>Сколько последних измерений показывать на графике.</summary>
+        private const int MaxChartPoints = 60;
+
         private readonly IBloodPressureRepository _repository;
 
         [ObservableProperty]
@@ -17,6 +20,16 @@ namespace MedicalResultsTracker.ViewModel
 
         [ObservableProperty]
         private string _targetSummary = string.Empty;
+
+        [ObservableProperty]
+        private PressureChartDrawable _chart = new();
+
+        /// <summary>По одной точке линию не построишь — до второго измерения графика нет.</summary>
+        [ObservableProperty]
+        private bool _hasChart;
+
+        [ObservableProperty]
+        private string _chartLegend = string.Empty;
 
         public PressureViewModel(IBloodPressureRepository repository)
         {
@@ -59,6 +72,30 @@ namespace MedicalResultsTracker.ViewModel
             }
 
             IsEmpty = Readings.Count == 0;
+
+            BuildChart(readings, systolicTarget, diastolicTarget);
+        }
+
+        /// <summary>
+        /// Последние измерения от старых к новым. Ограничение по количеству — ради читаемости:
+        /// на ширине телефона две сотни точек сливаются в сплошную полосу.
+        /// </summary>
+        private void BuildChart(IReadOnlyList<BloodPressureReading> readings, int systolic, int diastolic)
+        {
+            List<BloodPressureReading> forChart = readings
+                .Take(MaxChartPoints)
+                .OrderBy(r => r.MeasuredAt)
+                .ToList();
+
+            Chart = new PressureChartDrawable
+            {
+                Readings = forChart,
+                TargetSystolic = systolic,
+                TargetDiastolic = diastolic,
+            };
+
+            HasChart = forChart.Count >= 2;
+            ChartLegend = string.Format(S.Bp_ChartLegend, forChart.Count);
         }
     }
 

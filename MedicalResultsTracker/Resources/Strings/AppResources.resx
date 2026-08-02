@@ -1096,4 +1096,49 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Err_ExportPressure" xml:space="preserve">
     <value>Blutdruck konnte nicht exportiert werden</value>
   </data>
+  <data name="Bp_ChartNoData" xml:space="preserve">
+    <value>Noch zu wenig Messungen für einen Verlauf</value>
+  </data>
+  <data name="Bp_ChartLegend" xml:space="preserve">
+    <value>letzte {0} Messungen</value>
+  </data>
+  <data name="Auto_Title" xml:space="preserve">
+    <value>Automatische Sicherung</value>
+  </data>
+  <data name="Auto_Body" xml:space="preserve">
+    <value>Wählen Sie einmal einen Ordner. Beim Öffnen der App legt sie dort eine Sicherung ab – aber nur, wenn sich seit der letzten etwas geändert hat. Die App sendet nichts; wird der Ordner von einem Cloud-Dienst synchronisiert, erledigt das dieser Dienst.</value>
+  </data>
+  <data name="Auto_NoFolder" xml:space="preserve">
+    <value>Kein Ordner gewählt — es wird nichts automatisch gesichert.</value>
+  </data>
+  <data name="Auto_Summary" xml:space="preserve">
+    <value>Ordner: {0}. Letzte automatische Sicherung: {1}.</value>
+  </data>
+  <data name="Auto_NeverYet" xml:space="preserve">
+    <value>noch keine</value>
+  </data>
+  <data name="Auto_ChooseFolder" xml:space="preserve">
+    <value>Ordner wählen</value>
+  </data>
+  <data name="Auto_Now" xml:space="preserve">
+    <value>Jetzt sichern</value>
+  </data>
+  <data name="Auto_Forget" xml:space="preserve">
+    <value>Ordner vergessen</value>
+  </data>
+  <data name="Auto_DoneTitle" xml:space="preserve">
+    <value>Gesichert</value>
+  </data>
+  <data name="Auto_DoneBody" xml:space="preserve">
+    <value>Die Sicherung liegt in «{0}».</value>
+  </data>
+  <data name="Auto_Failed" xml:space="preserve">
+    <value>Die Sicherung konnte nicht abgelegt werden. Vermutlich gibt es den Ordner nicht mehr oder die Berechtigung wurde entzogen — wählen Sie ihn erneut.</value>
+  </data>
+  <data name="Auto_ForgetTitle" xml:space="preserve">
+    <value>Ordner vergessen?</value>
+  </data>
+  <data name="Auto_ForgetBody" xml:space="preserve">
+    <value>Automatische Sicherungen hören auf. Bereits abgelegte Dateien bleiben, wo sie sind.</value>
+  </data>
 </root>

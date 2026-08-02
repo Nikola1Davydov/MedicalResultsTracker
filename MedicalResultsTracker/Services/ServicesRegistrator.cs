@@ -1,5 +1,6 @@
 using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Analysis;
+using MedicalResultsTracker.Services.Backup;
 using MedicalResultsTracker.Services.Database;
 using MedicalResultsTracker.Services.Export;
 using MedicalResultsTracker.Services.Import;
@@ -16,6 +17,7 @@ namespace MedicalResultsTracker.Services
             .AddSingleton<IMatrixViewRepository, MatrixViewRepository>()
             .AddSingleton<IAnalysisService, AnalysisService>()
             .AddSingleton<IExportService, ExportService>()
+            .AddSingleton<IAutoBackupService, AutoBackupService>()
             .AddSingleton<ITextImportService, TextImportService>()
             .AddSingleton<IAiConsentService, AiConsentService>()
 

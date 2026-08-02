@@ -20,13 +20,14 @@
         <PackageReference Include="xunit" Version="2.9.2" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
 
-        <!-- Модели помечены атрибутами sqlite-net, хотя базы в тестах нет. -->
-        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+        <!-- sqlite-net приходит из Directory.Build.props: модели помечены его атрибутами,
+             хотя базы в тестах нет. Второе объявление здесь было дубликатом (NU1504). -->
     </ItemGroup>
 
     <ItemGroup>
         <Compile Include="..\..\MedicalResultsTracker\Model\*.cs" LinkBase="Linked\Model" />
         <Compile Include="..\..\MedicalResultsTracker\Services\Ai\AiDraft.cs" LinkBase="Linked\Services" />
+        <Compile Include="..\..\MedicalResultsTracker\Services\Backup\BackupSignature.cs" LinkBase="Linked\Services" />
         <Compile Include="..\..\MedicalResultsTracker\Services\Import\*.cs" LinkBase="Linked\Services" />
         <Compile Include="..\..\MedicalResultsTracker\Resources\Strings\S.cs" LinkBase="Linked\Resources" />
     </ItemGroup>
