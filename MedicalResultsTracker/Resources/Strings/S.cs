@@ -1140,9 +1140,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Filter</summary>
         public static string Trend_FilterTitle => Get("Trend_FilterTitle");
 
-        /// <summary>Alle Werte</summary>
-        public static string Trend_FilterAll => Get("Trend_FilterAll");
-
         /// <summary>Außerhalb des Referenzbereichs</summary>
         public static string Trend_FilterOut => Get("Trend_FilterOut");
 
@@ -1155,20 +1152,8 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Nur Favoriten</summary>
         public static string Trend_OnlyFavorites => Get("Trend_OnlyFavorites");
 
-        /// <summary>Auch ohne Favoriten</summary>
-        public static string Trend_AllValues => Get("Trend_AllValues");
-
-        /// <summary>Nur mit Verlauf</summary>
-        public static string Trend_OnlyWithHistory => Get("Trend_OnlyWithHistory");
-
         /// <summary>Auch einzelne Messungen</summary>
         public static string Trend_AlsoSingle => Get("Trend_AlsoSingle");
-
-        /// <summary>Ausgeblendete wieder zeigen ({0})</summary>
-        public static string Trend_ShowHidden => Get("Trend_ShowHidden");
-
-        /// <summary>Filter zurücksetzen</summary>
-        public static string Trend_FilterReset => Get("Trend_FilterReset");
 
         /// <summary>Filter: {0}</summary>
         public static string Trend_FilterSummary => Get("Trend_FilterSummary");

@@ -1200,9 +1200,6 @@
   <data name="Trend_FilterTitle" xml:space="preserve">
     <value>Фильтры</value>
   </data>
-  <data name="Trend_FilterAll" xml:space="preserve">
-    <value>Все показатели</value>
-  </data>
   <data name="Trend_FilterOut" xml:space="preserve">
     <value>Вне нормы</value>
   </data>
@@ -1215,20 +1212,8 @@
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>Только избранное</value>
   </data>
-  <data name="Trend_AllValues" xml:space="preserve">
-    <value>Не только избранное</value>
-  </data>
-  <data name="Trend_OnlyWithHistory" xml:space="preserve">
-    <value>Только с историей</value>
-  </data>
   <data name="Trend_AlsoSingle" xml:space="preserve">
     <value>Даже с одним измерением</value>
-  </data>
-  <data name="Trend_ShowHidden" xml:space="preserve">
-    <value>Показать скрытые ({0})</value>
-  </data>
-  <data name="Trend_FilterReset" xml:space="preserve">
-    <value>Сбросить фильтры</value>
   </data>
   <data name="Trend_FilterSummary" xml:space="preserve">
     <value>Фильтр: {0}</value>

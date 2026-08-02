@@ -520,16 +520,11 @@ S += [
 # Фильтры на экране динамики: один список вместо ленты кнопок.
 S += [
 ("Trend_FilterTitle","Filter","Фильтры"),
-("Trend_FilterAll","Alle Werte","Все показатели"),
 ("Trend_FilterOut","Außerhalb des Referenzbereichs","Вне нормы"),
 ("Trend_FilterHigh","Nur zu hohe Werte","Только выше нормы"),
 ("Trend_FilterLow","Nur zu niedrige Werte","Только ниже нормы"),
 ("Trend_OnlyFavorites","Nur Favoriten","Только избранное"),
-("Trend_AllValues","Auch ohne Favoriten","Не только избранное"),
-("Trend_OnlyWithHistory","Nur mit Verlauf","Только с историей"),
 ("Trend_AlsoSingle","Auch einzelne Messungen","Даже с одним измерением"),
-("Trend_ShowHidden","Ausgeblendete wieder zeigen ({0})","Показать скрытые ({0})"),
-("Trend_FilterReset","Filter zurücksetzen","Сбросить фильтры"),
 ("Trend_FilterSummary","Filter: {0}","Фильтр: {0}"),
 ("Trend_HiddenCount","{0} ausgeblendet","скрыто: {0}"),
 ]

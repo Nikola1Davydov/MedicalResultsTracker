@@ -75,9 +75,6 @@ namespace MedicalResultsTracker.ViewModel
         private bool _onlyWithHistory = true;
         private bool _onlyFavorites;
 
-        /// <summary>Выбран возврат скрытых. Пункт списка только помечает намерение — база пишется после.</summary>
-        private bool _unhideRequested;
-
         public TrendsViewModel(
             IAnalysisService analysis,
             IAnalyteCatalog catalog,
@@ -97,15 +94,7 @@ namespace MedicalResultsTracker.ViewModel
         public ObservableCollection<SeriesGroupViewModel> Groups { get; } = new();
 
         /// <summary>
-        /// Хоть что-то наложено поверх обычного вида. «Только с историей» включено с самого
-        /// начала и фильтром здесь не считается — иначе кнопка была бы «нажата» всегда.
-        /// </summary>
-        public bool HasFilter =>
-            _statusFilter != TrendStatusFilter.Any || _onlyFavorites || !_onlyWithHistory;
-
-        /// <summary>
-        /// Значок на кнопке. Крестик, когда что-то наложено: список открывается тем же
-        /// нажатием, а первым пунктом в нём стоит «Сбросить фильтры».
+        /// Значок на кнопке: крестик, когда что-то наложено, иначе три полоски.
         /// </summary>
         public string FilterGlyph => HasFilterSummary ? "✕" : "≡";
 
@@ -123,14 +112,25 @@ namespace MedicalResultsTracker.ViewModel
                 $"{AppRoutes.TrendDetail}?{AppRoutes.SeriesKeyParameter}={Uri.EscapeDataString(item.Key)}");
 
         /// <summary>
-        /// Все фильтры одним списком. Раньше это была лента кнопок: их пять, на телефон
-        /// они не помещались, и до последней приходилось доскроллить. Список открывается
-        /// поверх экрана, ничего на нём не занимает и растёт вниз — новый фильтр можно
-        /// будет просто дописать, а не искать ему место в ряду.
+        /// Одна кнопка на два действия, и какое сейчас — видно по значку.
+        ///
+        /// Крестик снимает всё одним нажатием: когда фильтр наложен, от него чаще всего
+        /// хотят избавиться, и заставлять ради этого открывать список и искать в нём
+        /// «Сбросить» — лишний шаг на ровном месте.
+        ///
+        /// Три полоски открывают список всех фильтров. Список растёт вниз и ничего не
+        /// занимает на экране — новый фильтр можно будет просто дописать, а не искать
+        /// ему место в ряду кнопок, который и так не помещался в ширину телефона.
         /// </summary>
         [RelayCommand]
         private Task Filter() => RunAsync(async () =>
         {
+            if (HasFilterSummary)
+            {
+                await ResetAsync();
+                return;
+            }
+
             List<(string Label, Action Apply)> options = BuildFilterOptions();
 
             string? chosen = await Dialog.ChooseAsync(
@@ -151,73 +151,50 @@ namespace MedicalResultsTracker.ViewModel
                 }
             }
 
-            // Возврат скрытых — единственный пункт, который трогает базу.
-            if (_unhideRequested)
+            ApplyFilters();
+        }, S.Err_Charts);
+
+        /// <summary>
+        /// Обычный вид: фильтры сняты, скрытое возвращено. Скрытие делается тем же жестом,
+        /// что и избранное, и человек считает его таким же фильтром — значит и снимается
+        /// оно тем же крестиком, а не походом в справочник.
+        /// </summary>
+        private async Task ResetAsync()
+        {
+            _statusFilter = TrendStatusFilter.Any;
+            _onlyFavorites = false;
+            _onlyWithHistory = true;
+
+            List<SeriesItemViewModel> hidden = _all.Where(i => i.IsHidden).ToList();
+
+            foreach (SeriesItemViewModel item in hidden)
             {
-                _unhideRequested = false;
+                await _catalog.SetHiddenAsync(item.Key, false);
+            }
 
-                foreach (SeriesItemViewModel item in _all.Where(i => i.IsHidden))
-                {
-                    await _catalog.SetHiddenAsync(item.Key, false);
-                }
-
+            // Перечитываем, только если что-то изменилось в базе: фильтры снимаются на месте.
+            if (hidden.Count > 0)
+            {
                 await LoadAsync();
                 return;
             }
 
             ApplyFilters();
-        }, S.Err_Charts);
-
-        /// <summary>
-        /// Пункты списка вместе с тем, что каждый делает. Порядок: сначала то, что снимает
-        /// уже наложенное, потом сами фильтры. Галочка помечает включённое — иначе список
-        /// не показывает своего состояния.
-        /// </summary>
-        private List<(string Label, Action Apply)> BuildFilterOptions()
-        {
-            List<(string, Action)> options = new();
-
-            int hidden = _all.Count(i => i.IsHidden);
-
-            if (HasFilter)
-            {
-                options.Add((S.Trend_FilterReset, () =>
-                {
-                    _statusFilter = TrendStatusFilter.Any;
-                    _onlyFavorites = false;
-                    _onlyWithHistory = true;
-                }));
-            }
-
-            if (hidden > 0)
-            {
-                options.Add((string.Format(S.Trend_ShowHidden, hidden), () => _unhideRequested = true));
-            }
-
-            options.Add((Mark(S.Trend_FilterAll, _statusFilter == TrendStatusFilter.Any),
-                () => _statusFilter = TrendStatusFilter.Any));
-
-            options.Add((Mark(S.Trend_FilterOut, _statusFilter == TrendStatusFilter.OutOfRange),
-                () => _statusFilter = TrendStatusFilter.OutOfRange));
-
-            options.Add((Mark(S.Trend_FilterHigh, _statusFilter == TrendStatusFilter.High),
-                () => _statusFilter = TrendStatusFilter.High));
-
-            options.Add((Mark(S.Trend_FilterLow, _statusFilter == TrendStatusFilter.Low),
-                () => _statusFilter = TrendStatusFilter.Low));
-
-            // Переключатели показываются тем действием, которое произойдёт по нажатию:
-            // «Только избранное», когда показаны все, и «Не только избранное», когда нет.
-            options.Add((_onlyFavorites ? S.Trend_AllValues : S.Trend_OnlyFavorites,
-                () => _onlyFavorites = !_onlyFavorites));
-
-            options.Add((_onlyWithHistory ? S.Trend_AlsoSingle : S.Trend_OnlyWithHistory,
-                () => _onlyWithHistory = !_onlyWithHistory));
-
-            return options;
         }
 
-        private static string Mark(string label, bool active) => active ? $"\u2713 {label}" : label;
+        /// <summary>
+        /// Пункты списка вместе с тем, что каждый делает. Список открывается только когда
+        /// ничего не наложено, поэтому галочек в нём нет: каждый пункт что-то включает.
+        /// </summary>
+        private List<(string Label, Action Apply)> BuildFilterOptions() => new()
+        {
+            (S.Trend_FilterOut, () => _statusFilter = TrendStatusFilter.OutOfRange),
+            (S.Trend_FilterHigh, () => _statusFilter = TrendStatusFilter.High),
+            (S.Trend_FilterLow, () => _statusFilter = TrendStatusFilter.Low),
+            (S.Trend_OnlyFavorites, () => _onlyFavorites = true),
+            (S.Trend_AlsoSingle, () => _onlyWithHistory = false),
+        };
+
 
         /// <summary>Жест вправо: показатель попадает в избранное или уходит из него.</summary>
         [RelayCommand]
@@ -356,8 +333,6 @@ namespace MedicalResultsTracker.ViewModel
 
             FilterSummary = BuildFilterSummary();
             HasFilterSummary = FilterSummary.Length > 0;
-
-            OnPropertyChanged(nameof(HasFilter));
         }
 
         /// <summary>

@@ -1200,9 +1200,6 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Trend_FilterTitle" xml:space="preserve">
     <value>Filter</value>
   </data>
-  <data name="Trend_FilterAll" xml:space="preserve">
-    <value>Alle Werte</value>
-  </data>
   <data name="Trend_FilterOut" xml:space="preserve">
     <value>Außerhalb des Referenzbereichs</value>
   </data>
@@ -1215,20 +1212,8 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Trend_OnlyFavorites" xml:space="preserve">
     <value>Nur Favoriten</value>
   </data>
-  <data name="Trend_AllValues" xml:space="preserve">
-    <value>Auch ohne Favoriten</value>
-  </data>
-  <data name="Trend_OnlyWithHistory" xml:space="preserve">
-    <value>Nur mit Verlauf</value>
-  </data>
   <data name="Trend_AlsoSingle" xml:space="preserve">
     <value>Auch einzelne Messungen</value>
-  </data>
-  <data name="Trend_ShowHidden" xml:space="preserve">
-    <value>Ausgeblendete wieder zeigen ({0})</value>
-  </data>
-  <data name="Trend_FilterReset" xml:space="preserve">
-    <value>Filter zurücksetzen</value>
   </data>
   <data name="Trend_FilterSummary" xml:space="preserve">
     <value>Filter: {0}</value>
