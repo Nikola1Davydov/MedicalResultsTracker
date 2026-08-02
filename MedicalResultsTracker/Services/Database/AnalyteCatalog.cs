@@ -61,7 +61,10 @@ namespace MedicalResultsTracker.Services.Database
                         continue;
                     }
 
-                    if (!refresh)
+                    // Запись, которую человек правил сам, не трогаем никогда: там стоят
+                    // границы его лаборатории, а не типовые, и вернуть их к типовым молча —
+                    // это подменить данные в медицинской записи.
+                    if (!refresh || current.IsCustomized)
                     {
                         continue;
                     }
