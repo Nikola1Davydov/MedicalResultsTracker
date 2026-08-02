@@ -1141,4 +1141,20 @@
   <data name="Auto_ForgetBody" xml:space="preserve">
     <value>Автоматические копии прекратятся. Уже созданные файлы останутся на месте.</value>
   </data>
+  <data name="Edit_AmbiguousTitle" xml:space="preserve">
+    <value>Точка прочитана как разделитель тысяч</value>
+  </data>
+  <data name="Edit_AmbiguousBody" xml:space="preserve">
+    <value>Эти значения поняты так:
+
+{0}
+
+Вы это имели в виду? Для дробного числа поставьте запятую.</value>
+  </data>
+  <data name="Edit_AmbiguousAccept" xml:space="preserve">
+    <value>Так и оставить</value>
+  </data>
+  <data name="Edit_AmbiguousBack" xml:space="preserve">
+    <value>Вернуться к вводу</value>
+  </data>
 </root>

@@ -1109,5 +1109,17 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Automatische Sicherungen hören auf. Bereits abgelegte Dateien bleiben,</summary>
         public static string Auto_ForgetBody => Get("Auto_ForgetBody");
+
+        /// <summary>Punkt als Tausendertrennung gelesen</summary>
+        public static string Edit_AmbiguousTitle => Get("Edit_AmbiguousTitle");
+
+        /// <summary>Diese Eingaben sind so verstanden worden: {0} Ist das gemeint? Für ein</summary>
+        public static string Edit_AmbiguousBody => Get("Edit_AmbiguousBody");
+
+        /// <summary>So übernehmen</summary>
+        public static string Edit_AmbiguousAccept => Get("Edit_AmbiguousAccept");
+
+        /// <summary>Zurück zur Eingabe</summary>
+        public static string Edit_AmbiguousBack => Get("Edit_AmbiguousBack");
     }
 }

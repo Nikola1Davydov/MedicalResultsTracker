@@ -1141,4 +1141,20 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   <data name="Auto_ForgetBody" xml:space="preserve">
     <value>Automatische Sicherungen hören auf. Bereits abgelegte Dateien bleiben, wo sie sind.</value>
   </data>
+  <data name="Edit_AmbiguousTitle" xml:space="preserve">
+    <value>Punkt als Tausendertrennung gelesen</value>
+  </data>
+  <data name="Edit_AmbiguousBody" xml:space="preserve">
+    <value>Diese Eingaben sind so verstanden worden:
+
+{0}
+
+Ist das gemeint? Für einen Dezimalwert schreiben Sie ein Komma.</value>
+  </data>
+  <data name="Edit_AmbiguousAccept" xml:space="preserve">
+    <value>So übernehmen</value>
+  </data>
+  <data name="Edit_AmbiguousBack" xml:space="preserve">
+    <value>Zurück zur Eingabe</value>
+  </data>
 </root>

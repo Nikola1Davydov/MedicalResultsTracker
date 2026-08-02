@@ -189,7 +189,7 @@ namespace MedicalResultsTracker.Services.Import
             }
 
             string valueText = Get(parts, 1);
-            double? value = ParseNumber(valueText, out ambiguous);
+            double? value = LabNumber.Parse(valueText, out ambiguous);
 
             AiDraftRow row = new()
             {
@@ -202,8 +202,8 @@ namespace MedicalResultsTracker.Services.Import
             // Норма может прийти двумя числами (как просили) или одной колонкой вида «30–300».
             if (parts.Length > 4)
             {
-                row.RefMin = ParseNumber(Get(parts, 3));
-                row.RefMax = ParseNumber(Get(parts, 4));
+                row.RefMin = LabNumber.Parse(Get(parts, 3));
+                row.RefMax = LabNumber.Parse(Get(parts, 4));
             }
             else if (parts.Length > 3)
             {
@@ -226,20 +226,20 @@ namespace MedicalResultsTracker.Services.Import
             if (value.StartsWith('<') || value.StartsWith('≤') ||
                 StartsWithWord(value, "bis", "до"))
             {
-                return (null, ParseNumber(StripPrefix(value, '<', '≤')));
+                return (null, LabNumber.Parse(StripPrefix(value, '<', '≤')));
             }
 
             if (value.StartsWith('>') || value.StartsWith('≥') ||
                 StartsWithWord(value, "ab", "von", "от"))
             {
-                return (ParseNumber(StripPrefix(value, '>', '≥')), null);
+                return (LabNumber.Parse(StripPrefix(value, '>', '≥')), null);
             }
 
             string[] bounds = value.Split('–', '—', '-', '…');
 
             if (bounds.Length == 2)
             {
-                return (ParseNumber(bounds[0]), ParseNumber(bounds[1]));
+                return (LabNumber.Parse(bounds[0]), LabNumber.Parse(bounds[1]));
             }
 
             return (null, null);
@@ -303,7 +303,7 @@ namespace MedicalResultsTracker.Services.Import
             line.Trim('|', '-', ':', ' ', '=').Length == 0;
 
         private static bool LooksLikeHeader(string[] parts) =>
-            ParseNumber(Get(parts, 1)) is null &&
+            LabNumber.Parse(Get(parts, 1)) is null &&
             parts.Any(p => HeaderWords.Any(w => p.Contains(w, StringComparison.CurrentCultureIgnoreCase)));
 
         private static string[] SplitRow(string line)
@@ -320,97 +320,6 @@ namespace MedicalResultsTracker.Services.Import
                 .Split(separator)
                 .Select(p => p.Trim())
                 .ToArray();
-        }
-
-        private static double? ParseNumber(string? text) => ParseNumber(text, out _);
-
-        /// <summary>
-        /// Разбирает число из бланка. Формат заранее не известен: бланк немецкий, но текст
-        /// приходит от чат-бота, а тот пишет и «1.234,5», и «1,234.5», и «1234.5».
-        ///
-        /// <paramref name="ambiguous"/> — запись, которую нельзя прочитать однозначно. Значение
-        /// всё равно возвращается, иначе строка потеряется, но вызывающий обязан о нём
-        /// предупредить: ошибка здесь стоит множителя в тысячу.
-        /// </summary>
-        private static double? ParseNumber(string? text, out bool ambiguous)
-        {
-            ambiguous = false;
-
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return null;
-            }
-
-            // Разделители разрядов, которые не являются ни точкой, ни запятой: пробелы
-            // разных видов регулярно приходят из чатов и таблиц, апостроф — швейцарская запись.
-            string value = text
-                .Replace('\u00A0', ' ')
-                .Replace('\u202F', ' ')
-                .Replace('\u2009', ' ')
-                .Replace(" ", string.Empty)
-                .Replace("'", string.Empty)
-                .Trim();
-
-            int commas = value.Count(c => c == ',');
-            int dots = value.Count(c => c == '.');
-
-            if (commas > 0 && dots > 0)
-            {
-                // Оба знака сразу: десятичный — тот, что правее, второй разделяет разряды.
-                value = value.LastIndexOf(',') > value.LastIndexOf('.')
-                    ? value.Replace(".", string.Empty).Replace(',', '.')
-                    : value.Replace(",", string.Empty);
-            }
-            else if (commas > 1 || dots > 1)
-            {
-                // Знак повторяется — десятичным он быть не может: «1.234.567».
-                value = value.Replace(",", string.Empty).Replace(".", string.Empty);
-            }
-            else if (commas == 1)
-            {
-                // Запятая в бланке — всегда десятичный разделитель.
-                value = value.Replace(',', '.');
-            }
-            else if (dots == 1)
-            {
-                value = ReadSingleDot(value, out ambiguous);
-            }
-
-            return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed)
-                ? parsed
-                : null;
-        }
-
-        /// <summary>
-        /// Одна точка и больше ничего. В немецком бланке точка разделяет разряды: «254.000» —
-        /// это 254 000 тромбоцитов, а вовсе не 254. Прочти это по-английски — и в историю
-        /// молча уедет число в тысячу раз меньше.
-        ///
-        /// По одному токену определить нельзя, поэтому решают две вещи: ровно три цифры справа
-        /// (иначе разрядом быть не может) и целая часть от одной до трёх цифр без ведущего
-        /// нуля: «0.123» — это дробь, а не разряды.
-        /// </summary>
-        private static string ReadSingleDot(string value, out bool ambiguous)
-        {
-            ambiguous = false;
-
-            int dot = value.IndexOf('.');
-            string head = value[..dot].TrimStart('+', '-');
-            string tail = value[(dot + 1)..];
-
-            bool looksGrouped =
-                tail.Length == 3 && tail.All(char.IsAsciiDigit) &&
-                head.Length is >= 1 and <= 3 && head.All(char.IsAsciiDigit) &&
-                head[0] != '0';
-
-            if (!looksGrouped)
-            {
-                return value;
-            }
-
-            ambiguous = true;
-
-            return value.Replace(".", string.Empty);
         }
 
         private static string Get(string[] parts, int index) => index < parts.Length ? parts[index].Trim() : string.Empty;
