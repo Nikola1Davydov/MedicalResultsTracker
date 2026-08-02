@@ -41,7 +41,7 @@ namespace MedicalResultsTracker.Services.Backup
         }
 
         /// <summary>Вызывается из MainActivity: системный диалог возвращает результат туда.</summary>
-        public static bool HandleResult(int requestCode, Result resultCode, Intent? data)
+        public static bool HandleResult(int requestCode, Android.App.Result resultCode, Intent? data)
         {
             if (requestCode != RequestCode)
             {
@@ -56,7 +56,7 @@ namespace MedicalResultsTracker.Services.Backup
                 return true;
             }
 
-            Android.Net.Uri? tree = resultCode == Result.Ok ? data?.Data : null;
+            Android.Net.Uri? tree = resultCode == Android.App.Result.Ok ? data?.Data : null;
 
             if (tree is not null)
             {
