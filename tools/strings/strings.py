@@ -31,7 +31,6 @@ S = [
 ("Dash_StartBody","Nehmen Sie Ihren Laborbefund und tragen Sie die Werte ein: Bezeichnung, Zahl, Einheit und den Referenzbereich aus der entsprechenden Spalte.","Возьмите бланк анализа и внесите значения — название, число, единицы и норму из колонки «референсные значения»."),
 ("Dash_StartNote","Alles wird lokal auf diesem Gerät gespeichert. Es werden keine Daten übertragen.","Всё сохраняется в локальной базе на этом устройстве. Никуда ничего не отправляется."),
 ("Dash_OutOfRange","Außerhalb des Referenzbereichs","Вне нормы"),
-("Dash_Changes","Deutliche Veränderungen","Заметные изменения"),
 ("Dash_Summary","{0} Werte · {1} · {2}","{0} показателей · {1} · {2}"),
 ("Dash_AllInRange","alle Werte im Referenzbereich","все показатели в пределах указанных норм"),
 ("Dash_OneOut","1 Wert außerhalb","1 показатель вне нормы"),
@@ -104,10 +103,6 @@ S = [
 ("Assess_Worsened","schlechter als beim letzten Mal","хуже, чем в прошлый раз"),
 ("Assess_Stable","unverändert","без изменений"),
 ("Assess_Unknown","kein Vergleich möglich","не с чем сравнить"),
-("Item_RefKnown","Referenz {0}","норма {0}"),
-("Item_RefUnknown","kein Referenzbereich","норма не указана"),
-("Item_Previous","zuvor {0} · {1}","было {0} · {1}"),
-("Item_First","erste Messung","первое измерение"),
 # --- Werteverzeichnis ---
 ("Cat_Title","Werteverzeichnis","Справочник"),
 ("Cat_Search","Suche nach Bezeichnung","Поиск по названию"),
@@ -508,8 +503,6 @@ S += [
 ]
 # Сводка на главном экране вместо длинного списка.
 S += [
-("Dash_HighCount","{0} über dem Referenzbereich","{0} выше нормы"),
-("Dash_LowCount","{0} unter dem Referenzbereich","{0} ниже нормы"),
 ("Dash_NoneOut","Alle Werte liegen im Referenzbereich Ihres Befunds.","Все показатели — в пределах норм из вашего бланка."),
 ("Dash_OpenTrends","Tippen für alle Werte","Нажмите, чтобы увидеть все показатели"),
 ]
@@ -535,4 +528,10 @@ S += [
 ("Ai_CopiedBody","Fügen Sie den Text in Ihren KI-Chat ein. Die App hat nichts gesendet.","Вставьте текст в свой ИИ-чат. Приложение ничего никуда не отправило."),
 ("A11y_Filter","Filter","Фильтры"),
 ("A11y_Ai","Werte für den KI-Chat kopieren","Скопировать показатели для ИИ-чата"),
+]
+
+# Два квадрата на главном экране: отдельно те, что выше нормы, и те, что ниже.
+S += [
+("Dash_HighTitle","über dem Referenzbereich","выше нормы"),
+("Dash_LowTitle","unter dem Referenzbereich","ниже нормы"),
 ]

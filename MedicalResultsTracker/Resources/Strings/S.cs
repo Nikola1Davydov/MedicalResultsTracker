@@ -81,9 +81,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Außerhalb des Referenzbereichs</summary>
         public static string Dash_OutOfRange => Get("Dash_OutOfRange");
 
-        /// <summary>Deutliche Veränderungen</summary>
-        public static string Dash_Changes => Get("Dash_Changes");
-
         /// <summary>{0} Werte · {1} · {2}</summary>
         public static string Dash_Summary => Get("Dash_Summary");
 
@@ -287,18 +284,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>kein Vergleich möglich</summary>
         public static string Assess_Unknown => Get("Assess_Unknown");
-
-        /// <summary>Referenz {0}</summary>
-        public static string Item_RefKnown => Get("Item_RefKnown");
-
-        /// <summary>kein Referenzbereich</summary>
-        public static string Item_RefUnknown => Get("Item_RefUnknown");
-
-        /// <summary>zuvor {0} · {1}</summary>
-        public static string Item_Previous => Get("Item_Previous");
-
-        /// <summary>erste Messung</summary>
-        public static string Item_First => Get("Item_First");
 
         /// <summary>Werteverzeichnis</summary>
         public static string Cat_Title => Get("Cat_Title");
@@ -1122,12 +1107,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Ausblenden</summary>
         public static string Swipe_Hide => Get("Swipe_Hide");
 
-        /// <summary>{0} über dem Referenzbereich</summary>
-        public static string Dash_HighCount => Get("Dash_HighCount");
-
-        /// <summary>{0} unter dem Referenzbereich</summary>
-        public static string Dash_LowCount => Get("Dash_LowCount");
-
         /// <summary>Alle Werte liegen im Referenzbereich Ihres Befunds.</summary>
         public static string Dash_NoneOut => Get("Dash_NoneOut");
 
@@ -1175,5 +1154,11 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Werte für den KI-Chat kopieren</summary>
         public static string A11y_Ai => Get("A11y_Ai");
+
+        /// <summary>über dem Referenzbereich</summary>
+        public static string Dash_HighTitle => Get("Dash_HighTitle");
+
+        /// <summary>unter dem Referenzbereich</summary>
+        public static string Dash_LowTitle => Get("Dash_LowTitle");
     }
 }

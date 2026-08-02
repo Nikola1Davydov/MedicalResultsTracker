@@ -103,9 +103,6 @@
   <data name="Dash_OutOfRange" xml:space="preserve">
     <value>Außerhalb des Referenzbereichs</value>
   </data>
-  <data name="Dash_Changes" xml:space="preserve">
-    <value>Deutliche Veränderungen</value>
-  </data>
   <data name="Dash_Summary" xml:space="preserve">
     <value>{0} Werte · {1} · {2}</value>
   </data>
@@ -311,18 +308,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Assess_Unknown" xml:space="preserve">
     <value>kein Vergleich möglich</value>
-  </data>
-  <data name="Item_RefKnown" xml:space="preserve">
-    <value>Referenz {0}</value>
-  </data>
-  <data name="Item_RefUnknown" xml:space="preserve">
-    <value>kein Referenzbereich</value>
-  </data>
-  <data name="Item_Previous" xml:space="preserve">
-    <value>zuvor {0} · {1}</value>
-  </data>
-  <data name="Item_First" xml:space="preserve">
-    <value>erste Messung</value>
   </data>
   <data name="Cat_Title" xml:space="preserve">
     <value>Werteverzeichnis</value>
@@ -1182,12 +1167,6 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Swipe_Hide" xml:space="preserve">
     <value>Ausblenden</value>
   </data>
-  <data name="Dash_HighCount" xml:space="preserve">
-    <value>{0} über dem Referenzbereich</value>
-  </data>
-  <data name="Dash_LowCount" xml:space="preserve">
-    <value>{0} unter dem Referenzbereich</value>
-  </data>
   <data name="Dash_NoneOut" xml:space="preserve">
     <value>Alle Werte liegen im Referenzbereich Ihres Befunds.</value>
   </data>
@@ -1235,5 +1214,11 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   </data>
   <data name="A11y_Ai" xml:space="preserve">
     <value>Werte für den KI-Chat kopieren</value>
+  </data>
+  <data name="Dash_HighTitle" xml:space="preserve">
+    <value>über dem Referenzbereich</value>
+  </data>
+  <data name="Dash_LowTitle" xml:space="preserve">
+    <value>unter dem Referenzbereich</value>
   </data>
 </root>

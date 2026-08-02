@@ -103,9 +103,6 @@
   <data name="Dash_OutOfRange" xml:space="preserve">
     <value>Вне нормы</value>
   </data>
-  <data name="Dash_Changes" xml:space="preserve">
-    <value>Заметные изменения</value>
-  </data>
   <data name="Dash_Summary" xml:space="preserve">
     <value>{0} показателей · {1} · {2}</value>
   </data>
@@ -311,18 +308,6 @@
   </data>
   <data name="Assess_Unknown" xml:space="preserve">
     <value>не с чем сравнить</value>
-  </data>
-  <data name="Item_RefKnown" xml:space="preserve">
-    <value>норма {0}</value>
-  </data>
-  <data name="Item_RefUnknown" xml:space="preserve">
-    <value>норма не указана</value>
-  </data>
-  <data name="Item_Previous" xml:space="preserve">
-    <value>было {0} · {1}</value>
-  </data>
-  <data name="Item_First" xml:space="preserve">
-    <value>первое измерение</value>
   </data>
   <data name="Cat_Title" xml:space="preserve">
     <value>Справочник</value>
@@ -1182,12 +1167,6 @@
   <data name="Swipe_Hide" xml:space="preserve">
     <value>Скрыть</value>
   </data>
-  <data name="Dash_HighCount" xml:space="preserve">
-    <value>{0} выше нормы</value>
-  </data>
-  <data name="Dash_LowCount" xml:space="preserve">
-    <value>{0} ниже нормы</value>
-  </data>
   <data name="Dash_NoneOut" xml:space="preserve">
     <value>Все показатели — в пределах норм из вашего бланка.</value>
   </data>
@@ -1235,5 +1214,11 @@
   </data>
   <data name="A11y_Ai" xml:space="preserve">
     <value>Скопировать показатели для ИИ-чата</value>
+  </data>
+  <data name="Dash_HighTitle" xml:space="preserve">
+    <value>выше нормы</value>
+  </data>
+  <data name="Dash_LowTitle" xml:space="preserve">
+    <value>ниже нормы</value>
   </data>
 </root>
