@@ -30,6 +30,13 @@
                 </VerticalStackLayout>
             </Border>
 
+            <!--  Чинить разъехавшийся показатель надо там, где его и разглядывают:
+                  человек видит половину истории здесь, а не в справочнике.  -->
+            <Button
+                Command="{Binding MergeCommand}"
+                IsVisible="{Binding HasData}"
+                Text="{x:Static loc:S.CatEdit_MergeTitle}" />
+
             <Label Style="{StaticResource SectionTitle}" Text="{x:Static loc:S.Trend_Values}" />
 
             <VerticalStackLayout BindableLayout.ItemsSource="{Binding Values}" Spacing="6">

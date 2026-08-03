@@ -1197,4 +1197,7 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Set_BackupTitle" xml:space="preserve">
     <value>Sicherung</value>
   </data>
+  <data name="Trend_MergeAll" xml:space="preserve">
+    <value>Alle Werte anzeigen …</value>
+  </data>
 </root>

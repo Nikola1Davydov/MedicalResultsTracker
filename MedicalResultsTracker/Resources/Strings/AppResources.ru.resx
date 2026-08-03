@@ -1197,4 +1197,7 @@
   <data name="Set_BackupTitle" xml:space="preserve">
     <value>Резервная копия</value>
   </data>
+  <data name="Trend_MergeAll" xml:space="preserve">
+    <value>Показать все показатели…</value>
+  </data>
 </root>
