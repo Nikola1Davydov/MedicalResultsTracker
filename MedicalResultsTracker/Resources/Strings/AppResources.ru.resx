@@ -1200,4 +1200,25 @@
   <data name="Trend_MergeAll" xml:space="preserve">
     <value>Показать все показатели…</value>
   </data>
+  <data name="Trend_EditRange" xml:space="preserve">
+    <value>Изменить норму</value>
+  </data>
+  <data name="Trend_RangeHint" xml:space="preserve">
+    <value>Возьмите границы из своего бланка. Без них приложение не может сказать, вышло значение за норму или нет.</value>
+  </data>
+  <data name="Trend_RangeSetTitle" xml:space="preserve">
+    <value>Записать норму?</value>
+  </data>
+  <data name="Trend_RangeSetBody" xml:space="preserve">
+    <value>Норма будет записана во все измерения этого показателя ({0}) — в том числе туда, где в бланке стояла другая.</value>
+  </data>
+  <data name="Trend_RangeClearTitle" xml:space="preserve">
+    <value>Убрать норму?</value>
+  </data>
+  <data name="Trend_RangeClearBody" xml:space="preserve">
+    <value>Норма будет убрана у всех измерений этого показателя ({0}). Сами значения останутся.</value>
+  </data>
+  <data name="Err_RangeSave" xml:space="preserve">
+    <value>Не удалось сохранить норму</value>
+  </data>
 </root>

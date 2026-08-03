@@ -36,8 +36,21 @@ namespace MedicalResultsTracker.ViewModel
 
         private string? _key;
 
+        /// <summary>Прочитанный ряд: из него берутся текущие границы для редактора.</summary>
+        private ParameterSeries? _series;
+
         /// <summary>В списке похожих выбрали «показать все»: за первым списком идёт второй.</summary>
         private bool _fullListRequested;
+
+        /// <summary>Открыт ли редактор нормы. Поля показываются на месте, без отдельного экрана.</summary>
+        [ObservableProperty]
+        private bool _isEditingRange;
+
+        [ObservableProperty]
+        private string _refMinText = string.Empty;
+
+        [ObservableProperty]
+        private string _refMaxText = string.Empty;
 
         public TrendDetailViewModel(
             IAnalysisService analysis,
@@ -62,6 +75,87 @@ namespace MedicalResultsTracker.ViewModel
         }
 
         public override Task InitializeAsync() => RunAsync(LoadAsync, S.Err_Chart);
+
+        /// <summary>
+        /// Открывает поля нормы, подставив то, что записано сейчас.
+        ///
+        /// Норму приходится вписывать руками чаще, чем хотелось бы: чат-бот вытаскивает её
+        /// из бланка не всегда, а без неё приложение не может сказать ровно то, ради чего
+        /// его и завели, — вышло значение за пределы или нет.
+        /// </summary>
+        [RelayCommand]
+        private void EditRange()
+        {
+            RefMinText = Format(_series?.RefMin);
+            RefMaxText = Format(_series?.RefMax);
+            IsEditingRange = true;
+        }
+
+        [RelayCommand]
+        private void CancelRange() => IsEditingRange = false;
+
+        /// <summary>
+        /// Записывает норму во все измерения показателя и в справочник.
+        ///
+        /// Во все — потому что «норма показателя» человеком мыслится как одна на весь ряд:
+        /// иначе на графике полоса прыгала бы от точки к точке. Границы из бланка при этом
+        /// перезаписываются, и об этом прямо сказано в подтверждении.
+        /// </summary>
+        [RelayCommand]
+        private Task SaveRange() => RunAsync(async () =>
+        {
+            if (string.IsNullOrEmpty(_key))
+            {
+                return;
+            }
+
+            double? min = LabNumber.Parse(RefMinText);
+            double? max = LabNumber.Parse(RefMaxText);
+
+            IReadOnlyDictionary<string, int> usage = await _repository.GetUsageByCodeAsync();
+
+            usage.TryGetValue(_key, out int count);
+
+            bool clearing = min is null && max is null;
+
+            bool confirmed = await Dialog.ConfirmAsync(
+                clearing ? S.Trend_RangeClearTitle : S.Trend_RangeSetTitle,
+                string.Format(clearing ? S.Trend_RangeClearBody : S.Trend_RangeSetBody, count),
+                clearing ? S.Common_Delete : S.Common_Save);
+
+            if (!confirmed)
+            {
+                return;
+            }
+
+            await _repository.SetRangeAsync(_key, min, max);
+            await RememberRangeAsync(min, max);
+
+            IsEditingRange = false;
+
+            await LoadAsync();
+        }, S.Err_RangeSave);
+
+        /// <summary>
+        /// Та же норма уходит в справочник — чтобы в следующий раз она подставилась сама.
+        /// Правленая встроенная запись помечается: обновление набора её больше не трогает.
+        /// </summary>
+        private async Task RememberRangeAsync(double? min, double? max)
+        {
+            if (_key is null || await _catalog.FindAsync(_key) is not Analyte known)
+            {
+                return;
+            }
+
+            known.RefMin = min;
+            known.RefMax = max;
+            known.IsCustomized = known.IsBuiltIn;
+
+            await _catalog.SaveAsync(known);
+        }
+
+        private static string Format(double? value) =>
+            value?.ToString("0.####", CultureInfo.CurrentCulture) ?? string.Empty;
 
         /// <summary>
         /// «Это тот же показатель, что и вот этот» — прямо здесь, на экране значения.
@@ -207,6 +301,8 @@ namespace MedicalResultsTracker.ViewModel
             }
 
             ParameterSeries? series = await _analysis.GetSeriesAsync(_key);
+
+            _series = series;
 
             if (series is null)
             {

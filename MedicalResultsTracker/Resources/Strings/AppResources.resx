@@ -1200,4 +1200,25 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Trend_MergeAll" xml:space="preserve">
     <value>Alle Werte anzeigen …</value>
   </data>
+  <data name="Trend_EditRange" xml:space="preserve">
+    <value>Referenzbereich ändern</value>
+  </data>
+  <data name="Trend_RangeHint" xml:space="preserve">
+    <value>Übernehmen Sie die Grenzen aus Ihrem Befund. Ohne sie kann die App nicht sagen, ob ein Wert außerhalb liegt.</value>
+  </data>
+  <data name="Trend_RangeSetTitle" xml:space="preserve">
+    <value>Referenzbereich übernehmen?</value>
+  </data>
+  <data name="Trend_RangeSetBody" xml:space="preserve">
+    <value>Der Bereich wird für alle {0} Messungen dieses Werts gesetzt – auch dort, wo im Befund ein anderer stand.</value>
+  </data>
+  <data name="Trend_RangeClearTitle" xml:space="preserve">
+    <value>Referenzbereich entfernen?</value>
+  </data>
+  <data name="Trend_RangeClearBody" xml:space="preserve">
+    <value>Der Referenzbereich wird bei allen {0} Messungen entfernt. Die Werte selbst bleiben.</value>
+  </data>
+  <data name="Err_RangeSave" xml:space="preserve">
+    <value>Referenzbereich konnte nicht gespeichert werden</value>
+  </data>
 </root>

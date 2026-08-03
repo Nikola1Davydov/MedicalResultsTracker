@@ -30,8 +30,39 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!--  Чинить разъехавшийся показатель надо там, где его и разглядывают:
-                  человек видит половину истории здесь, а не в справочнике.  -->
+            <!--  Норму и склейку правят там, где человек видит проблему: он смотрит на
+                  этот график, а не на справочник в настройках.  -->
+            <Button
+                Command="{Binding EditRangeCommand}"
+                IsVisible="{Binding HasData}"
+                Text="{x:Static loc:S.Trend_EditRange}" />
+
+            <Border IsVisible="{Binding IsEditingRange}" Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Trend_RangeHint}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_RowRefMin}" />
+                            <Entry Keyboard="Numeric" Text="{Binding RefMinText}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Edit_RowRefMax}" />
+                            <Entry Keyboard="Numeric" Text="{Binding RefMaxText}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button
+                            Grid.Column="0"
+                            Command="{Binding SaveRangeCommand}"
+                            Text="{x:Static loc:S.Common_Save}" />
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding CancelRangeCommand}"
+                            Text="{x:Static loc:S.Common_Cancel}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
             <Button
                 Command="{Binding MergeCommand}"
                 IsVisible="{Binding HasData}"

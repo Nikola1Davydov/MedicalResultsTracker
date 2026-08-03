@@ -1139,5 +1139,26 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Alle Werte anzeigen …</summary>
         public static string Trend_MergeAll => Get("Trend_MergeAll");
+
+        /// <summary>Referenzbereich ändern</summary>
+        public static string Trend_EditRange => Get("Trend_EditRange");
+
+        /// <summary>Übernehmen Sie die Grenzen aus Ihrem Befund. Ohne sie kann die App nic</summary>
+        public static string Trend_RangeHint => Get("Trend_RangeHint");
+
+        /// <summary>Referenzbereich übernehmen?</summary>
+        public static string Trend_RangeSetTitle => Get("Trend_RangeSetTitle");
+
+        /// <summary>Der Bereich wird für alle {0} Messungen dieses Werts gesetzt – auch do</summary>
+        public static string Trend_RangeSetBody => Get("Trend_RangeSetBody");
+
+        /// <summary>Referenzbereich entfernen?</summary>
+        public static string Trend_RangeClearTitle => Get("Trend_RangeClearTitle");
+
+        /// <summary>Der Referenzbereich wird bei allen {0} Messungen entfernt. Die Werte s</summary>
+        public static string Trend_RangeClearBody => Get("Trend_RangeClearBody");
+
+        /// <summary>Referenzbereich konnte nicht gespeichert werden</summary>
+        public static string Err_RangeSave => Get("Err_RangeSave");
     }
 }

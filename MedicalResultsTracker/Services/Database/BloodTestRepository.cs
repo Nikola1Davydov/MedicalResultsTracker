@@ -194,6 +194,15 @@ namespace MedicalResultsTracker.Services.Database
                 .ConfigureAwait(false);
         }
 
+        public async Task<int> SetRangeAsync(string code, double? min, double? max)
+        {
+            SQLiteAsyncConnection connection = await _database.GetConnectionAsync().ConfigureAwait(false);
+
+            return await connection
+                .ExecuteAsync("update blood_parameters set RefMin = ?, RefMax = ? where Code = ?", min, max, code)
+                .ConfigureAwait(false);
+        }
+
         private static async Task LoadParametersAsync(SQLiteAsyncConnection connection, BloodTest test)
         {
             Guid testId = test.Id;

@@ -540,3 +540,13 @@ S += [
 S += [
 ("Trend_MergeAll","Alle Werte anzeigen …","Показать все показатели…"),
 ]
+# Правка нормы прямо на экране показателя: из бланка она вытаскивается не всегда.
+S += [
+("Trend_EditRange","Referenzbereich ändern","Изменить норму"),
+("Trend_RangeHint","Übernehmen Sie die Grenzen aus Ihrem Befund. Ohne sie kann die App nicht sagen, ob ein Wert außerhalb liegt.","Возьмите границы из своего бланка. Без них приложение не может сказать, вышло значение за норму или нет."),
+("Trend_RangeSetTitle","Referenzbereich übernehmen?","Записать норму?"),
+("Trend_RangeSetBody","Der Bereich wird für alle {0} Messungen dieses Werts gesetzt – auch dort, wo im Befund ein anderer stand.","Норма будет записана во все измерения этого показателя ({0}) — в том числе туда, где в бланке стояла другая."),
+("Trend_RangeClearTitle","Referenzbereich entfernen?","Убрать норму?"),
+("Trend_RangeClearBody","Der Referenzbereich wird bei allen {0} Messungen entfernt. Die Werte selbst bleiben.","Норма будет убрана у всех измерений этого показателя ({0}). Сами значения останутся."),
+("Err_RangeSave","Referenzbereich konnte nicht gespeichert werden","Не удалось сохранить норму"),
+]
