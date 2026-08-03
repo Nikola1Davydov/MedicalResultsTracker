@@ -510,27 +510,6 @@
   <data name="Set_ExportNote" xml:space="preserve">
     <value>Файл создаётся на устройстве, а дальше вы сами решаете, куда его отправить.</value>
   </data>
-  <data name="Set_AiTitle" xml:space="preserve">
-    <value>ИИ-помощник</value>
-  </data>
-  <data name="Set_AiBody" xml:space="preserve">
-    <value>Приложение полностью работает без ИИ: все значения можно ввести руками. Помощник — необязательная надстройка, и каждое разрешение выдаётся отдельно.</value>
-  </data>
-  <data name="Set_AiManual" xml:space="preserve">
-    <value>Ручная передача — работает уже сейчас и не требует никаких разрешений: приложение готовит таблицу текстом, а получателя вы выбираете сами.</value>
-  </data>
-  <data name="Set_AiShare" xml:space="preserve">
-    <value>Отправить таблицу в ИИ-чат</value>
-  </data>
-  <data name="Set_AiCopy" xml:space="preserve">
-    <value>Скопировать таблицу в буфер</value>
-  </data>
-  <data name="Set_AiOff" xml:space="preserve">
-    <value>Всё выключено: приложение не отправляет наружу ни одного байта.</value>
-  </data>
-  <data name="Set_AiGranted" xml:space="preserve">
-    <value>Разрешения выданы для «{0}»{1} Провайдер в этой сборке ещё не подключён, поэтому фактической отправки не происходит.</value>
-  </data>
   <data name="Set_DangerTitle" xml:space="preserve">
     <value>Опасная зона</value>
   </data>
@@ -539,12 +518,6 @@
   </data>
   <data name="Set_Disclaimer" xml:space="preserve">
     <value>Приложение ведёт личный журнал результатов и не ставит диагнозов. Любые выводы обсуждайте с врачом.</value>
-  </data>
-  <data name="Set_CopiedTitle" xml:space="preserve">
-    <value>Скопировано</value>
-  </data>
-  <data name="Set_CopiedBody" xml:space="preserve">
-    <value>Таблица в буфере обмена — вставьте её в любой чат.</value>
   </data>
   <data name="Set_ImportPick" xml:space="preserve">
     <value>Выберите файл резервной копии</value>
@@ -587,9 +560,6 @@
   </data>
   <data name="Err_Text" xml:space="preserve">
     <value>Не удалось подготовить текст</value>
-  </data>
-  <data name="Err_Copy" xml:space="preserve">
-    <value>Не удалось скопировать текст</value>
   </data>
   <data name="Err_History" xml:space="preserve">
     <value>Не удалось загрузить историю</value>
@@ -864,12 +834,6 @@
   </data>
   <data name="Matrix_EditView" xml:space="preserve">
     <value>✎ Изменить выбранный набор …</value>
-  </data>
-  <data name="Set_HistoryBody" xml:space="preserve">
-    <value>Все внесённые анализы — открыть и поправить любой.</value>
-  </data>
-  <data name="Set_HistoryOpen" xml:space="preserve">
-    <value>Открыть анализы</value>
   </data>
   <data name="Imp_AmbiguousNumber" xml:space="preserve">
     <value>{0}: «{1}» прочитано как разделитель тысяч. Сверьте с бланком.</value>

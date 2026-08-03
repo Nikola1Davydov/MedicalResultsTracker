@@ -50,8 +50,6 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private Color _pressureColor = StatusPalette.Unknown;
 
-        private Guid? _latestTestId;
-
         /// <summary>За один запуск копия делается один раз, а не на каждое открытие вкладки.</summary>
         private bool _backupChecked;
 
@@ -84,10 +82,13 @@ namespace MedicalResultsTracker.ViewModel
         [RelayCommand]
         private Task OpenPressure() => Shell.Current.GoToAsync(AppRoutes.Pressure);
 
+        /// <summary>
+        /// Тап по карточке анализов открывает весь список — так же, как тап по карточке
+        /// давления открывает дневник. Разное поведение у двух одинаковых на вид карточек
+        /// человек воспринимает как поломку, а не как замысел.
+        /// </summary>
         [RelayCommand]
-        private Task OpenLastTest() => _latestTestId is Guid id
-            ? Shell.Current.GoToAsync($"{AppRoutes.TestEdit}?{AppRoutes.TestIdParameter}={id}")
-            : Shell.Current.GoToAsync(AppRoutes.TestEdit);
+        private Task OpenHistory() => Shell.Current.GoToAsync(AppRoutes.History);
 
         /// <summary>Сводка вне нормы ведёт туда, где эти показатели перечислены и отбираются.</summary>
         [RelayCommand]
@@ -101,7 +102,6 @@ namespace MedicalResultsTracker.ViewModel
             BloodTest? latest = await _repository.GetLatestAsync();
             int count = await _repository.CountAsync();
 
-            _latestTestId = latest?.Id;
             HasData = latest is not null;
             IsEmpty = latest is null;
 

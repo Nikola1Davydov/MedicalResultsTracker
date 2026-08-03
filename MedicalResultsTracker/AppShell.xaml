@@ -11,19 +11,24 @@
         <ShellContent
             Title="{x:Static loc:S.Tab_Dashboard}"
             ContentTemplate="{DataTemplate view:MainPage}"
+            Icon="tab_home.png"
             Route="dashboard" />
         <ShellContent
             Title="{x:Static loc:S.Tab_Matrix}"
             ContentTemplate="{DataTemplate view:MatrixPage}"
+            Icon="tab_table.png"
             Route="matrix" />
-        <!--  Befunde вкладкой не является: список бланков нужен изредка, и он открывается из настроек.  -->
+        <!--  Befunde вкладкой не является: список бланков нужен изредка, и он
+              открывается тапом по карточке анализов на главном экране.  -->
         <ShellContent
             Title="{x:Static loc:S.Tab_Trends}"
             ContentTemplate="{DataTemplate view:TrendsPage}"
+            Icon="tab_trend.png"
             Route="trends" />
         <ShellContent
             Title="{x:Static loc:S.Tab_Settings}"
             ContentTemplate="{DataTemplate view:SettingsPage}"
+            Icon="tab_settings.png"
             Route="settings" />
     </TabBar>
 

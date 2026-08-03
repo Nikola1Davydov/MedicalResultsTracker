@@ -510,27 +510,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   <data name="Set_ExportNote" xml:space="preserve">
     <value>Die Datei entsteht auf dem Gerät; wohin sie geht, entscheiden Sie selbst.</value>
   </data>
-  <data name="Set_AiTitle" xml:space="preserve">
-    <value>KI-Assistent</value>
-  </data>
-  <data name="Set_AiBody" xml:space="preserve">
-    <value>Die App funktioniert vollständig ohne KI: Alle Werte lassen sich von Hand eintragen. Der Assistent ist eine freiwillige Ergänzung, und jede Berechtigung wird einzeln erteilt.</value>
-  </data>
-  <data name="Set_AiManual" xml:space="preserve">
-    <value>Manueller Weg – funktioniert sofort und braucht keine Berechtigung: Die App bereitet die Tabelle als Text auf, den Empfänger wählen Sie selbst.</value>
-  </data>
-  <data name="Set_AiShare" xml:space="preserve">
-    <value>Tabelle an KI-Chat senden</value>
-  </data>
-  <data name="Set_AiCopy" xml:space="preserve">
-    <value>Tabelle in die Zwischenablage</value>
-  </data>
-  <data name="Set_AiOff" xml:space="preserve">
-    <value>Alles aus: Die App sendet kein einziges Byte nach außen.</value>
-  </data>
-  <data name="Set_AiGranted" xml:space="preserve">
-    <value>Berechtigungen erteilt für «{0}»{1} Ein Anbieter ist in diesem Build noch nicht angebunden, es findet also keine Übertragung statt.</value>
-  </data>
   <data name="Set_DangerTitle" xml:space="preserve">
     <value>Gefahrenzone</value>
   </data>
@@ -539,12 +518,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Set_Disclaimer" xml:space="preserve">
     <value>Die App führt ein persönliches Wertetagebuch und stellt keine Diagnosen. Besprechen Sie Schlussfolgerungen mit Ihrer Ärztin oder Ihrem Arzt.</value>
-  </data>
-  <data name="Set_CopiedTitle" xml:space="preserve">
-    <value>Kopiert</value>
-  </data>
-  <data name="Set_CopiedBody" xml:space="preserve">
-    <value>Die Tabelle liegt in der Zwischenablage – fügen Sie sie in einen beliebigen Chat ein.</value>
   </data>
   <data name="Set_ImportPick" xml:space="preserve">
     <value>Sicherungsdatei wählen</value>
@@ -587,9 +560,6 @@ Ferritin | 18 | ng/ml | 30 | 300</value>
   </data>
   <data name="Err_Text" xml:space="preserve">
     <value>Text konnte nicht vorbereitet werden</value>
-  </data>
-  <data name="Err_Copy" xml:space="preserve">
-    <value>Text konnte nicht kopiert werden</value>
   </data>
   <data name="Err_History" xml:space="preserve">
     <value>Verlauf konnte nicht geladen werden</value>
@@ -864,12 +834,6 @@ Sollen die neuen Werte die bisherigen ersetzen?</value>
   </data>
   <data name="Matrix_EditView" xml:space="preserve">
     <value>✎ Ausgewählte Ansicht ändern …</value>
-  </data>
-  <data name="Set_HistoryBody" xml:space="preserve">
-    <value>Alle erfassten Befunde, einzeln zum Öffnen und Ändern.</value>
-  </data>
-  <data name="Set_HistoryOpen" xml:space="preserve">
-    <value>Befunde öffnen</value>
   </data>
   <data name="Imp_AmbiguousNumber" xml:space="preserve">
     <value>{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund prüfen.</value>

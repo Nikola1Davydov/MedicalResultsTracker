@@ -486,27 +486,6 @@ namespace MedicalResultsTracker.Resources.Strings
         /// <summary>Die Datei entsteht auf dem Gerät; wohin sie geht, entscheiden Sie selb</summary>
         public static string Set_ExportNote => Get("Set_ExportNote");
 
-        /// <summary>KI-Assistent</summary>
-        public static string Set_AiTitle => Get("Set_AiTitle");
-
-        /// <summary>Die App funktioniert vollständig ohne KI: Alle Werte lassen sich von H</summary>
-        public static string Set_AiBody => Get("Set_AiBody");
-
-        /// <summary>Manueller Weg – funktioniert sofort und braucht keine Berechtigung: Di</summary>
-        public static string Set_AiManual => Get("Set_AiManual");
-
-        /// <summary>Tabelle an KI-Chat senden</summary>
-        public static string Set_AiShare => Get("Set_AiShare");
-
-        /// <summary>Tabelle in die Zwischenablage</summary>
-        public static string Set_AiCopy => Get("Set_AiCopy");
-
-        /// <summary>Alles aus: Die App sendet kein einziges Byte nach außen.</summary>
-        public static string Set_AiOff => Get("Set_AiOff");
-
-        /// <summary>Berechtigungen erteilt für «{0}»{1} Ein Anbieter ist in diesem Build n</summary>
-        public static string Set_AiGranted => Get("Set_AiGranted");
-
         /// <summary>Gefahrenzone</summary>
         public static string Set_DangerTitle => Get("Set_DangerTitle");
 
@@ -515,12 +494,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Die App führt ein persönliches Wertetagebuch und stellt keine Diagnose</summary>
         public static string Set_Disclaimer => Get("Set_Disclaimer");
-
-        /// <summary>Kopiert</summary>
-        public static string Set_CopiedTitle => Get("Set_CopiedTitle");
-
-        /// <summary>Die Tabelle liegt in der Zwischenablage – fügen Sie sie in einen belie</summary>
-        public static string Set_CopiedBody => Get("Set_CopiedBody");
 
         /// <summary>Sicherungsdatei wählen</summary>
         public static string Set_ImportPick => Get("Set_ImportPick");
@@ -563,9 +536,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Text konnte nicht vorbereitet werden</summary>
         public static string Err_Text => Get("Err_Text");
-
-        /// <summary>Text konnte nicht kopiert werden</summary>
-        public static string Err_Copy => Get("Err_Copy");
 
         /// <summary>Verlauf konnte nicht geladen werden</summary>
         public static string Err_History => Get("Err_History");
@@ -836,12 +806,6 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>✎ Ausgewählte Ansicht ändern …</summary>
         public static string Matrix_EditView => Get("Matrix_EditView");
-
-        /// <summary>Alle erfassten Befunde, einzeln zum Öffnen und Ändern.</summary>
-        public static string Set_HistoryBody => Get("Set_HistoryBody");
-
-        /// <summary>Befunde öffnen</summary>
-        public static string Set_HistoryOpen => Get("Set_HistoryOpen");
 
         /// <summary>{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund</summary>
         public static string Imp_AmbiguousNumber => Get("Imp_AmbiguousNumber");
