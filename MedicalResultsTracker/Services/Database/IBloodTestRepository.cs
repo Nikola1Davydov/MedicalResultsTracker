@@ -41,5 +41,12 @@ namespace MedicalResultsTracker.Services.Database
         /// Возвращает количество затронутых строк.
         /// </summary>
         Task<int> ReassignCodeAsync(string fromCode, string toCode);
+
+        /// <summary>
+        /// Записывает границы нормы во все измерения показателя. Нужно, когда норму
+        /// не удалось вытащить из бланка и человек вписывает её сам: без неё приложение
+        /// не может сказать, вышло значение за пределы или нет.
+        /// </summary>
+        Task<int> SetRangeAsync(string code, double? min, double? max);
     }
 }
