@@ -1133,5 +1133,8 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>{0} ({1})</summary>
         public static string Match_Option => Get("Match_Option");
+
+        /// <summary>Sicherung</summary>
+        public static string Set_BackupTitle => Get("Set_BackupTitle");
     }
 }
