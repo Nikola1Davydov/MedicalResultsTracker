@@ -148,7 +148,13 @@ namespace MedicalResultsTracker.Services.Database
             IReadOnlyList<Analyte> all = await GetAllAsync().ConfigureAwait(false);
             string trimmed = name.Trim();
 
-            return all.FirstOrDefault(a => string.Equals(a.Name.Trim(), trimmed, StringComparison.CurrentCultureIgnoreCase));
+            Analyte? exact = all.FirstOrDefault(a =>
+                string.Equals(a.Name.Trim(), trimmed, StringComparison.CurrentCultureIgnoreCase));
+
+            // Регистр, умляуты и знаки смысла не меняют: «Hämoglobin», «Hamoglobin»
+            // и «Haemoglobin» — одна и та же строка бланка, и заводить под них
+            // три записи справочника незачем.
+            return exact ?? all.FirstOrDefault(a => NameMatch.AreSame(a.Name, trimmed));
         }
 
         public async Task<IReadOnlyList<Analyte>> SearchAsync(string query, int limit = 20)
