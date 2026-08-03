@@ -1185,4 +1185,13 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Trend_Empty" xml:space="preserve">
     <value>Hier erscheinen alle erfassten Werte – auch die, die es bisher nur einmal gibt.</value>
   </data>
+  <data name="Match_Title" xml:space="preserve">
+    <value>«{0}» – gehört das zu einem dieser Werte?</value>
+  </data>
+  <data name="Match_KeepNew" xml:space="preserve">
+    <value>Nein, als neuen Wert anlegen</value>
+  </data>
+  <data name="Match_Option" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
 </root>

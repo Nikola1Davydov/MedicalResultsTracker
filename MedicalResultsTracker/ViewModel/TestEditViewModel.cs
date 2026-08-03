@@ -546,7 +546,7 @@ namespace MedicalResultsTracker.ViewModel
 
         /// <summary>
         /// Подбирает код показателя: уже проставленный, затем совпадение по названию в каталоге,
-        /// и только потом новый код из названия.
+        /// затем — если название лишь похоже — выбор человека, и только потом новый код.
         /// </summary>
         private async Task<string> ResolveCodeAsync(BloodParameter parameter)
         {
@@ -557,7 +557,62 @@ namespace MedicalResultsTracker.ViewModel
 
             Analyte? known = await _catalog.FindByNameAsync(parameter.Name);
 
-            return known?.Code ?? AnalyteCode.FromName(parameter.Name);
+            if (known is not null)
+            {
+                return known.Code;
+            }
+
+            if (await AskWhichAnalyteAsync(parameter.Name) is Analyte chosen)
+            {
+                // Название берём из справочника: иначе одна и та же строка таблицы
+                // называлась бы по-разному в зависимости от того, какой бланк свежее.
+                parameter.Name = chosen.Name;
+
+                return chosen.Code;
+            }
+
+            return AnalyteCode.FromName(parameter.Name);
+        }
+
+        /// <summary>
+        /// Название похоже на уже заведённое, но не совпадает — «Hb» и «Hämoglobin»,
+        /// «Ferritin» и «Ferritin (Serum)». Молча склеивать нельзя: ошибка склейки испортит
+        /// сразу две истории. Молча заводить новое — тоже: показатель разойдётся на два
+        /// графика, и каждый будет с половиной значений. Поэтому спрашиваем.
+        ///
+        /// Чат-бот получает список уже заведённых названий и обычно пишет их как надо,
+        /// но «обычно» — это не «всегда», и последнее слово должно оставаться за человеком.
+        /// </summary>
+        private async Task<Analyte?> AskWhichAnalyteAsync(string name)
+        {
+            IReadOnlyList<Analyte> known = await _catalog.GetAllAsync();
+            IReadOnlyList<Analyte> candidates = NameMatch.Candidates(name, known);
+
+            if (candidates.Count == 0)
+            {
+                return null;
+            }
+
+            Dictionary<string, Analyte> byLabel = new(StringComparer.Ordinal);
+
+            foreach (Analyte candidate in candidates)
+            {
+                string label = string.IsNullOrWhiteSpace(candidate.Unit)
+                    ? candidate.Name
+                    : string.Format(S.Match_Option, candidate.Name, candidate.Unit);
+
+                byLabel.TryAdd(label, candidate);
+            }
+
+            List<string> options = byLabel.Keys.ToList();
+            options.Add(S.Match_KeepNew);
+
+            string? chosen = await Dialog.ChooseAsync(
+                string.Format(S.Match_Title, name),
+                options.ToArray());
+
+            // Закрытый диалог — это не «да»: заводим новый показатель, как и раньше.
+            return chosen is null ? null : byLabel.GetValueOrDefault(chosen);
         }
 
         private async Task RememberNewAnalytesAsync(BloodTest test)

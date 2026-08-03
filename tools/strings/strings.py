@@ -526,3 +526,10 @@ S += [
 ("Trend_OnlyWithHistory","Nur mit Verlauf","Только с историей"),
 ("Trend_Empty","Hier erscheinen alle erfassten Werte – auch die, die es bisher nur einmal gibt.","Здесь появятся все внесённые показатели — в том числе те, что пока измерены один раз."),
 ]
+
+# Подбор похожего названия: один показатель не должен расходиться на два графика.
+S += [
+("Match_Title","«{0}» – gehört das zu einem dieser Werte?","«{0}» — это один из этих показателей?"),
+("Match_KeepNew","Nein, als neuen Wert anlegen","Нет, завести новый показатель"),
+("Match_Option","{0} ({1})","{0} ({1})"),
+]

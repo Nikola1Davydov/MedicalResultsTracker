@@ -1185,4 +1185,13 @@
   <data name="Trend_Empty" xml:space="preserve">
     <value>Здесь появятся все внесённые показатели — в том числе те, что пока измерены один раз.</value>
   </data>
+  <data name="Match_Title" xml:space="preserve">
+    <value>«{0}» — это один из этих показателей?</value>
+  </data>
+  <data name="Match_KeepNew" xml:space="preserve">
+    <value>Нет, завести новый показатель</value>
+  </data>
+  <data name="Match_Option" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
 </root>

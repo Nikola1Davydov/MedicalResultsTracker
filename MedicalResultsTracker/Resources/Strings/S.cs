@@ -1124,5 +1124,14 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Hier erscheinen alle erfassten Werte – auch die, die es bisher nur ein</summary>
         public static string Trend_Empty => Get("Trend_Empty");
+
+        /// <summary>«{0}» – gehört das zu einem dieser Werte?</summary>
+        public static string Match_Title => Get("Match_Title");
+
+        /// <summary>Nein, als neuen Wert anlegen</summary>
+        public static string Match_KeepNew => Get("Match_KeepNew");
+
+        /// <summary>{0} ({1})</summary>
+        public static string Match_Option => Get("Match_Option");
     }
 }
