@@ -13,14 +13,19 @@
         <ScrollView>
             <VerticalStackLayout Padding="16" Spacing="14">
 
+                <!--  Устроена так же, как карточка давления: тап по карточке открывает
+                      весь список записей, кнопка внутри заводит новую. Раньше по анализам
+                      попасть в список было нельзя вовсе, а по давлению — можно.  -->
                 <Border Style="{StaticResource Card}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenHistoryCommand}" />
+                    </Border.GestureRecognizers>
                     <VerticalStackLayout Spacing="6">
                         <Label Style="{StaticResource SectionTitle}" Text="{Binding LastTestTitle}" />
                         <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
+                        <Button Command="{Binding AddTestCommand}" Text="{x:Static loc:S.Hist_Add}" />
                     </VerticalStackLayout>
                 </Border>
-
-                <Button Command="{Binding AddTestCommand}" Text="{x:Static loc:S.Hist_Add}" />
 
                 <!--  Давление записывают каждый день, поэтому оно на первом экране,
                       а не спрятано за вкладкой. Тап по карточке открывает весь дневник.  -->

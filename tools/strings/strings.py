@@ -82,7 +82,6 @@ S = [
 ("Edit_Added","{0} Zeilen übernommen. Bitte vor dem Speichern prüfen.","Добавлено строк: {0}. Проверьте значения перед сохранением."),
 ("Edit_AddedWarn","{0} Nicht erkannt: {1}","{0} Не разобрано: {1}"),
 # --- Verlauf ---
-("Trend_Empty","Diagramme erscheinen, sobald zwei Befunde mit denselben Werten vorliegen.","Графики появятся, когда в истории будет хотя бы два анализа с одинаковыми показателями."),
 ("Trend_FavoritesGroup","★ Favoriten","★ Избранное"),
 ("Trend_NoGroup","Ohne Gruppe","Без группы"),
 ("Trend_OneMeasurement","eine Messung","одно измерение"),
@@ -174,18 +173,9 @@ S = [
 ("Set_ExportBackup","Sicherungskopie (JSON)","Резервная копия (JSON)"),
 ("Set_ImportBackup","Aus Sicherungskopie wiederherstellen","Восстановить из копии"),
 ("Set_ExportNote","Die Datei entsteht auf dem Gerät; wohin sie geht, entscheiden Sie selbst.","Файл создаётся на устройстве, а дальше вы сами решаете, куда его отправить."),
-("Set_AiTitle","KI-Assistent","ИИ-помощник"),
-("Set_AiBody","Die App funktioniert vollständig ohne KI: Alle Werte lassen sich von Hand eintragen. Der Assistent ist eine freiwillige Ergänzung, und jede Berechtigung wird einzeln erteilt.","Приложение полностью работает без ИИ: все значения можно ввести руками. Помощник — необязательная надстройка, и каждое разрешение выдаётся отдельно."),
-("Set_AiManual","Manueller Weg – funktioniert sofort und braucht keine Berechtigung: Die App bereitet die Tabelle als Text auf, den Empfänger wählen Sie selbst.","Ручная передача — работает уже сейчас и не требует никаких разрешений: приложение готовит таблицу текстом, а получателя вы выбираете сами."),
-("Set_AiShare","Tabelle an KI-Chat senden","Отправить таблицу в ИИ-чат"),
-("Set_AiCopy","Tabelle in die Zwischenablage","Скопировать таблицу в буфер"),
-("Set_AiOff","Alles aus: Die App sendet kein einziges Byte nach außen.","Всё выключено: приложение не отправляет наружу ни одного байта."),
-("Set_AiGranted","Berechtigungen erteilt für «{0}»{1} Ein Anbieter ist in diesem Build noch nicht angebunden, es findet also keine Übertragung statt.","Разрешения выданы для «{0}»{1} Провайдер в этой сборке ещё не подключён, поэтому фактической отправки не происходит."),
 ("Set_DangerTitle","Gefahrenzone","Опасная зона"),
 ("Set_DeleteAll","Gesamten Verlauf löschen","Удалить всю историю"),
 ("Set_Disclaimer","Die App führt ein persönliches Wertetagebuch und stellt keine Diagnosen. Besprechen Sie Schlussfolgerungen mit Ihrer Ärztin oder Ihrem Arzt.","Приложение ведёт личный журнал результатов и не ставит диагнозов. Любые выводы обсуждайте с врачом."),
-("Set_CopiedTitle","Kopiert","Скопировано"),
-("Set_CopiedBody","Die Tabelle liegt in der Zwischenablage – fügen Sie sie in einen beliebigen Chat ein.","Таблица в буфере обмена — вставьте её в любой чат."),
 ("Set_ImportPick","Sicherungsdatei wählen","Выберите файл резервной копии"),
 ("Set_ImportDoneTitle","Import abgeschlossen","Импорт завершён"),
 ("Set_ImportNothing","Es wurden keine neuen Befunde gefunden.","Новых анализов в файле не найдено."),
@@ -201,7 +191,6 @@ S = [
 ("Err_Import","Sicherungskopie konnte nicht eingelesen werden","Не удалось импортировать резервную копию"),
 ("Err_DeleteAll","Verlauf konnte nicht gelöscht werden","Не удалось очистить историю"),
 ("Err_Text","Text konnte nicht vorbereitet werden","Не удалось подготовить текст"),
-("Err_Copy","Text konnte nicht kopiert werden","Не удалось скопировать текст"),
 ("Err_History","Verlauf konnte nicht geladen werden","Не удалось загрузить историю"),
 ("Err_Charts","Diagramme konnten nicht erstellt werden","Не удалось построить графики"),
 ("Err_Chart","Diagramm konnte nicht erstellt werden","Не удалось построить график"),
@@ -311,8 +300,6 @@ S += [
 S += [
 ("Matrix_NewView","＋ Neue Ansicht …","＋ Новый набор …"),
 ("Matrix_EditView","✎ Ausgewählte Ansicht ändern …","✎ Изменить выбранный набор …"),
-("Set_HistoryBody","Alle erfassten Befunde, einzeln zum Öffnen und Ändern.","Все внесённые анализы — открыть и поправить любой."),
-("Set_HistoryOpen","Befunde öffnen","Открыть анализы"),
 ]
 S += [
 ("Imp_AmbiguousNumber","{0}: «{1}» wurde als Tausendertrennung gelesen. Bitte gegen den Befund prüfen.","{0}: «{1}» прочитано как разделитель тысяч. Сверьте с бланком."),
@@ -517,7 +504,6 @@ S += [
 ("Trend_FilterHigh","Nur zu hohe Werte","Только выше нормы"),
 ("Trend_FilterLow","Nur zu niedrige Werte","Только ниже нормы"),
 ("Trend_OnlyFavorites","Nur Favoriten","Только избранное"),
-("Trend_AlsoSingle","Auch einzelne Messungen","Даже с одним измерением"),
 ("Trend_FilterSummary","Filter: {0}","Фильтр: {0}"),
 ("Trend_HiddenCount","{0} ausgeblendet","скрыто: {0}"),
 ]
@@ -534,4 +520,9 @@ S += [
 S += [
 ("Dash_HighTitle","über dem Referenzbereich","выше нормы"),
 ("Dash_LowTitle","unter dem Referenzbereich","ниже нормы"),
+]
+
+S += [
+("Trend_OnlyWithHistory","Nur mit Verlauf","Только с историей"),
+("Trend_Empty","Hier erscheinen alle erfassten Werte – auch die, die es bisher nur einmal gibt.","Здесь появятся все внесённые показатели — в том числе те, что пока измерены один раз."),
 ]

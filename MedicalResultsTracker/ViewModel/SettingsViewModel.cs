@@ -1,5 +1,4 @@
 using System.Globalization;
-using MedicalResultsTracker.Services.Ai;
 using MedicalResultsTracker.Services.Backup;
 using MedicalResultsTracker.Resources.Strings;
 using MedicalResultsTracker.Services.UI;
@@ -8,7 +7,7 @@ using MedicalResultsTracker.Services.Export;
 
 namespace MedicalResultsTracker.ViewModel
 {
-    /// <summary>Хранение данных, выгрузка и разрешения для ИИ-помощника.</summary>
+    /// <summary>Хранение данных, выгрузка и обслуживание: язык, справочник, резервные копии.</summary>
     public partial class SettingsViewModel : BaseViewModel
     {
         private const string LastBackupKey = "backup.last.utc";
@@ -21,17 +20,12 @@ namespace MedicalResultsTracker.ViewModel
         private readonly IBloodPressureRepository _pressure;
         private readonly IAutoBackupService _autoBackup;
         private readonly IExportService _export;
-        private readonly IAiConsentService _consent;
-        private readonly IAiAssistant _assistant;
 
         [ObservableProperty]
         private string _databasePath = string.Empty;
 
         [ObservableProperty]
         private string _storageSummary = string.Empty;
-
-        [ObservableProperty]
-        private string _assistantSummary = string.Empty;
 
         [ObservableProperty]
         private string _versionSummary = string.Empty;
@@ -74,17 +68,13 @@ namespace MedicalResultsTracker.ViewModel
             IBloodTestRepository repository,
             IBloodPressureRepository pressure,
             IAutoBackupService autoBackup,
-            IExportService export,
-            IAiConsentService consent,
-            IAiAssistant assistant)
+            IExportService export)
         {
             _database = database;
             _repository = repository;
             _pressure = pressure;
             _autoBackup = autoBackup;
             _export = export;
-            _consent = consent;
-            _assistant = assistant;
 
             Title = S.Tab_Settings;
         }
@@ -198,8 +188,6 @@ namespace MedicalResultsTracker.ViewModel
         [RelayCommand]
         private Task OpenCatalog() => Shell.Current.GoToAsync(AppRoutes.Catalog);
 
-        [RelayCommand]
-        private Task OpenHistory() => Shell.Current.GoToAsync(AppRoutes.History);
 
         [RelayCommand]
         private Task OpenPressure() => Shell.Current.GoToAsync(AppRoutes.Pressure);
@@ -260,22 +248,6 @@ namespace MedicalResultsTracker.ViewModel
             await Dialog.AlertAsync(S.Bp_TargetSavedTitle, string.Format(S.Bp_TargetSavedBody, systolic, diastolic));
         }, S.Err_Settings);
 
-        [RelayCommand]
-        private Task ShareForAi() => RunAsync(async () =>
-        {
-            string text = await _export.BuildTextSummaryAsync();
-            await _export.ShareTextAsync(text, S.Dash_Title);
-        }, S.Err_Text);
-
-        [RelayCommand]
-        private Task CopyForAi() => RunAsync(async () =>
-        {
-            string text = await _export.BuildTextSummaryAsync();
-
-            await _export.CopyToClipboardAsync(text);
-            await Dialog.AlertAsync(S.Set_CopiedTitle, S.Set_CopiedBody);
-        }, S.Err_Copy);
-
         private async Task LoadAsync()
         {
             Title = S.Tab_Settings;
@@ -297,7 +269,6 @@ namespace MedicalResultsTracker.ViewModel
                 _ => string.Format(S.Set_StorageMany, count)
             };
 
-            UpdateAssistantSummary();
             UpdateBackupSummary();
             UpdateAutoBackupSummary();
 
@@ -355,21 +326,6 @@ namespace MedicalResultsTracker.ViewModel
                 : S.Auto_NeverYet;
 
             AutoBackupSummary = string.Format(S.Auto_Summary, _autoBackup.FolderName, when);
-        }
-
-        private void UpdateAssistantSummary()
-        {
-            if (_consent.Current.Scope == AiConsentScope.None)
-            {
-                AssistantSummary = S.Set_AiOff;
-                return;
-            }
-
-            string when = _consent.Current.GrantedUtc is DateTime granted
-                ? $" {granted.ToLocalTime().ToString("d", CultureInfo.CurrentCulture)}."
-                : ".";
-
-            AssistantSummary = string.Format(S.Set_AiGranted, _assistant.ProviderName, when);
         }
 
 
