@@ -1194,4 +1194,7 @@
   <data name="Match_Option" xml:space="preserve">
     <value>{0} ({1})</value>
   </data>
+  <data name="Set_BackupTitle" xml:space="preserve">
+    <value>Резервная копия</value>
+  </data>
 </root>

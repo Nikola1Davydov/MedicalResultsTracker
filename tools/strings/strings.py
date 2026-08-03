@@ -533,3 +533,6 @@ S += [
 ("Match_KeepNew","Nein, als neuen Wert anlegen","Нет, завести новый показатель"),
 ("Match_Option","{0} ({1})","{0} ({1})"),
 ]
+S += [
+("Set_BackupTitle","Sicherung","Резервная копия"),
+]
