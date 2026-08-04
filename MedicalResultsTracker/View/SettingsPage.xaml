@@ -38,6 +38,8 @@
                     <!--  Порог задаёт человек со слов врача: приложение сравнивает с числом,
                           а не ставит степень гипертонии.  -->
                     <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_TargetBody}" />
+
+                    <Label Text="{x:Static loc:S.Bp_TargetHigh}" />
                     <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="8">
                         <Entry
                             Grid.Column="0"
@@ -56,6 +58,29 @@
                             MaxLength="3"
                             Text="{Binding PressureTargetDiastolic}" />
                     </Grid>
+
+                    <!--  Давление бывает не только высоким. Ноль здесь — «снизу не следить»,
+                          это осознанный выбор, а не пустая настройка.  -->
+                    <Label Text="{x:Static loc:S.Bp_TargetLow}" />
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="8">
+                        <Entry
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            MaxLength="3"
+                            Text="{Binding PressureLowSystolic}" />
+                        <Label
+                            Grid.Column="1"
+                            Text="/"
+                            VerticalOptions="Center" />
+                        <Entry
+                            Grid.Column="2"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            MaxLength="3"
+                            Text="{Binding PressureLowDiastolic}" />
+                    </Grid>
+                    <Label Style="{StaticResource Caption}" Text="{x:Static loc:S.Bp_TargetLowOff}" />
                     <Button Command="{Binding SavePressureTargetCommand}" Text="{x:Static loc:S.Bp_TargetSave}" />
                     <Button Command="{Binding OpenPressureCommand}" Text="{x:Static loc:S.Bp_OpenDiary}" />
                 </VerticalStackLayout>

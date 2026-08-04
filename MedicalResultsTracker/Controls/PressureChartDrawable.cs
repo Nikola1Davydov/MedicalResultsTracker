@@ -22,6 +22,11 @@ namespace MedicalResultsTracker.Controls
 
         public int TargetDiastolic { get; set; }
 
+        /// <summary>Нижние пороги. Ноль — черты нет: снизу человек следить не просил.</summary>
+        public int TargetSystolicLow { get; set; }
+
+        public int TargetDiastolicLow { get; set; }
+
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             IReadOnlyList<BloodPressureReading> readings = Readings;
@@ -62,9 +67,19 @@ namespace MedicalResultsTracker.Controls
                 min = Math.Min(min, TargetDiastolic);
             }
 
+            if (TargetDiastolicLow > 0)
+            {
+                min = Math.Min(min, TargetDiastolicLow);
+            }
+
             if (TargetSystolic > 0)
             {
                 max = Math.Max(max, TargetSystolic);
+            }
+
+            if (TargetSystolicLow > 0)
+            {
+                min = Math.Min(min, TargetSystolicLow);
             }
 
             double margin = Math.Max((max - min) * 0.12d, 4d);
@@ -83,6 +98,8 @@ namespace MedicalResultsTracker.Controls
 
             DrawTarget(canvas, plot, min, max, TargetSystolic, StatusPalette.High);
             DrawTarget(canvas, plot, min, max, TargetDiastolic, StatusPalette.Low);
+            DrawTarget(canvas, plot, min, max, TargetSystolicLow, StatusPalette.High);
+            DrawTarget(canvas, plot, min, max, TargetDiastolicLow, StatusPalette.Low);
 
             canvas.StrokeDashPattern = null;
         }

@@ -59,8 +59,13 @@ namespace MedicalResultsTracker.ViewModel
 
             int systolicTarget = BloodPressureTarget.Systolic;
             int diastolicTarget = BloodPressureTarget.Diastolic;
+            int systolicLow = BloodPressureTarget.SystolicLow;
+            int diastolicLow = BloodPressureTarget.DiastolicLow;
 
-            TargetSummary = string.Format(S.Bp_TargetSummary, systolicTarget, diastolicTarget);
+            // Нижние пороги можно выключить нулём — тогда и говорить о них незачем.
+            TargetSummary = systolicLow > 0 || diastolicLow > 0
+                ? string.Format(S.Bp_TargetSummaryLow, systolicTarget, diastolicTarget, systolicLow, diastolicLow)
+                : string.Format(S.Bp_TargetSummary, systolicTarget, diastolicTarget);
 
             IReadOnlyList<BloodPressureReading> readings = await _repository.GetAllAsync();
 
@@ -68,19 +73,25 @@ namespace MedicalResultsTracker.ViewModel
 
             foreach (BloodPressureReading reading in readings)
             {
-                Readings.Add(new PressureItemViewModel(reading, systolicTarget, diastolicTarget));
+                Readings.Add(new PressureItemViewModel(
+                    reading, systolicTarget, diastolicTarget, systolicLow, diastolicLow));
             }
 
             IsEmpty = Readings.Count == 0;
 
-            BuildChart(readings, systolicTarget, diastolicTarget);
+            BuildChart(readings, systolicTarget, diastolicTarget, systolicLow, diastolicLow);
         }
 
         /// <summary>
         /// Последние измерения от старых к новым. Ограничение по количеству — ради читаемости:
         /// на ширине телефона две сотни точек сливаются в сплошную полосу.
         /// </summary>
-        private void BuildChart(IReadOnlyList<BloodPressureReading> readings, int systolic, int diastolic)
+        private void BuildChart(
+            IReadOnlyList<BloodPressureReading> readings,
+            int systolic,
+            int diastolic,
+            int systolicLow,
+            int diastolicLow)
         {
             List<BloodPressureReading> forChart = readings
                 .Take(MaxChartPoints)
@@ -92,6 +103,8 @@ namespace MedicalResultsTracker.ViewModel
                 Readings = forChart,
                 TargetSystolic = systolic,
                 TargetDiastolic = diastolic,
+                TargetSystolicLow = systolicLow,
+                TargetDiastolicLow = diastolicLow,
             };
 
             HasChart = forChart.Count >= 2;
@@ -102,7 +115,12 @@ namespace MedicalResultsTracker.ViewModel
     /// <summary>Строка дневника.</summary>
     public sealed class PressureItemViewModel
     {
-        public PressureItemViewModel(BloodPressureReading reading, int systolicTarget, int diastolicTarget)
+        public PressureItemViewModel(
+            BloodPressureReading reading,
+            int systolicTarget,
+            int diastolicTarget,
+            int systolicLow,
+            int diastolicLow)
         {
             Id = reading.Id;
             Value = reading.Display;
@@ -119,9 +137,13 @@ namespace MedicalResultsTracker.ViewModel
             HasNote = !string.IsNullOrWhiteSpace(reading.Note);
 
             IsAboveTarget = reading.IsAbove(systolicTarget, diastolicTarget);
+            IsBelowTarget = !IsAboveTarget && reading.IsBelow(systolicLow, diastolicLow);
 
-            // Цветом отмечается только «выше заданной цели» — без степеней и диагнозов.
-            Color = IsAboveTarget ? StatusPalette.High : StatusPalette.Normal;
+            // Цветом отмечается выход за пороги, которые человек задал сам, — вверх красным,
+            // вниз синим. Ни степеней, ни диагнозов: это сравнение с числом из настроек.
+            Color = IsAboveTarget
+                ? StatusPalette.High
+                : IsBelowTarget ? StatusPalette.Low : StatusPalette.Normal;
         }
 
         public Guid Id { get; }
@@ -139,6 +161,8 @@ namespace MedicalResultsTracker.ViewModel
         public bool HasNote { get; }
 
         public bool IsAboveTarget { get; }
+
+        public bool IsBelowTarget { get; }
 
         public Color Color { get; }
     }

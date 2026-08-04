@@ -51,6 +51,15 @@ namespace MedicalResultsTracker.Model
         public bool IsAbove(int systolicLimit, int diastolicLimit) =>
             Systolic > systolicLimit || Diastolic > diastolicLimit;
 
+        /// <summary>
+        /// Измерение ниже порога, заданного пользователем. Ноль означает «снизу не следить»:
+        /// пороги нижней границы человек ставит не всегда, и без этой проверки любое
+        /// измерение оказывалось бы «ниже нуля» никогда, а с нулём-порогом — всегда.
+        /// </summary>
+        public bool IsBelow(int systolicLimit, int diastolicLimit) =>
+            (systolicLimit > 0 && Systolic < systolicLimit) ||
+            (diastolicLimit > 0 && Diastolic < diastolicLimit);
+
         /// <summary>Значения, при которых запись не имеет смысла: опечатка или пустая форма.</summary>
         [Ignore]
         public bool IsPlausible =>

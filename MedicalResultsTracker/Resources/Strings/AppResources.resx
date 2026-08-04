@@ -1221,4 +1221,25 @@ Bezeichnungen, die ich schon führe (Bezeichnung | Einheit):</value>
   <data name="Err_RangeSave" xml:space="preserve">
     <value>Referenzbereich konnte nicht gespeichert werden</value>
   </data>
+  <data name="Bp_TargetHigh" xml:space="preserve">
+    <value>Zu hoch ab</value>
+  </data>
+  <data name="Bp_TargetLow" xml:space="preserve">
+    <value>Zu niedrig unter</value>
+  </data>
+  <data name="Bp_TargetLowOff" xml:space="preserve">
+    <value>0 – dann wird nach unten nichts hervorgehoben.</value>
+  </data>
+  <data name="Bp_TargetSummaryLow" xml:space="preserve">
+    <value>Hervorgehoben wird alles über {0}/{1} und alles unter {2}/{3}.</value>
+  </data>
+  <data name="Bp_TargetSavedLow" xml:space="preserve">
+    <value>Hervorgehoben wird ab {0}/{1} und unter {2}/{3}.</value>
+  </data>
+  <data name="Bp_BadLowTitle" xml:space="preserve">
+    <value>Untere Grenze prüfen</value>
+  </data>
+  <data name="Bp_BadLowBody" xml:space="preserve">
+    <value>Die untere Grenze muss unter der oberen liegen. 0 bedeutet: nach unten nichts hervorheben.</value>
+  </data>
 </root>

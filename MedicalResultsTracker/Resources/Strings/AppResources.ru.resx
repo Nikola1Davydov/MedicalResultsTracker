@@ -1221,4 +1221,25 @@
   <data name="Err_RangeSave" xml:space="preserve">
     <value>Не удалось сохранить норму</value>
   </data>
+  <data name="Bp_TargetHigh" xml:space="preserve">
+    <value>Считать высоким от</value>
+  </data>
+  <data name="Bp_TargetLow" xml:space="preserve">
+    <value>Считать низким ниже</value>
+  </data>
+  <data name="Bp_TargetLowOff" xml:space="preserve">
+    <value>0 — тогда снизу ничего не подсвечивается.</value>
+  </data>
+  <data name="Bp_TargetSummaryLow" xml:space="preserve">
+    <value>Подсвечивается всё выше {0}/{1} и всё ниже {2}/{3}.</value>
+  </data>
+  <data name="Bp_TargetSavedLow" xml:space="preserve">
+    <value>Подсветка: выше {0}/{1} и ниже {2}/{3}.</value>
+  </data>
+  <data name="Bp_BadLowTitle" xml:space="preserve">
+    <value>Проверьте нижний порог</value>
+  </data>
+  <data name="Bp_BadLowBody" xml:space="preserve">
+    <value>Нижний порог должен быть меньше верхнего. 0 означает «снизу не подсвечивать».</value>
+  </data>
 </root>
