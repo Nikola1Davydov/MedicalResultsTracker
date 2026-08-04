@@ -550,3 +550,13 @@ S += [
 ("Trend_RangeClearBody","Der Referenzbereich wird bei allen {0} Messungen entfernt. Die Werte selbst bleiben.","Норма будет убрана у всех измерений этого показателя ({0}). Сами значения останутся."),
 ("Err_RangeSave","Referenzbereich konnte nicht gespeichert werden","Не удалось сохранить норму"),
 ]
+# Нижний порог давления: подсвечивать надо не только высокое.
+S += [
+("Bp_TargetHigh","Zu hoch ab","Считать высоким от"),
+("Bp_TargetLow","Zu niedrig unter","Считать низким ниже"),
+("Bp_TargetLowOff","0 – dann wird nach unten nichts hervorgehoben.","0 — тогда снизу ничего не подсвечивается."),
+("Bp_TargetSummaryLow","Hervorgehoben wird alles über {0}/{1} und alles unter {2}/{3}.","Подсвечивается всё выше {0}/{1} и всё ниже {2}/{3}."),
+("Bp_TargetSavedLow","Hervorgehoben wird ab {0}/{1} und unter {2}/{3}.","Подсветка: выше {0}/{1} и ниже {2}/{3}."),
+("Bp_BadLowTitle","Untere Grenze prüfen","Проверьте нижний порог"),
+("Bp_BadLowBody","Die untere Grenze muss unter der oberen liegen. 0 bedeutet: nach unten nichts hervorheben.","Нижний порог должен быть меньше верхнего. 0 означает «снизу не подсвечивать»."),
+]

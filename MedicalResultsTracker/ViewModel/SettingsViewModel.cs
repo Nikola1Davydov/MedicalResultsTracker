@@ -55,6 +55,13 @@ namespace MedicalResultsTracker.ViewModel
         [ObservableProperty]
         private string _pressureTargetDiastolic = string.Empty;
 
+        /// <summary>Нижние пороги. Ноль — снизу не подсвечивать: это осознанный выбор.</summary>
+        [ObservableProperty]
+        private string _pressureLowSystolic = string.Empty;
+
+        [ObservableProperty]
+        private string _pressureLowDiastolic = string.Empty;
+
         [ObservableProperty]
         private LanguageOption? _selectedLanguage;
 
@@ -242,11 +249,43 @@ namespace MedicalResultsTracker.ViewModel
                 return;
             }
 
+            // Пустое поле нижнего порога читается как ноль: «снизу не следить».
+            int lowSystolic = ParseLow(PressureLowSystolic);
+            int lowDiastolic = ParseLow(PressureLowDiastolic);
+
+            if (lowSystolic < 0 || lowDiastolic < 0 ||
+                (lowSystolic > 0 && lowSystolic >= systolic) ||
+                (lowDiastolic > 0 && lowDiastolic >= diastolic) ||
+                (lowSystolic > 0 && lowDiastolic > 0 && lowDiastolic >= lowSystolic))
+            {
+                await Dialog.AlertAsync(S.Bp_BadLowTitle, S.Bp_BadLowBody);
+                return;
+            }
+
             BloodPressureTarget.Systolic = systolic;
             BloodPressureTarget.Diastolic = diastolic;
+            BloodPressureTarget.SystolicLow = lowSystolic;
+            BloodPressureTarget.DiastolicLow = lowDiastolic;
 
-            await Dialog.AlertAsync(S.Bp_TargetSavedTitle, string.Format(S.Bp_TargetSavedBody, systolic, diastolic));
+            await Dialog.AlertAsync(
+                S.Bp_TargetSavedTitle,
+                lowSystolic > 0 || lowDiastolic > 0
+                    ? string.Format(S.Bp_TargetSavedLow, systolic, diastolic, lowSystolic, lowDiastolic)
+                    : string.Format(S.Bp_TargetSavedBody, systolic, diastolic));
         }, S.Err_Settings);
+
+        /// <summary>Пустое поле — это ноль, «снизу не следить». Мусор — минус: сигнал об ошибке.</summary>
+        private static int ParseLow(string text)
+        {
+            string trimmed = text.Trim();
+
+            if (trimmed.Length == 0)
+            {
+                return 0;
+            }
+
+            return int.TryParse(trimmed, out int value) && value is >= 0 and <= 200 ? value : -1;
+        }
 
         private async Task LoadAsync()
         {
@@ -274,6 +313,8 @@ namespace MedicalResultsTracker.ViewModel
 
             PressureTargetSystolic = BloodPressureTarget.Systolic.ToString(CultureInfo.CurrentCulture);
             PressureTargetDiastolic = BloodPressureTarget.Diastolic.ToString(CultureInfo.CurrentCulture);
+            PressureLowSystolic = BloodPressureTarget.SystolicLow.ToString(CultureInfo.CurrentCulture);
+            PressureLowDiastolic = BloodPressureTarget.DiastolicLow.ToString(CultureInfo.CurrentCulture);
 
             // Версия ставится тегом релиза и больше нигде: увидев её здесь, можно сверить,
             // что на телефоне стоит именно тот выпуск, который лежит в Releases.

@@ -1160,5 +1160,26 @@ namespace MedicalResultsTracker.Resources.Strings
 
         /// <summary>Referenzbereich konnte nicht gespeichert werden</summary>
         public static string Err_RangeSave => Get("Err_RangeSave");
+
+        /// <summary>Zu hoch ab</summary>
+        public static string Bp_TargetHigh => Get("Bp_TargetHigh");
+
+        /// <summary>Zu niedrig unter</summary>
+        public static string Bp_TargetLow => Get("Bp_TargetLow");
+
+        /// <summary>0 – dann wird nach unten nichts hervorgehoben.</summary>
+        public static string Bp_TargetLowOff => Get("Bp_TargetLowOff");
+
+        /// <summary>Hervorgehoben wird alles über {0}/{1} und alles unter {2}/{3}.</summary>
+        public static string Bp_TargetSummaryLow => Get("Bp_TargetSummaryLow");
+
+        /// <summary>Hervorgehoben wird ab {0}/{1} und unter {2}/{3}.</summary>
+        public static string Bp_TargetSavedLow => Get("Bp_TargetSavedLow");
+
+        /// <summary>Untere Grenze prüfen</summary>
+        public static string Bp_BadLowTitle => Get("Bp_BadLowTitle");
+
+        /// <summary>Die untere Grenze muss unter der oberen liegen. 0 bedeutet: nach unten</summary>
+        public static string Bp_BadLowBody => Get("Bp_BadLowBody");
     }
 }

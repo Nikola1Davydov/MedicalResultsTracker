@@ -167,7 +167,9 @@ namespace MedicalResultsTracker.ViewModel
 
             PressureColor = latest.IsAbove(BloodPressureTarget.Systolic, BloodPressureTarget.Diastolic)
                 ? StatusPalette.High
-                : StatusPalette.Normal;
+                : latest.IsBelow(BloodPressureTarget.SystolicLow, BloodPressureTarget.DiastolicLow)
+                    ? StatusPalette.Low
+                    : StatusPalette.Normal;
         }
 
         private static string BuildSummary(int parameterCount, int totalTests, int attentionCount)
